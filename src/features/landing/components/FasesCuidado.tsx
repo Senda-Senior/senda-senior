@@ -13,7 +13,7 @@ const MANUAIS = [
     tab: 'Prevent Care',
     photo: '/brand/photos/prevent-care.png',
     title: 'Prevent\nCare',
-    tagline: 'O guia para quem quer se antecipar.',
+    tagline: 'Cuidar preventivamente é se organizar enquanto ainda está tudo bem.',
     desc: 'Planejamento preventivo para famílias com pais autônomos.',
     // Card: sage green
     cardBg: 'rgba(198, 212, 188, 0.97)',
@@ -30,8 +30,8 @@ const MANUAIS = [
     tab: 'Care',
     photo: '/brand/photos/care.png',
     title: 'Care',
-    tagline: 'O guia para quem já percebeu os sinais.',
-    desc: 'Planejamento preventivo para famílias com pais autônomos.',
+    tagline: 'O guia para quem já percebeu os primeiros sinais.',
+    desc: 'Idosos funcionais, mas que já sinalizam a necessidade de apoio.',
     // Card: warm golden / tan
     cardBg: 'rgba(208, 170, 110, 0.97)',
     labelColor: '#5c3a18',
@@ -48,7 +48,7 @@ const MANUAIS = [
     photo: '/brand/photos/immediate-care.png',
     title: 'Immediate\nCare',
     tagline: 'O guia para quem precisa agir agora.',
-    desc: 'Organização e suporte para famílias em transição.',
+    desc: 'Organização e suporte para famílias que não podem mais esperar.',
     // Card: terracotta / burnt sienna
     cardBg: 'rgba(148, 72, 50, 0.97)',
     labelColor: 'rgba(245, 240, 232, 0.75)',

@@ -24,7 +24,7 @@ const FOUNDERS = [
   {
     name: 'Luciana Moura',
     role: 'Co-Fundadora',
-    bio: 'Viveu pessoalmente o desafio de cuidar de sua mãe idosa. Essa experiência transformou-se em método e orientação para outras famílias que precisam se preparar, não improvisar.',
+    bio: 'Vivo pessoalmente o desafio e a responsabilidade de cuidar de minha mãe idosa de 92 anos. Essa experiência transformou-se em método e orientação para outras famílias que precisam se preparar, não improvisar.',
     reverse: false,
   },
   {
@@ -195,7 +195,7 @@ export function PorQuemViveu() {
               maxWidth: 480,
             }}
           >
-            A Senda nasceu da vivência real de mulheres que acompanharam de
+            A Senda Sênior nasceu da vivência real de mulheres que acompanharam de
             perto o envelhecimento de suas mães. Essa experiência se
             transformou em método, manuais e consultoria para famílias que
             querem se preparar, não improvisar.

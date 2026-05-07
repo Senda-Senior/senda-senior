@@ -29,10 +29,10 @@ const FASES = [
     iconFilter: 'brightness(0) invert(1)',
     checklist: [
       'Avaliar autonomia e saúde atual dos pais',
-      'Organizar documentos essenciais (testamento, procurações)',
-      'Mapear histórico médico da família',
-      'Definir responsabilidades entre filhos e cuidadores',
-      'Criar fundo de reserva para imprevistos de saúde',
+      'Organizar documentos essenciais',
+      'Abrir conversas sobre o futuro',
+      'Avaliar a segurança do ambiente',
+      'Prever gastos futuros',
     ],
   },
   {
@@ -41,8 +41,8 @@ const FASES = [
     fase: 'FASE 2',
     title: 'Care',
     subtitle: 'Os primeiros sinais apareceram.',
-    desc: 'É hora de organizar — não de improvisar.',
-    tagline: 'Organização é forma de amor.',
+    desc: 'É hora de começar a agir — não de improvisar.',
+    tagline: 'Organizar é forma de amor.',
     bg: '#d9c9a8',
     bgExpanded: '#cfc09a',
     numColor: 'var(--color-terracotta)',
@@ -53,11 +53,12 @@ const FASES = [
     iconSrc: '/icons/brand/heart.svg',
     iconFilter: 'brightness(0) invert(1)',
     checklist: [
-      'Consultar geriatras e especialistas adequados',
-      'Adaptar o ambiente doméstico com segurança',
-      'Contratar ou estruturar cuidados formais',
-      'Estabelecer rotinas de medicação e acompanhamento',
-      'Distribuir tarefas emocionais entre a família',
+      'Consulta médica ao Geriatra',
+      'Adaptar o ambiente doméstico',
+      'Organizar rotinas',
+      'Dividir responsabilidades familiares',
+      'O papel do cuidador principal',
+      'Gerir profissionais',
     ],
   },
   {
@@ -65,8 +66,8 @@ const FASES = [
     num: '03',
     fase: 'FASE 3',
     title: 'Immediate Care',
-    subtitle: 'O cuidado é urgente.',
-    desc: 'É hora de agir — não de desesperar.',
+    subtitle: 'Necessidades urgentes.',
+    desc: 'Idosos que requerem supervisão constante.',
     tagline: 'Na urgência, clareza salva.',
     bg: '#c98a65',
     bgExpanded: '#b5724a',
@@ -78,11 +79,13 @@ const FASES = [
     iconSrc: '/icons/brand/life-ring.svg',
     iconFilter: 'none',
     checklist: [
-      'Acionar plano de emergência previamente definido',
-      'Comunicar toda a família com clareza e calma',
-      'Contatar assistente social e serviços de suporte',
-      'Rever questões legais e financeiras urgentes',
-      'Cuidar também de quem cuida — seu bem-estar importa',
+      'Entender e aceitar que o momento é de vigilância 24h',
+      'Organizar rotinas',
+      'Adaptar ambientes',
+      'O papel do cuidador principal e o risco de colapso',
+      'Gestão financeira',
+      'Gestão de equipe',
+      'Decisões difíceis',
     ],
   },
 ]
@@ -411,7 +414,7 @@ export function DesktopManualSection() {
                 opacity: 0.85,
               }}
             >
-              Metodologia Senda
+              Metodologia Senda Sênior
             </p>
 
             <h2
@@ -426,7 +429,7 @@ export function DesktopManualSection() {
                 textWrap: 'balance',
               }}
             >
-              As 3 etapas<br />
+              Os 3 momentos<br />
               do cuidado.
             </h2>
 
@@ -440,6 +443,7 @@ export function DesktopManualSection() {
                 marginBottom: 24,
               }}
             >
+<<<<<<< Updated upstream
               A Senda Sênior é uma empresa de planejamento e assessoria para o envelhecimento familiar. Fundada por Luciana e Julianne — duas mulheres que viveram pessoalmente os desafios de cuidar de mães idosas — oferecemos orientação estruturada para famílias em qualquer fase do cuidado.
             </p>
 
@@ -456,6 +460,9 @@ export function DesktopManualSection() {
             >
               Não somos cuidadores. Não somos clínica.<br />
               Somos a bússola que orienta o caminho.
+=======
+              Estruturamos o envelhecimento em três estágios para ajudar você a entender o presente e proteger o futuro. Esta classificação não rotula; ela orienta.
+>>>>>>> Stashed changes
             </p>
 
             <Link
@@ -583,7 +590,7 @@ function MobileManualSection() {
             opacity: 0.85,
           }}
         >
-          Metodologia Senda
+          Metodologia Senda Sênior
         </p>
         <h2
           style={{
@@ -597,7 +604,7 @@ function MobileManualSection() {
             marginBottom: 20,
           }}
         >
-          As 3 etapas<br />do cuidado.
+          Os 3 momentos<br />do cuidado.
         </h2>
         <p
           style={{
@@ -607,8 +614,7 @@ function MobileManualSection() {
             color: 'rgba(245,240,232,0.7)',
           }}
         >
-          Não somos cuidadores. Não somos clínica.<br />
-          Somos a bússola que orienta o caminho.
+          Estruturamos o envelhecimento em três estágios para ajudar você a entender o presente e proteger o futuro. Esta classificação não rotula; ela orienta.
         </p>
       </div>
 

@@ -115,7 +115,7 @@ export function CTAFinal() {
                 transition: 'border-color 0.2s, opacity 0.2s',
               }}
             >
-              Conhecer as 3 etapas
+              Conhecer os 3 momentos
             </Link>
           </div>
         </Reveal>

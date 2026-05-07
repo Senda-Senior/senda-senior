@@ -100,7 +100,7 @@ export function Manifesto() {
 
           <Reveal delay={0.2}>
             <Link
-              href="#manual"
+              href="#sobre"
               className="btn-terracotta-hover"
               style={{
                 display: 'inline-flex',

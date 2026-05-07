@@ -132,7 +132,7 @@ export function Consultoria() {
             }}
           >
             Cada família vive o envelhecimento de um jeito. A consultoria da
-            Senda ajuda a entender a fase atual, organizar prioridades e
+            Senda Sênior ajuda a entender a fase atual, organizar prioridades e
             construir um plano possível.
           </p>
 

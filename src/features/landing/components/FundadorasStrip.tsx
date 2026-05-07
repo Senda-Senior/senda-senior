@@ -6,27 +6,27 @@ import { Reveal } from '@/design'
 
 const CARDS = [
   {
-    icon: '/icons/brand/map.svg',
-    title: 'Planejamento preventivo',
-    desc: 'Antecipação de necessidades para evitar crises',
+    icon: '/icons/brand/book-open.svg',
+    title: 'Os manuais',
+    desc: 'Guias práticos para cada momento do cuidado.',
     bg: 'var(--color-terracotta-light)',
   },
   {
-    icon: '/icons/brand/users.svg',
-    title: 'Assessoria personalizada',
-    desc: 'Orientação adaptada à realidade da sua família',
-    bg: 'var(--color-gold-light)',
-  },
-  {
-    icon: '/icons/brand/book-open.svg',
-    title: 'Manuais práticos por fase',
-    desc: 'Guias claros para cada momento da jornada',
-    bg: 'var(--color-gold-light)',
-  },
-  {
     icon: '/icons/brand/heart-hand.svg',
-    title: 'Consultoria individual',
-    desc: 'Suporte direto para decisões complexas',
+    title: 'A assessoria personalizada',
+    desc: 'Orientação individual para prioridades reais da família.',
+    bg: 'var(--color-gold-light)',
+  },
+  {
+    icon: '/icons/brand/file-content.svg',
+    title: 'O repositório',
+    desc: 'Documentos, organização e histórico em um só lugar.',
+    bg: 'var(--color-gold-light)',
+  },
+  {
+    icon: '/icons/brand/users.svg',
+    title: 'Os parceiros',
+    desc: 'Rede de cuidadores, fisioterapeutas, clínicas e ILPIs.',
     bg: 'var(--color-terracotta-light)',
   },
 ]
@@ -125,6 +125,20 @@ export function FundadorasStrip() {
           className="cards-grid"
           style={{ gap: 16 }}
         >
+          <p
+            style={{
+              gridColumn: '1 / -1',
+              fontFamily: 'var(--font-sans)',
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: '0.14em',
+              textTransform: 'uppercase',
+              color: 'var(--color-ink-sub)',
+              marginBottom: 4,
+            }}
+          >
+            Nossos produtos:
+          </p>
           {CARDS.map((card, i) => (
               <Reveal key={i} delay={0.1 + i * 0.05}>
                 <div

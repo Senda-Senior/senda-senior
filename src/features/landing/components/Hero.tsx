@@ -123,7 +123,7 @@ export function Hero() {
                     transition: 'all 0.3s',
                   }}
                 >
-                  Conhecer as 3 etapas
+                  Conhecer os 3 momentos
                   <ArrowRight size={18} strokeWidth={2} />
                 </Link>
 
