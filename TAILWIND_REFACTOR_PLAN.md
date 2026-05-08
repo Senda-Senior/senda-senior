@@ -229,28 +229,63 @@ git commit -m "refactor(<comp>): convert inline styles to tailwind utilities"
 
 ---
 
+## 5.1 Lesson learned: structural wrappers are not atoms
+
+Regression found during `Footer.tsx` refactor:
+
+- The visual broke even though `typecheck` and `lint` passed.
+- Root cause: the footer grid depended on global CSS (`#footer-grid`) and
+  structural wrapper styles (`maxWidth`, `margin: 0 auto`, `gridTemplateColumns`,
+  macro padding). Moving those to Tailwind changed cascade/priority and altered
+  the rendered layout.
+- Fix: restore structural styles surgically, keep only low-risk internal atoms
+  converted, then validate with a screenshot.
+
+New rule:
+
+- Do not migrate structural wrappers (`section`, `footer`, `header`, main grids,
+  page containers, responsive layout shells) in the same pass as internal atoms.
+- Before touching any wrapper, search `globals.css` for related `id`, class,
+  media query, and `!important` overrides.
+- Treat wrappers as a separate high-risk atom that requires before/after print
+  or visual snapshot approval.
+- Passing `typecheck` + `lint` is not enough for UI refactors. A visual check is
+  mandatory before marking the atom done.
+- If visual fidelity matters more than removing inline styles, keep the exact
+  inline style. This is a refactor, not a redesign.
+
+Footer status:
+
+- `Footer.tsx` internal atoms were partially converted.
+- Structural wrappers were restored because they are layout-critical.
+- Newsletter was adjusted and visually approved by screenshot.
+- Status: stabilized. Do not continue converting footer structure without a new
+  baseline screenshot and explicit review.
+
+---
+
 ## 6. Common pitfalls (com exemplos do que aconteceu)
 
 ### 6.1 Inline + Tailwind no mesmo elemento
 
 ```tsx
-// ❌ ERRADO — inline ganha por especificidade, Tailwind nunca aplica
+// ERRADO - inline ganha por especificidade, Tailwind nunca aplica
 <div
   className="grid grid-cols-1 md:grid-cols-2"
   style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}
 />
 
-// ✅ CERTO — Tailwind sozinho
+// CERTO - Tailwind sozinho
 <div className="grid grid-cols-1 md:grid-cols-2" />
 ```
 
 ### 6.2 `not-italic` em `<em>`
 
 ```tsx
-// ❌ ERRADO — <em> é italic por padrão; not-italic REMOVE o italic
+// ERRADO - <em> é italic por padrão; not-italic REMOVE o italic
 <em className="not-italic text-terracotta">amanhã.</em>
 
-// ✅ CERTO
+// CERTO
 <em className="italic text-terracotta">amanhã.</em>
 ```
 
@@ -273,22 +308,22 @@ git commit -m "refactor(<comp>): convert inline styles to tailwind utilities"
 ```
 
 ```tsx
-// ❌ ERRADO — bg-header-surface não existe (não há --color-header-surface)
+// ERRADO - bg-header-surface não existe (não há --color-header-surface)
 <header className="bg-header-surface" />
 
-// ✅ Opção A: arbitrary value
+// Opção A: arbitrary value
 <header className="bg-[var(--header-surface)]" />
 
-// ✅ Opção B: promover pra @theme primeiro (renomear var pra --color-header-surface)
+// Opção B: promover pra @theme primeiro (renomear var pra --color-header-surface)
 ```
 
 ### 6.5 Aproximar valor em vez de usar exato
 
 ```tsx
-// ❌ "tracking-tight" é -0.025em — original era -0.03em
+// ERRADO - "tracking-tight" é -0.025em; original era -0.03em
 <h1 className="tracking-tight">...</h1>
 
-// ✅ Valor exato
+// CERTO - valor exato
 <h1 className="tracking-[-0.03em]">...</h1>
 ```
 
@@ -307,10 +342,10 @@ git commit -m "refactor(<comp>): convert inline styles to tailwind utilities"
 ```
 
 ```tsx
-// ❌ Perdeu a cor terracotta e mudou peso
+// ERRADO - perdeu a cor terracotta e mudou peso
 <p className="font-sans text-[11px] font-bold tracking-[0.2em] uppercase">
 
-// ✅ Mantém TODAS as propriedades originais
+// CERTO - mantém TODAS as propriedades originais
 <p className="font-sans text-[11px] font-semibold tracking-[0.15em] uppercase text-terracotta">
 ```
 
@@ -453,7 +488,8 @@ Phase 2 — landing sections (médio)
 
 Phase 3 — layout (alto)
   src/features/landing/components/Header.tsx
-  src/features/landing/components/Footer.tsx
+  src/features/landing/components/Footer.tsx (stabilized: internal atoms only;
+  structural wrappers intentionally preserved)
 
 Phase 4 — pages (depende de phases anteriores estarem completas)
   src/app/dashboard/page.tsx
@@ -487,3 +523,4 @@ npm run test:e2e -- --grep "Hero"
 # Build completo (typecheck + lint + test)
 npm run typecheck && npm run lint && npm run test && npm run build
 ```
+

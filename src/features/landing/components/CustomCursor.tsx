@@ -76,15 +76,8 @@ export function CustomCursor() {
 
   return (
     <motion.div
+      className="pointer-events-none fixed left-0 top-0 z-[9999] flex items-center justify-center"
       style={{
-        position: 'fixed',
-        left: 0,
-        top: 0,
-        pointerEvents: 'none',
-        zIndex: 9999,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         x,
         y,
         scale,
@@ -92,31 +85,10 @@ export function CustomCursor() {
     >
       {/* Cursor usa verde da marca — cor primária do design folder */}
       <div
-        style={{
-          width: 80,
-          height: 80,
-          borderRadius: '50%',
-          background: 'var(--color-green)',
-          transform: 'translate(-50%, -50%)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          opacity: hoveredText ? 0.95 : 0,
-          boxShadow: '0 8px 32px rgba(74,94,74,0.4)',
-          transition: 'opacity 0.2s',
-        }}
+        className="flex h-[80px] w-[80px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--color-green)] shadow-[0_8px_32px_rgba(74,94,74,0.4)] transition-opacity duration-[200ms]"
+        style={{ opacity: hoveredText ? 0.95 : 0 }}
       >
-        <span
-          style={{
-            color: 'white',
-            fontSize: 10,
-            fontWeight: 700,
-            letterSpacing: 1,
-            textTransform: 'uppercase',
-            textAlign: 'center',
-            padding: 4,
-          }}
-        >
+        <span className="p-[4px] text-center text-[10px] font-bold uppercase tracking-[1px] text-white">
           {hoveredText}
         </span>
       </div>

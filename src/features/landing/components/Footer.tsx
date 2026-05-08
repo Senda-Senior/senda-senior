@@ -45,7 +45,6 @@ const SOCIALS = [
 /* ─── Color tokens (dark ink on gold background) ─────────────────────── */
 const INK = '#2a2520'
 const INK_MUTED = 'rgba(42, 37, 32, 0.58)'
-const INK_LABEL = 'rgba(42, 37, 32, 0.38)'
 const BG = '#EDCE90'
 
 /* ─── Footer ──────────────────────────────────────────────────────────── */
@@ -67,6 +66,7 @@ export function Footer() {
           maxWidth: 1160,
           margin: '0 auto',
           display: 'grid',
+          gridTemplateColumns: '1fr repeat(3, auto) 1.2fr',
           gap: 'clamp(28px, 4vw, 56px)',
           alignItems: 'start',
           paddingBottom: 'clamp(40px, 5vw, 60px)',
@@ -79,22 +79,9 @@ export function Footer() {
             alt="Senda Sênior"
             width={200}
             height={60}
-            style={{
-              height: 44,
-              width: 'auto',
-              objectFit: 'contain',
-              marginBottom: 14,
-              // No filter: logo shows in its natural dark color on gold background
-            }}
+            className="mb-[14px] h-[44px] w-auto object-contain"
           />
-          <p
-            style={{
-              fontSize: 14.95,
-              lineHeight: 1.65,
-              color: INK_MUTED,
-              fontFamily: 'var(--font-sans)',
-            }}
-          >
+          <p className="font-sans text-[14.95px] leading-[1.65] text-[rgba(42,37,32,0.58)]">
             O cuidado que começa<br />antes da urgência.
           </p>
         </div>
@@ -102,32 +89,14 @@ export function Footer() {
         {/* Nav columns */}
         {NAV_COLUMNS.map((col) => (
           <div key={col.title}>
-            <h4
-              style={{
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                color: INK_LABEL,
-                marginBottom: 20,
-                fontFamily: 'var(--font-sans)',
-              }}
-            >
+            <h4 className="mb-[20px] font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-[rgba(42,37,32,0.38)]">
               {col.title}
             </h4>
             {col.links.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                style={{
-                  display: 'block',
-                  fontSize: 14.95,
-                  color: INK_MUTED,
-                  textDecoration: 'none',
-                  marginBottom: 12,
-                  fontFamily: 'var(--font-sans)',
-                  transition: 'color 0.2s',
-                }}
+                className="mb-[12px] block font-sans text-[14.95px] text-[rgba(42,37,32,0.58)] no-underline transition-[color] duration-[200ms]"
               >
                 {link.label}
               </a>
@@ -137,15 +106,7 @@ export function Footer() {
 
         {/* Newsletter + social icons */}
         <div>
-          <p
-            style={{
-              fontSize: 16.1,
-              fontWeight: 600,
-              color: INK,
-              fontFamily: 'var(--font-sans)',
-              marginBottom: 14,
-            }}
-          >
+          <p className="mb-[14px] font-sans text-[16.1px] font-semibold text-[#2a2520]">
             Inscreva-se no nosso Newsletter
           </p>
 
@@ -154,9 +115,12 @@ export function Footer() {
             style={{
               display: 'flex',
               alignItems: 'center',
-              background: 'rgba(255, 255, 255, 0.55)',
+              width: 'min(100%, 366px)',
+              height: 36,
+              background: 'rgba(255, 255, 255, 0.5)',
               borderRadius: 100,
-              border: '1px solid rgba(42, 37, 32, 0.14)',
+              border: '1px solid rgba(42, 37, 32, 0.12)',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.35)',
               overflow: 'hidden',
               marginBottom: 20,
             }}
@@ -169,33 +133,38 @@ export function Footer() {
               aria-label="Email para newsletter"
               style={{
                 flex: 1,
+                minWidth: 0,
+                height: '100%',
                 border: 'none',
                 background: 'transparent',
-                padding: '10px 16px',
-                fontSize: 14.95,
+                padding: '0 14px',
+                fontSize: 14,
+                lineHeight: 1,
                 color: INK,
                 outline: 'none',
                 fontFamily: 'var(--font-sans)',
-                minWidth: 0,
               }}
             />
             <button
               type="submit"
               style={{
+                height: 30,
+                margin: 3,
+                padding: '0 14px',
+                border: 'none',
+                borderRadius: 100,
                 background: 'var(--color-terracotta)',
                 color: 'white',
-                border: 'none',
-                padding: '10px 18px',
-                borderRadius: 100,
-                margin: 3,
-                fontSize: 14.95,
-                fontWeight: 600,
                 cursor: 'pointer',
-                fontFamily: 'var(--font-sans)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 5,
+                gap: 4,
                 whiteSpace: 'nowrap',
+                fontFamily: 'var(--font-sans)',
+                fontSize: 13.5,
+                fontWeight: 700,
+                lineHeight: 1,
+                letterSpacing: '-0.01em',
               }}
             >
               Enviar →
@@ -203,25 +172,13 @@ export function Footer() {
           </div>
 
           {/* Social icons */}
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div className="flex gap-[8px]">
             {SOCIALS.map(({ Icon, href, label }) => (
               <a
                 key={label}
                 href={href}
                 aria-label={label}
-                style={{
-                  width: 34,
-                  height: 34,
-                  borderRadius: 8,
-                  background: 'rgba(42, 37, 32, 0.12)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: INK,
-                  textDecoration: 'none',
-                  flexShrink: 0,
-                  transition: 'background 0.2s',
-                }}
+                className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[8px] bg-[rgba(42,37,32,0.12)] text-[#2a2520] no-underline transition-[background] duration-[200ms]"
               >
                 <Icon size={15} strokeWidth={1.8} />
               </a>

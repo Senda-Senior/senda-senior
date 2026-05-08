@@ -38,8 +38,8 @@ nunca:
 
 ```ts
 'use client'
-useEffect(() => { supabase.auth.getUser().then(...) }, [])   // ❌
-if (!user) router.push('/login')                             // ❌ flicker + inseguro
+useEffect(() => { supabase.auth.getUser().then(...) }, [])   // errado
+if (!user) router.push('/login')                             // errado: flicker + inseguro
 ```
 
 ## mutação de estado
@@ -130,3 +130,4 @@ ui, comentários, commits, docs → português. nomes técnicos (react, rsc, rls
 - `localStorage` para dados sensíveis. cookie httpOnly via supabase já resolve.
 - `window.*` em componente não marcado `'use client'`.
 - service role key em qualquer coisa acessível pelo cliente.
+
