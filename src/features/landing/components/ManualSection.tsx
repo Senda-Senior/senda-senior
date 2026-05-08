@@ -4,7 +4,7 @@
 
 import { useRef, useState, useEffect } from 'react'
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
-import { ArrowRight, Check, ChevronDown, ChevronUp } from 'lucide-react'
+import { ArrowRight, ChevronDown, ChevronUp } from 'lucide-react'
 import Link from 'next/link'
 
 /* ─── Data ──────────────────────────────────────────────────────────── */
@@ -27,12 +27,10 @@ const FASES = [
     // Brand icon: shield-check — prevention/protection — white on dark-green bg
     iconSrc: '/icons/brand/shield-check.svg',
     iconFilter: 'brightness(0) invert(1)',
-    checklist: [
-      'Avaliar autonomia e saúde atual dos pais',
-      'Organizar documentos essenciais',
-      'Abrir conversas sobre o futuro',
-      'Avaliar a segurança do ambiente',
-      'Prever gastos futuros',
+    expandedText: [
+      'Neste momento, o foco e avaliar com calma a autonomia e as condicoes de saude dos pais, sem esperar o primeiro susto para agir.',
+      'Tambem e hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a seguranca da casa com um olhar preventivo.',
+      'Quando esse planejamento inclui previsao de gastos e papeis da familia, o cuidado comeca antes da urgencia e com muito mais leveza.',
     ],
   },
   {
@@ -52,13 +50,10 @@ const FASES = [
     // Brand icon: heart — care/compassion — white on terracotta bg
     iconSrc: '/icons/brand/heart.svg',
     iconFilter: 'brightness(0) invert(1)',
-    checklist: [
-      'Consulta médica ao Geriatra',
-      'Adaptar o ambiente doméstico',
-      'Organizar rotinas',
-      'Dividir responsabilidades familiares',
-      'O papel do cuidador principal',
-      'Gerir profissionais',
+    expandedText: [
+      'Neste momento, o foco e avaliar com calma a autonomia e as condicoes de saude dos pais, sem esperar o primeiro susto para agir.',
+      'Tambem e hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a seguranca da casa com um olhar preventivo.',
+      'Quando esse planejamento inclui previsao de gastos e papeis da familia, o cuidado comeca antes da urgencia e com muito mais leveza.',
     ],
   },
   {
@@ -78,14 +73,10 @@ const FASES = [
     // Brand icon: life-ring — rescue/urgent — dark ink on cream bg
     iconSrc: '/icons/brand/life-ring.svg',
     iconFilter: 'none',
-    checklist: [
-      'Entender e aceitar que o momento é de vigilância 24h',
-      'Organizar rotinas',
-      'Adaptar ambientes',
-      'O papel do cuidador principal e o risco de colapso',
-      'Gestão financeira',
-      'Gestão de equipe',
-      'Decisões difíceis',
+    expandedText: [
+      'Neste momento, o foco e avaliar com calma a autonomia e as condicoes de saude dos pais, sem esperar o primeiro susto para agir.',
+      'Tambem e hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a seguranca da casa com um olhar preventivo.',
+      'Quando esse planejamento inclui previsao de gastos e papeis da familia, o cuidado comeca antes da urgencia e com muito mais leveza.',
     ],
   },
 ]
@@ -189,11 +180,11 @@ function FaseCard({
         </p>
       </motion.div>
 
-      {/* ── Checklist (animated) ── */}
+      {/* ── Expanded details (animated) ── */}
       <AnimatePresence>
         {isExpanded && (
           <motion.div
-            key="checklist"
+            key="details"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -210,44 +201,25 @@ function FaseCard({
                   marginBottom: 24,
                 }}
               />
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 14 }}>
-                {fase.checklist.map((item, i) => (
-                  <motion.li
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                {fase.expandedText.map((paragraph, i) => (
+                  <motion.p
                     key={i}
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 + i * 0.06, duration: 0.3 }}
                     style={{
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      gap: 12,
                       fontFamily: 'var(--font-sans)',
                       fontSize: 'clamp(14.95px, 1.265vw, 16.1px)',
                       color: fase.titleColor,
-                      lineHeight: 1.5,
+                      lineHeight: 1.65,
+                      opacity: 0.9,
                     }}
                   >
-                    <span
-                      style={{
-                        flexShrink: 0,
-                        width: 20,
-                        height: 20,
-                        borderRadius: '50%',
-                        border: `1.5px solid ${fase.checkColor}`,
-                        background: 'transparent',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginTop: 1,
-                        opacity: 0.9,
-                      }}
-                    >
-                      <Check size={11} color={fase.checkColor} strokeWidth={2.5} />
-                    </span>
-                    {item}
-                  </motion.li>
+                    {paragraph}
+                  </motion.p>
                 ))}
-              </ul>
+              </div>
 
               {/* Tagline */}
               <p
@@ -292,9 +264,9 @@ function FaseCard({
           onMouseLeave={e => (e.currentTarget.style.opacity = '0.85')}
         >
           {isExpanded ? (
-            <>Fechar checklist <ChevronUp size={14} strokeWidth={2} /></>
+            <>Fechar detalhes <ChevronUp size={14} strokeWidth={2} /></>
           ) : (
-            <>Ver checklist <ChevronDown size={14} strokeWidth={2} /></>
+            <>Ver detalhes <ChevronDown size={14} strokeWidth={2} /></>
           )}
         </button>
       </motion.div>
@@ -307,9 +279,13 @@ function FaseCard({
 export function DesktopManualSection() {
   const trackRef = useRef<HTMLDivElement>(null)
   const railContainerRef = useRef<HTMLDivElement>(null)
+  const cardRefs = useRef<Array<HTMLDivElement | null>>([])
+  const nudgeFrameRef = useRef<number | null>(null)
+  const nudgeTimeoutRef = useRef<number | null>(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
   const [containerWidth, setContainerWidth] = useState(0)
+  const [expandedNudge, setExpandedNudge] = useState(0)
 
   // Measure the card viewport width for pixel-accurate rail translation
   useEffect(() => {
@@ -333,6 +309,17 @@ export function DesktopManualSection() {
   // per threshold crossing prevents skipping card 2 on fast scrolls.
   const activeIndexRef = useRef(0)
 
+  const clearPendingNudgeMeasure = () => {
+    if (nudgeFrameRef.current !== null) {
+      window.cancelAnimationFrame(nudgeFrameRef.current)
+      nudgeFrameRef.current = null
+    }
+    if (nudgeTimeoutRef.current !== null) {
+      window.clearTimeout(nudgeTimeoutRef.current)
+      nudgeTimeoutRef.current = null
+    }
+  }
+
   useMotionValueEvent(scrollYProgress, 'change', (v) => {
     const rawNext = v < 0.33 ? 0 : v < 0.67 ? 1 : 2
     const cur = activeIndexRef.current
@@ -344,25 +331,67 @@ export function DesktopManualSection() {
 
     activeIndexRef.current = clamped
     setActiveIndex(clamped)
+    clearPendingNudgeMeasure()
+    setExpandedNudge(0)
     setExpandedIndex(null)
   })
 
   // Rail offset: slide left by one card-width per step
   const railX = -activeIndex * (containerWidth + 16) // +16 = gap between cards
 
+  const ensureExpandedCardFullyVisible = (index: number) => {
+    const cardEl = cardRefs.current[index]
+    if (!cardEl) return
+
+    const rect = cardEl.getBoundingClientRect()
+    const viewportHeight = window.innerHeight
+    const bottomGap = 20
+
+    // Keep the expanded card fully visible by nudging only the right rail up.
+    // This avoids internal scroll and avoids changing the page/card progression.
+    if (rect.bottom > viewportHeight - bottomGap) {
+      const delta = rect.bottom - (viewportHeight - bottomGap)
+      setExpandedNudge(Math.min(Math.ceil(delta), 260))
+    } else {
+      setExpandedNudge(0)
+    }
+  }
+
+  const scheduleExpandedCardMeasure = (index: number) => {
+    clearPendingNudgeMeasure()
+    nudgeFrameRef.current = window.requestAnimationFrame(() => {
+      nudgeFrameRef.current = null
+      nudgeTimeoutRef.current = window.setTimeout(() => {
+        nudgeTimeoutRef.current = null
+        ensureExpandedCardFullyVisible(index)
+      }, 240)
+    })
+  }
+
+  useEffect(() => {
+    return () => {
+      if (nudgeFrameRef.current !== null) {
+        window.cancelAnimationFrame(nudgeFrameRef.current)
+      }
+      if (nudgeTimeoutRef.current !== null) {
+        window.clearTimeout(nudgeTimeoutRef.current)
+      }
+    }
+  }, [])
+
   return (
     <section
       id="manual"
       ref={trackRef}
-      style={{ height: '250vh', position: 'relative' }}
+      style={{ height: '290vh', position: 'relative' }}
     >
       {/* ── Sticky viewport ── */}
       <div
         style={{
           position: 'sticky',
           top: 0,
-          height: '100vh',
-          overflow: 'hidden',
+          minHeight: '100vh',
+          overflow: 'visible',
           background: 'var(--color-green-dark)',
           display: 'flex',
           alignItems: 'stretch',
@@ -443,26 +472,7 @@ export function DesktopManualSection() {
                 marginBottom: 24,
               }}
             >
-<<<<<<< Updated upstream
-              A Senda Sênior é uma empresa de planejamento e assessoria para o envelhecimento familiar. Fundada por Luciana e Julianne — duas mulheres que viveram pessoalmente os desafios de cuidar de mães idosas — oferecemos orientação estruturada para famílias em qualquer fase do cuidado.
-            </p>
-
-            <p
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: 'clamp(16.1px, 1.265vw, 17.25px)',
-                fontWeight: 600,
-                lineHeight: 1.5,
-                color: 'rgba(245,240,232,0.9)',
-                marginBottom: 40,
-                maxWidth: 400,
-              }}
-            >
-              Não somos cuidadores. Não somos clínica.<br />
-              Somos a bússola que orienta o caminho.
-=======
               Estruturamos o envelhecimento em três estágios para ajudar você a entender o presente e proteger o futuro. Esta classificação não rotula; ela orienta.
->>>>>>> Stashed changes
             </p>
 
             <Link
@@ -510,9 +520,13 @@ export function DesktopManualSection() {
             ref={railContainerRef}
             style={{
               position: 'relative',
-              overflow: 'hidden',
+              overflowX: 'hidden',
+              overflowY: 'visible',
+              maxHeight: 'none',
               borderRadius: 24,
               isolation: 'isolate',
+              transform: expandedNudge ? `translateY(-${expandedNudge}px)` : 'translateY(0)',
+              transition: 'transform 240ms ease',
             }}
           >
             {/*
@@ -541,6 +555,9 @@ export function DesktopManualSection() {
               {FASES.map((fase, i) => (
                 <div
                   key={i}
+                  ref={el => {
+                    cardRefs.current[i] = el
+                  }}
                   style={{
                     flex: `0 0 ${containerWidth || 300}px`,
                     minWidth: 0,
@@ -549,9 +566,18 @@ export function DesktopManualSection() {
                   <FaseCard
                     fase={fase}
                     isExpanded={expandedIndex === i}
-                    onToggle={() =>
-                      setExpandedIndex(prev => (prev === i ? null : i))
-                    }
+                    onToggle={() => {
+                      setExpandedIndex(prev => {
+                        const next = prev === i ? null : i
+                        if (next !== null) {
+                          scheduleExpandedCardMeasure(i)
+                        } else {
+                          clearPendingNudgeMeasure()
+                          setExpandedNudge(0)
+                        }
+                        return next
+                      })
+                    }}
                   />
                 </div>
               ))}

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient as createServerClient } from '@/lib/supabase/server'
-import { requireUser } from '@/lib/server'
+import { assertSameOrigin, requireUser } from '@/lib/server'
 import { fail, success, type ActionResult } from './errors'
 import {
   extractExtension,
@@ -43,6 +43,8 @@ export async function prepareUpload(
   storagePath: string
   expiresAt: string
 }>> {
+  await assertSameOrigin()
+
   const parsed = prepareUploadSchema.safeParse(input)
   if (!parsed.success) return fail('invalid')
 
@@ -166,6 +168,8 @@ type JoinedFileRow = Database['public']['Tables']['vault_files']['Row'] & {
 export async function confirmUpload(
   fileId: string,
 ): Promise<ActionResult<{ file: VaultFile }>> {
+  await assertSameOrigin()
+
   const parsed = fileIdSchema.safeParse({ fileId })
   if (!parsed.success) return fail('invalid')
 
@@ -295,10 +299,11 @@ export async function getDownloadUrl(
 
 // ─── updateMetadata ─────────────────────────────────────────────────
 
-// ─── updateMetadata ─────────────────────────────────────────────────
 export async function updateMetadata(
   input: UpdateMetadataInput,
 ): Promise<ActionResult<null>> {
+  await assertSameOrigin()
+
   const parsed = updateMetadataSchema.safeParse(input)
   if (!parsed.success) return fail('invalid')
   const { fileId, patch } = parsed.data
@@ -395,6 +400,8 @@ export async function updateMetadata(
 // ─── softDelete / restore ───────────────────────────────────────────
 
 export async function softDelete(fileId: string): Promise<ActionResult<null>> {
+  await assertSameOrigin()
+
   const parsed = fileIdSchema.safeParse({ fileId })
   if (!parsed.success) return fail('invalid')
 
@@ -415,6 +422,8 @@ export async function softDelete(fileId: string): Promise<ActionResult<null>> {
 }
 
 export async function restore(fileId: string): Promise<ActionResult<null>> {
+  await assertSameOrigin()
+
   const parsed = fileIdSchema.safeParse({ fileId })
   if (!parsed.success) return fail('invalid')
 

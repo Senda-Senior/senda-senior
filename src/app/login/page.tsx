@@ -1,30 +1,199 @@
 'use client'
 
-import NextImage from 'next/image'
 import Link from 'next/link'
-import { useEffect, useMemo, useState } from 'react'
+import NextImage from 'next/image'
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+} from 'react'
+import { LoaderCircle, X } from 'lucide-react'
+import {
+  resetPasswordRequestSchema,
+  signInSchema,
+  signUpSchema,
+} from '@/features/auth'
 import { createClient as createBrowserClient } from '@/lib/supabase/client'
-import { AuthBrandPanel, AuthFormPanel } from '@/features/auth'
-import { Button, Field } from '@/design'
+
+type AuthMode = 'login' | 'register' | 'reset'
+type OAuthProvider = 'google' | 'facebook'
+type FieldErrors = Partial<Record<'email' | 'password', string>>
 
 function safePostAuthPath(): string {
-  const p = new URLSearchParams(
+  const params = new URLSearchParams(
     typeof window === 'undefined' ? '' : window.location.search,
   )
-  const next = p.get('next')
+  const next = params.get('next')
   if (next && next.startsWith('/') && !next.startsWith('//')) {
     return next
   }
   return '/dashboard'
 }
 
+function extractMessage(value: unknown, fallback: string): string {
+  if (value instanceof Error && value.message.trim()) {
+    return value.message
+  }
+  return typeof value === 'string' && value.trim() ? value : fallback
+}
+
+function providerLabel(provider: OAuthProvider): string {
+  return provider === 'google' ? 'Google' : 'Facebook'
+}
+
+function getOAuthErrorMessage(provider: OAuthProvider, message: string): string {
+  const lower = message.toLowerCase()
+  if (lower.includes('provider') && lower.includes('not enabled')) {
+    return `${providerLabel(provider)} indisponivel no momento.`
+  }
+  return message
+}
+
+function mapFieldErrors(
+  fieldErrors: Record<string, string[] | undefined>,
+): FieldErrors {
+  return {
+    email: fieldErrors.email?.[0],
+    password: fieldErrors.password?.[0],
+  }
+}
+
+function AuthTab({
+  active,
+  children,
+  onClick,
+}: {
+  active: boolean
+  children: React.ReactNode
+  onClick: () => void
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={[
+        'relative px-2 pb-3 text-[17px] font-bold transition-colors duration-200',
+        active ? 'text-[#2b2520]' : 'text-[#958b7d] hover:text-[#5a524a]',
+      ].join(' ')}
+      aria-pressed={active}
+    >
+      {children}
+      <span
+        aria-hidden
+        className={[
+          'absolute inset-x-0 bottom-0 h-[2px] transition-opacity duration-200',
+          active ? 'bg-[#2b2520] opacity-100' : 'bg-transparent opacity-0',
+        ].join(' ')}
+      />
+    </button>
+  )
+}
+
+function PremiumField({
+  id,
+  label,
+  type,
+  autoComplete,
+  placeholder,
+  value,
+  onChange,
+  error,
+  minLength,
+}: {
+  id: string
+  label: string
+  type: string
+  autoComplete?: string
+  placeholder: string
+  value: string
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void
+  error?: string
+  minLength?: number
+}) {
+  const errorId = error ? `${id}-error` : undefined
+
+  return (
+    <label htmlFor={id} className="block">
+      <span className="block text-sm font-bold text-[#2b2520]" style={{ marginBottom: '12px' }}>
+        {label}
+      </span>
+      <input
+        id={id}
+        type={type}
+        autoComplete={autoComplete}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={errorId}
+        minLength={minLength}
+        style={{ paddingLeft: '16px', paddingRight: '16px' }}
+        className={[
+          'h-10 w-full rounded-[4px] border bg-black/5 text-sm text-ink outline-none transition-all duration-200',
+          'placeholder:text-[#9e9486] focus:border-[#807463] focus:bg-white/20',
+          error ? 'border-red-600' : 'border-[#c4b9a9]',
+        ].join(' ')}
+      />
+      {error ? (
+        <span id={errorId} className="mt-1 block text-xs text-red-600">
+          {error}
+        </span>
+      ) : null}
+    </label>
+  )
+}
+
+function SocialButton({
+  provider,
+  mode,
+  loading,
+  onClick,
+}: {
+  provider: OAuthProvider
+  mode: Exclude<AuthMode, 'reset'>
+  loading: boolean
+  onClick: () => void
+}) {
+  const label = providerLabel(provider)
+  const verb = mode === 'login' ? 'Entrar' : 'Cadastrar'
+  const tone =
+    provider === 'facebook'
+      ? 'bg-[#c59664] hover:bg-[#b08557]'
+      : 'bg-[#a86545] hover:bg-[#92563a]'
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={loading}
+      style={{ borderRadius: '20px' }}
+      className={[
+        'relative flex h-12 w-full items-center justify-center rounded-[12px] px-4 text-sm font-bold text-white transition-all duration-200',
+        'disabled:cursor-not-allowed disabled:opacity-60',
+        tone,
+      ].join(' ')}
+    >
+      <span className="absolute left-4 flex h-[22px] w-[22px] items-center justify-center rounded-full border border-white/50 text-[11px] font-bold uppercase">
+        {provider === 'google' ? 'G' : 'f'}
+      </span>
+      <span>{`${verb} com ${label}`}</span>
+    </button>
+  )
+}
+
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [marketingConsent, setMarketingConsent] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-  const [mode, setMode] = useState<'login' | 'register' | 'reset'>('login')
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
+  const [mode, setMode] = useState<AuthMode>('login')
+  const modeResetTimeoutRef = useRef<number | null>(null)
   const supabase = useMemo(() => createBrowserClient(), [])
 
   const authCallbackUrl = (nextPath: string) => {
@@ -33,257 +202,361 @@ export default function Login() {
     return `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`
   }
 
-  useEffect(() => {
-    const p = new URLSearchParams(window.location.search)
-    const e = p.get('error')
-    if (e) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time sync from callback querystring
-      setError(decodeURIComponent(e).replaceAll('+', ' '))
-      window.history.replaceState(null, '', '/login')
-    }
+  const postAuthPath = useMemo(() => {
+    if (typeof window === 'undefined') return '/dashboard'
+    return safePostAuthPath()
   }, [])
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setLoading(true)
+  function clearFeedback() {
     setError('')
     setSuccess('')
+    setFieldErrors({})
+  }
 
-    if (mode === 'login') {
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      })
-      if (signInError) {
-        setError(signInError.message)
-      } else {
-        window.location.assign(safePostAuthPath())
+  function clearModeResetTimeout() {
+    if (!modeResetTimeoutRef.current) return
+    window.clearTimeout(modeResetTimeoutRef.current)
+    modeResetTimeoutRef.current = null
+  }
+
+  function switchMode(nextMode: AuthMode) {
+    clearModeResetTimeout()
+    clearFeedback()
+    setMode(nextMode)
+    if (nextMode === 'reset') {
+      setPassword('')
+    }
+    if (nextMode !== 'register') {
+      setMarketingConsent(false)
+    }
+  }
+
+  function handleEmailChange(event: ChangeEvent<HTMLInputElement>) {
+    setEmail(event.target.value)
+    if (fieldErrors.email) {
+      setFieldErrors((current) => ({ ...current, email: undefined }))
+    }
+  }
+
+  function handlePasswordChange(event: ChangeEvent<HTMLInputElement>) {
+    setPassword(event.target.value)
+    if (fieldErrors.password) {
+      setFieldErrors((current) => ({ ...current, password: undefined }))
+    }
+  }
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const errorParam = params.get('error')
+    const modeParam = params.get('mode')
+    const nextParam = params.get('next')
+
+    if (modeParam === 'register' || modeParam === 'reset') {
+      setMode(modeParam)
+    } else if (!nextParam) {
+      setMode('register')
+    }
+
+    if (errorParam) {
+      setError(decodeURIComponent(errorParam).replaceAll('+', ' '))
+      params.delete('error')
+
+      const search = params.toString()
+      window.history.replaceState(null, '', search ? `/login?${search}` : '/login')
+    }
+
+    return clearModeResetTimeout
+  }, [])
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    clearFeedback()
+
+    const parsed =
+      mode === 'login'
+        ? signInSchema.safeParse({ email, password })
+        : mode === 'register'
+          ? signUpSchema.safeParse({ email, password })
+          : resetPasswordRequestSchema.safeParse({ email })
+
+    if (!parsed.success) {
+      setFieldErrors(mapFieldErrors(parsed.error.flatten().fieldErrors))
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      if (mode === 'login') {
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        })
+
+        if (signInError) {
+          setError(signInError.message)
+          return
+        }
+
+        window.location.assign(postAuthPath)
         return
       }
-    } else if (mode === 'reset') {
-      const { error: resetError } = await supabase.auth.resetPasswordForEmail(
-        email,
-        {
-          redirectTo: authCallbackUrl('/update-password'),
-        },
-      )
-      if (resetError) {
-        setError(resetError.message)
-      } else {
-        setSuccess(
-          'Email de recuperação enviado. Verifique sua caixa de entrada.',
+
+      if (mode === 'reset') {
+        const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+          email,
+          {
+            redirectTo: authCallbackUrl('/update-password'),
+          },
         )
-        window.setTimeout(() => setMode('login'), 3000)
+
+        if (resetError) {
+          setError(resetError.message)
+          return
+        }
+
+        setSuccess('Enviamos um link de recuperacao para o seu email.')
+        clearModeResetTimeout()
+        modeResetTimeoutRef.current = window.setTimeout(() => switchMode('login'), 2600)
+        return
       }
-    } else {
+
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: authCallbackUrl('/dashboard'),
+          emailRedirectTo: authCallbackUrl(postAuthPath),
+          data: {
+            marketing_consent: marketingConsent,
+          },
         },
       })
+
       if (signUpError) {
         setError(signUpError.message)
-      } else if (data.session) {
-        window.location.assign(safePostAuthPath())
         return
-      } else {
-        setSuccess('Conta criada. Verifique seu email para confirmar.')
-        window.setTimeout(() => setMode('login'), 3000)
       }
-    }
 
-    setLoading(false)
+      if (data.session) {
+        window.location.assign(postAuthPath)
+        return
+      }
+
+      setSuccess('Conta criada. Confirme seu email para concluir o acesso.')
+      clearModeResetTimeout()
+      modeResetTimeoutRef.current = window.setTimeout(() => switchMode('login'), 2800)
+    } catch (caughtError) {
+      setError(extractMessage(caughtError, 'Nao foi possivel concluir agora.'))
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const titles = {
-    login: 'Bem-vindo de volta.',
-    register: 'Crie sua conta.',
-    reset: 'Recuperar senha.',
-  } as const
+  async function handleOAuth(provider: OAuthProvider) {
+    clearFeedback()
+    setLoading(true)
 
-  const subtitles = {
-    login: 'Entre para continuar organizando o que importa.',
-    register: 'Comece a organizar sua vida no seu tempo.',
-    reset: 'Enviaremos um link para seu email.',
-  } as const
+    try {
+      const { error: oauthError } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: authCallbackUrl(postAuthPath),
+        },
+      })
 
-  const buttonLabels = {
-    login: 'Entrar',
-    register: 'Criar conta',
-    reset: 'Enviar link',
-  } as const
+      if (oauthError) {
+        setError(getOAuthErrorMessage(provider, oauthError.message))
+      }
+    } catch (caughtError) {
+      setError(extractMessage(caughtError, 'Falha ao iniciar autenticacao social.'))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const isReset = mode === 'reset'
+  const isRegister = mode === 'register'
+  const ctaLabel = loading
+    ? 'Aguarde...'
+    : isReset
+      ? 'Enviar link'
+      : isRegister
+        ? 'Juntar-se a Senda'
+        : 'Entrar na Senda'
 
   return (
-    <div className="auth-wrapper flex min-h-screen bg-cream">
-      <AuthBrandPanel
-        photoSrc="/brand/photos/prancheta-7.png"
-        objectPosition="20% 42%"
-      >
-        <Link href="/" className="mb-12 inline-block no-underline">
-          <NextImage
-            src="/brand/logo-14.png"
-            alt="Senda Sênior"
-            width={280}
-            height={98}
-            priority
-            className="h-11 w-auto object-contain [filter:brightness(0)_invert(1)]"
-          />
-        </Link>
+    <div className="relative min-h-screen overflow-hidden bg-[#1d1713] text-ink">
+      <NextImage
+        aria-hidden
+        src="/brand/photos/care.png"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="absolute inset-0 object-cover object-center"
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(24,21,17,0.5)_0%,rgba(24,21,17,0.7)_100%)]"
+      />
 
-        <h2 className="mb-6 font-serif text-[clamp(32px,3.5vw,48px)] font-semibold leading-[1.15] tracking-[-0.02em] text-white">
-          Suas decisões.
-          <br />
-          Seu futuro.
-        </h2>
-        <p className="max-w-[340px] text-base leading-[1.7] text-white/70">
-          O ecossistema que organiza o jurídico, o financeiro e a saúde da sua
-          vida com carinho, clareza e autonomia.
-        </p>
+      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-8 sm:px-6">
+        <div className="relative w-full max-w-[440px]">
+          <div className="relative mx-auto w-full max-w-[440px] rounded-[16px] bg-[#EAE5DB] px-8 py-12 shadow-[0_24px_90px_rgba(0,0,0,0.36)] sm:px-10 sm:py-14 min-h-[600px] flex flex-col justify-center">
+            <div className="absolute right-5 top-5">
+              <Link
+                href="/"
+                aria-label="Fechar modal de autenticação"
+                className="inline-flex h-8 w-8 items-center justify-center text-[#958b7d] transition-colors hover:text-[#2b2520]"
+              >
+                <X size={24} strokeWidth={2} />
+              </Link>
+            </div>
 
-        <div className="mt-12 rounded-[14px] border border-white/12 bg-white/10 px-7 py-6">
-          <p className="mb-3 font-serif text-[15px] italic leading-[1.65] text-white/80">
-            &ldquo;Organizei tudo com carinho. Meus filhos sabem que está tudo
-            certo e ficam tranquilos.&rdquo;
-          </p>
-          <span className="text-xs font-semibold tracking-[0.08em] text-white/45">
-            HELENA SILVEIRA · 72 ANOS
-          </span>
+            <div className="mx-auto w-full max-w-[320px] self-center">
+              <div className="flex items-center justify-center gap-10" style={{ marginTop: '-1px', marginBottom: '20px' }}>
+                <AuthTab active={mode === 'login'} onClick={() => switchMode('login')}>
+                  Entrar
+                </AuthTab>
+                <AuthTab
+                  active={mode === 'register'}
+                  onClick={() => switchMode('register')}
+                >
+                  Cadastrar
+                </AuthTab>
+              </div>
+
+              <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
+                <PremiumField
+                  id="auth-email"
+                  label="E-mail"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="Endereço de e-mail"
+                  value={email}
+                  onChange={handleEmailChange}
+                  error={fieldErrors.email}
+                />
+
+                {!isReset ? (
+                  <PremiumField
+                    id="auth-password"
+                    label="Senha"
+                    type="password"
+                    autoComplete={isRegister ? 'new-password' : 'current-password'}
+                    placeholder="Senha (mín 8 caracteres)"
+                    value={password}
+                    onChange={handlePasswordChange}
+                    error={fieldErrors.password}
+                    minLength={8}
+                  />
+                ) : null}
+
+                {isRegister ? (
+                  <label className="flex items-center gap-2 pt-1 text-xs font-medium text-[#4a423b]">
+                    <input
+                      type="checkbox"
+                      checked={marketingConsent}
+                      onChange={(event) => setMarketingConsent(event.target.checked)}
+                      className="h-4 w-4 rounded-[3px] border border-[#b7ab9b] bg-transparent text-ink focus:ring-0"
+                    />
+                    <span>Concordo em receber conteúdo lorem ipsum lorem ispum</span>
+                  </label>
+                ) : null}
+
+                {mode === 'login' ? (
+                  <div className="flex justify-end pt-1">
+                    <button
+                      type="button"
+                      onClick={() => switchMode('reset')}
+                      className="text-xs font-bold text-terracotta transition-colors hover:text-terracotta-dark"
+                    >
+                      Esqueceu a senha?
+                    </button>
+                  </div>
+                ) : null}
+
+                {mode === 'reset' ? (
+                  <div className="flex justify-end pt-1">
+                    <button
+                      type="button"
+                      onClick={() => switchMode('login')}
+                      className="text-xs font-bold text-terracotta transition-colors hover:text-terracotta-dark"
+                    >
+                      Voltar para entrar
+                    </button>
+                  </div>
+                ) : null}
+
+                {error ? (
+                  <div className="rounded-[8px] border border-[#e7b0b0] bg-[#fff3f1] px-4 py-3 text-xs font-medium text-[#8a2e2e]">
+                    {error}
+                  </div>
+                ) : null}
+
+                {success ? (
+                  <div className="rounded-[8px] border border-[#c8d4c0] bg-[#eef3eb] px-4 py-3 text-xs font-medium text-green-dark">
+                    {success}
+                  </div>
+                ) : null}
+
+                <button
+                  id="login-submit"
+                  type="submit"
+                  disabled={loading}
+                  style={{ borderRadius: '20px' }}
+                  className={[
+                    'mt-4 flex h-12 w-full items-center justify-center rounded-[12px] bg-[#2a2420] px-4 text-[15px] font-bold text-white transition-all duration-200',
+                    'hover:bg-[#1a1613] disabled:cursor-not-allowed disabled:opacity-60',
+                  ].join(' ')}
+                >
+                  {loading ? (
+                    <span className="inline-flex items-center gap-2">
+                      <LoaderCircle size={16} className="animate-spin" />
+                      <span>{ctaLabel}</span>
+                    </span>
+                  ) : (
+                    ctaLabel
+                  )}
+                </button>
+              </form>
+
+              {!isReset ? (
+                <>
+                  <div className="my-10 flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-[#8f8375]">
+                    <span className="h-[1px] flex-1 bg-[#d2c9bc]" />
+                    <span>ou</span>
+                    <span className="h-[1px] flex-1 bg-[#d2c9bc]" />
+                  </div>
+
+                  <div className="flex flex-col gap-6">
+                    <SocialButton
+                      provider="google"
+                      mode={mode}
+                      loading={loading}
+                      onClick={() => handleOAuth('google')}
+                    />
+                    <SocialButton
+                      provider="facebook"
+                      mode={mode}
+                      loading={loading}
+                      onClick={() => handleOAuth('facebook')}
+                    />
+                  </div>
+                </>
+              ) : null}
+
+              <p className="text-center text-xs leading-relaxed text-[#7f7468]" style={{ marginTop: '30px' }}>
+                Ao prosseguir, você estará concordando com os
+                <br />
+                <span className="font-bold text-[#2a2420]">
+                  Termos de Uso & Política de Privacidade da Senda Sênior.
+                </span>
+              </p>
+            </div>
+          </div>
         </div>
-      </AuthBrandPanel>
-
-      <AuthFormPanel>
-        <NextImage
-          src="/brand/icons/heart-hand-outline-18.svg"
-          alt=""
-          width={22}
-          height={22}
-          className="mb-3.5 block opacity-45"
-        />
-
-        <h1 className="mb-2 font-serif text-[clamp(28px,3vw,38px)] font-semibold tracking-[-0.02em] text-ink">
-          {titles[mode]}
-        </h1>
-        <p className="mb-10 text-base font-medium leading-[1.6] text-terracotta-light">
-          {subtitles[mode]}
-        </p>
-
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <Field
-            id="login-email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            placeholder="seu@email.com"
-            label="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-          {mode !== 'reset' && (
-            <Field
-              id="login-password"
-              name="password"
-              type="password"
-              autoComplete={
-                mode === 'register' ? 'new-password' : 'current-password'
-              }
-              placeholder="Mínimo 6 caracteres"
-              label="Senha"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={6}
-              className="mb-2"
-            />
-          )}
-
-          {mode === 'login' && (
-            <div className="flex justify-end">
-              <button
-                type="button"
-                onClick={() => {
-                  setMode('reset')
-                  setError('')
-                  setSuccess('')
-                }}
-                className="text-[15px] font-semibold text-terracotta underline underline-offset-2"
-              >
-                Esqueceu a senha?
-              </button>
-            </div>
-          )}
-
-          {error && (
-            <div className="rounded-[10px] border border-[#FECACA] bg-[#FEF2F2] px-4 py-3 text-[15px] leading-[1.5] text-[#B91C1C]">
-              {error}
-            </div>
-          )}
-
-          {success && (
-            <div className="rounded-[10px] border border-green-light bg-green-muted px-4 py-3 text-[15px] leading-[1.5] text-green-dark">
-              {success}
-            </div>
-          )}
-
-          <Button
-            id="login-submit"
-            type="submit"
-            disabled={loading}
-            className="w-full"
-          >
-            {loading ? 'Aguarde...' : buttonLabels[mode]}
-          </Button>
-        </form>
-
-        <div className="mt-8 text-center text-[15px] text-ink-muted">
-          {mode === 'login' ? (
-            <>
-              Não tem conta?{' '}
-              <button
-                type="button"
-                onClick={() => {
-                  setMode('register')
-                  setError('')
-                  setSuccess('')
-                }}
-                className="font-bold text-terracotta underline underline-offset-2"
-              >
-                Criar uma
-              </button>
-            </>
-          ) : (
-            <>
-              Já tem conta?{' '}
-              <button
-                type="button"
-                onClick={() => {
-                  setMode('login')
-                  setError('')
-                  setSuccess('')
-                }}
-                className="font-bold text-terracotta underline underline-offset-2"
-              >
-                Entrar
-              </button>
-            </>
-          )}
-        </div>
-
-        <p className="mt-12 text-center text-[13px] leading-[1.6] text-ink-muted">
-          Ao continuar, você concorda com nossos{' '}
-          <a href="#" className="text-terracotta underline underline-offset-2">
-            Termos
-          </a>{' '}
-          e{' '}
-          <a href="#" className="text-terracotta underline underline-offset-2">
-            Política de Privacidade
-          </a>
-          .
-        </p>
-      </AuthFormPanel>
+      </div>
     </div>
   )
 }

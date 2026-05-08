@@ -2,7 +2,7 @@
 
 import NextImage from 'next/image'
 import Link from 'next/link'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { CheckCircle, KeyRound, Lock, ShieldCheck } from 'lucide-react'
 import { createClient as createBrowserClient } from '@/lib/supabase/client'
 import { AuthBrandPanel, AuthFormPanel } from '@/features/auth'
@@ -14,7 +14,16 @@ export default function UpdatePassword() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const redirectTimeoutRef = useRef<number | null>(null)
   const supabase = useMemo(() => createBrowserClient(), [])
+
+  useEffect(() => {
+    return () => {
+      if (redirectTimeoutRef.current) {
+        window.clearTimeout(redirectTimeoutRef.current)
+      }
+    }
+  }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -36,7 +45,7 @@ export default function UpdatePassword() {
       setLoading(false)
     } else {
       setSuccess(true)
-      window.setTimeout(() => {
+      redirectTimeoutRef.current = window.setTimeout(() => {
         window.location.assign('/dashboard')
       }, 2000)
     }

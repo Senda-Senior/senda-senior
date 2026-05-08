@@ -55,16 +55,9 @@ export function ConfirmDialog({
       onClick={(e) => {
         if (e.target === ref.current) onClose()
       }}
-      style={{
-        padding: 0,
-        border: 'none',
-        borderRadius: 14,
-        maxWidth: 440,
-        width: '90vw',
-        boxShadow: '0 12px 40px rgba(0,0,0,0.18)',
-      }}
+      className="w-[90vw] max-w-[440px] rounded-[14px] border-0 p-0 shadow-[0_12px_40px_rgba(0,0,0,0.18)]"
     >
-      <div style={{ padding: 28, background: 'white', borderRadius: 14 }}>
+      <div className="rounded-[14px] bg-white p-[28px]">
         <div style={{ display: 'flex', gap: 14, marginBottom: 16 }}>
           {danger && (
             <div

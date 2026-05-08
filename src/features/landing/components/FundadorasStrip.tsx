@@ -114,7 +114,6 @@ export function FundadorasStrip() {
                 color: 'var(--color-ink)',
               }}
             >
-              Não somos cuidadores. Não somos clínica.<br />
               Somos a bússola que orienta o caminho.
             </p>
           </Reveal>

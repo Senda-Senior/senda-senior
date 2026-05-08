@@ -28,12 +28,12 @@ export default function Home() {
         </div>
 
         {/* 2. Manifesto — deck card no desktop, scroll livre no mobile */}
-        <div className="w-full bg-[var(--color-green-dark)] shadow-[0_-20px_50px_rgba(0,0,0,0.25)] md:sticky md:top-0 md:z-10">
+        <div className="w-full bg-[var(--color-green-dark)] md:sticky md:top-0 md:z-10">
           <Manifesto />
         </div>
 
         {/* 3. FundadorasStrip — deck card no desktop, scroll livre no mobile */}
-        <div className="w-full bg-[var(--color-cream)] shadow-[0_-20px_50px_rgba(0,0,0,0.15)] md:sticky md:top-0 md:z-20">
+        <div className="w-full bg-[var(--color-cream)] md:sticky md:top-0 md:z-20">
           <FundadorasStrip />
         </div>
 
@@ -44,32 +44,32 @@ export default function Home() {
 
         {/* 5. FasesCuidado — deck card: 130vh/sticky apenas em desktop */}
         <div className="relative md:h-[130vh]">
-          <div className="w-full bg-[var(--color-cream)] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] md:sticky md:top-0 md:z-40 md:h-screen md:overflow-hidden">
+          <div className="w-full bg-[var(--color-cream)] md:sticky md:top-0 md:z-40">
             <FasesCuidado />
           </div>
         </div>
 
         {/* 6. Consultoria — deck card: 120vh/sticky apenas em desktop */}
         <div className="relative md:h-[120vh]">
-          <div className="w-full bg-[var(--color-cream)] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] md:sticky md:top-0 md:z-[45] md:h-screen md:overflow-hidden">
+          <div className="w-full bg-[var(--color-cream)] md:sticky md:top-0 md:z-[45] md:h-screen md:overflow-hidden">
             <Consultoria />
           </div>
         </div>
 
         {/* 7. Por quem viveu — scroll normal (conteúdo mais alto que viewport) */}
-        <div className="relative z-50 w-full bg-[var(--color-cream)] shadow-[0_-20px_50px_rgba(0,0,0,0.15)]">
+        <div className="relative z-50 w-full bg-[var(--color-cream)]">
           <PorQuemViveu />
         </div>
 
         {/* 8. Conteúdo — deck card: 130vh/sticky apenas em desktop */}
         <div className="relative md:h-[130vh]">
-          <div className="w-full bg-[var(--color-green-dark)] shadow-[0_-20px_50px_rgba(0,0,0,0.3)] md:sticky md:top-0 md:z-[55] md:h-screen md:overflow-hidden">
+          <div className="w-full bg-[var(--color-green-dark)] md:sticky md:top-0 md:z-[55] md:h-screen md:overflow-hidden">
             <Conteudo />
           </div>
         </div>
 
         {/* 9. CTA final */}
-        <div className="sticky top-0 z-[60] h-screen w-full overflow-hidden bg-[var(--color-cream)] shadow-[0_-20px_50px_rgba(0,0,0,0.12)] flex items-center">
+        <div className="sticky top-0 z-[60] h-screen w-full overflow-hidden bg-[var(--color-cream)] flex items-center">
           <CTAFinal />
         </div>
       </main>

@@ -71,8 +71,7 @@ export function FasesCuidado() {
       id="manuais"
       style={{
         background: 'var(--color-cream)',
-        // Fill the sticky viewport exactly, but prevent clipping on tiny screens
-        minHeight: 'max(100svh, 650px)',
+        minHeight: 'max(100svh, 760px)',
         display: 'flex',
         flexDirection: 'column',
         padding: 'clamp(28px, 4vw, 48px) clamp(20px, 5vw, 60px) clamp(20px, 3vw, 36px)',
@@ -227,7 +226,6 @@ export function FasesCuidado() {
           maxWidth: 1200,
           width: '100%',
           margin: '0 auto',
-          // Ensure banner is tall enough so cards are never cut off
           flex: 1,
           minHeight: 420,
           background: '#1a1a1a',
@@ -282,15 +280,19 @@ export function FasesCuidado() {
               width: 'clamp(240px, 34%, 360px)',
               background: manual.cardBg,
               borderRadius: 20,
-              padding: 'clamp(28px, 4vw, 48px)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
+              padding: 'clamp(24px, 4vh, 48px)',
+              display: 'grid',
+              gridTemplateRows: '1fr auto',
+              rowGap: 'clamp(14px, 2.4vh, 24px)',
               backdropFilter: 'blur(10px)',
               WebkitBackdropFilter: 'blur(10px)',
             }}
           >
-            <div>
+            <div
+              style={{
+                minHeight: 0,
+              }}
+            >
               {/* MANUAL label */}
               <p
                 style={{
@@ -301,6 +303,7 @@ export function FasesCuidado() {
                   textTransform: 'uppercase',
                   color: manual.labelColor,
                   marginBottom: 14,
+                  alignSelf: 'start',
                 }}
               >
                 Manual
@@ -310,13 +313,14 @@ export function FasesCuidado() {
               <h3
                 style={{
                   fontFamily: 'var(--font-serif)',
-                  fontSize: 'clamp(30px, 3.8vw, 52px)',
+                  fontSize: 'clamp(30px, 4.4vh, 46px)',
                   fontWeight: 400,
                   fontStyle: 'italic',
-                  lineHeight: 1.0,
+                  lineHeight: 1.03,
                   color: manual.titleColor,
-                  marginBottom: 28,
+                  marginBottom: 'clamp(20px, 3vh, 28px)',
                   whiteSpace: 'pre-line',
+                  alignSelf: 'start',
                 }}
               >
                 {manual.title}
@@ -326,11 +330,12 @@ export function FasesCuidado() {
               <p
                 style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: 'clamp(14.95px, 1.265vw, 18.4px)',
+                  fontSize: 'clamp(14.95px, 1.8vh, 18.4px)',
                   fontWeight: 700,
                   lineHeight: 1.35,
                   color: manual.taglineColor,
-                  marginBottom: 10,
+                  marginBottom: 12,
+                  alignSelf: 'start',
                 }}
               >
                 {manual.tagline}
@@ -343,6 +348,7 @@ export function FasesCuidado() {
                   fontSize: 'clamp(12.65px, 1.035vw, 14.95px)',
                   lineHeight: 1.6,
                   color: manual.descColor,
+                  alignSelf: 'start',
                 }}
               >
                 {manual.desc}
@@ -369,7 +375,6 @@ export function FasesCuidado() {
                 transition: 'opacity 0.2s, transform 0.2s',
                 alignSelf: 'flex-start',
                 letterSpacing: '0.01em',
-                marginTop: 24,
               }}
             >
               Comprar manual

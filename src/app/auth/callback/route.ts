@@ -21,16 +21,21 @@ export async function GET(request: NextRequest) {
   const err = searchParams.get('error')
   const errDescription = searchParams.get('error_description')
 
-  if (err) {
+  const redirectToLoginWithError = (message: string) => {
     const to = new URL('/login', origin)
-    to.searchParams.set('error', errDescription ?? err)
+    to.searchParams.set('error', message)
+    if (next !== '/dashboard') {
+      to.searchParams.set('next', next)
+    }
     return NextResponse.redirect(to)
   }
 
+  if (err) {
+    return redirectToLoginWithError(errDescription ?? err)
+  }
+
   if (!code) {
-    const to = new URL('/login', origin)
-    to.searchParams.set('error', 'missing_code')
-    return NextResponse.redirect(to)
+    return redirectToLoginWithError('missing_code')
   }
 
   const redirectUrl = new URL(next, origin).toString()
@@ -60,9 +65,7 @@ export async function GET(request: NextRequest) {
 
   const { error } = await supabase.auth.exchangeCodeForSession(code)
   if (error) {
-    const to = new URL('/login', origin)
-    to.searchParams.set('error', error.message)
-    return NextResponse.redirect(to)
+    return redirectToLoginWithError(error.message)
   }
 
   return response

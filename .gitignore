@@ -25,6 +25,10 @@
 *.pem
 .claude
 
+# local correction notes
+primeiras_correcoes.md
+PRIMEIRAS CORREÇÕES DO SITE*.docx
+
 # design
 /design
 

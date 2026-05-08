@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 import { createClient as createServerClient } from '@/lib/supabase/server'
-import { requireUser } from '@/lib/server'
+import { assertSameOrigin, requireUser } from '@/lib/server'
 import { isValidChecklistKey } from './checklistCatalog'
 
 const toggleSchema = z.object({
@@ -26,6 +26,8 @@ export type ToggleResult =
 export async function toggleChecklistItem(
   input: { key: string; done: boolean },
 ): Promise<ToggleResult> {
+  await assertSameOrigin()
+
   const parsed = toggleSchema.safeParse(input)
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? 'Entrada inválida.' }
