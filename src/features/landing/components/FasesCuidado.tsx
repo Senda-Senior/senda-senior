@@ -76,7 +76,6 @@ export function FasesCuidado() {
         display: 'flex',
         flexDirection: 'column',
         padding: 'clamp(16px, 3vw, 40px) clamp(20px, 5vw, 60px) clamp(12px, 2vw, 28px)',
-        boxSizing: 'border-box' as const,
         overflow: 'hidden',
       }}
     >
