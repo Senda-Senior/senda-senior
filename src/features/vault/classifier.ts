@@ -64,6 +64,12 @@ export interface ClassifierOutput {
   signals: ClassifierSignal[]
 }
 
+export interface FileNameClassification {
+  category: SystemCategorySlug
+  confidence: number
+  signals: ClassifierSignal[]
+}
+
 export interface UserOverride {
   pattern: string // normalized pattern that triggered match
   category: SystemCategorySlug
@@ -209,21 +215,24 @@ const FILENAME_DICT: Record<SystemCategorySlug, CategoryDict> = {
     ].map(rx => rx),
     terms: [
       'seguro de vida', 'seguro saude', 'seguro residencial',
-      'seguro veiculo', 'inss', 'previdencia complementar',
+      'seguro veiculo',
     ],
   },
   previdencia: {
     regex: [
+      /\bextrato\s*inss\s*beneficio\b/i,
       /\b(previdencia|pgbl|pgbil|vbgf|reserva\s*matematica)\b/i,
       /\b(beneficio\s*previdenciario|contribuicao\s*previdenciaria)\b/i,
+      /\b(extrato\s*inss|inss\s*beneficio|beneficio)\b/i,
     ].map(rx => rx),
     terms: [
       'previdencia social', 'previdencia complementar', 'fgts',
-      'fundo de pensao', 'risco', 'sobrevivencia',
+      'fundo de pensao', 'risco', 'sobrevivencia', 'inss beneficio',
     ],
   },
   familia: {
     regex: [
+      /\bcertidao\s*(de\s*)?(nascimento|casamento|obito)\b/i,
       /\b(certidao|casamento|nascimento|obito)\b/i,
       /\b(registro\s*civil|power\s*of\s*attorney|familiar)\b/i,
     ].map(rx => rx),
@@ -370,6 +379,20 @@ export function classify(input: ClassifierInput): ClassifierOutput {
   }
 
   return aggregate(signals)
+}
+
+export function classifyFileName(filename: string): FileNameClassification {
+  const result = classify({
+    name: filename,
+    mime: '',
+    size: 0,
+  })
+
+  return {
+    category: result.categorySlug,
+    confidence: result.confidence,
+    signals: result.signals,
+  }
 }
 
 function aggregate(signals: ClassifierSignal[]): ClassifierOutput {

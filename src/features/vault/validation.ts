@@ -60,8 +60,15 @@ export const prepareUploadSchema = z.object({
   sha256: sha256Schema,
 })
 
+export const uuidLikeSchema = z
+  .string()
+  .regex(
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
+    'UUID invalido.',
+  )
+
 export const updateMetadataSchema = z.object({
-  fileId: z.string().uuid(),
+  fileId: uuidLikeSchema,
   patch: z
     .object({
       displayName: z.string().min(1).max(VAULT_LIMITS.maxDisplayNameLength).optional(),
@@ -74,14 +81,14 @@ export const updateMetadataSchema = z.object({
 })
 
 export const fileIdSchema = z.object({
-  fileId: z.string().uuid(),
+  fileId: uuidLikeSchema,
 })
 
 export const listFilesSchema = z.object({
   page: z.number().int().min(1).default(1).optional(),
   pageSize: z.number().int().min(1).max(200).default(50).optional(),
   categorySlug: z.string().min(1).max(64).optional(),
-  tagIds: z.array(z.string().uuid()).max(20).optional(),
+  tagIds: z.array(uuidLikeSchema).max(20).optional(),
   query: z.string().max(255).optional(),
   favorite: z.boolean().optional(),
   trashed: z.boolean().default(false).optional(),
