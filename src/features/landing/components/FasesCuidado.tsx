@@ -71,10 +71,12 @@ export function FasesCuidado() {
       id="manuais"
       style={{
         background: 'var(--color-cream)',
-        minHeight: 'max(100svh, 760px)',
+        height: '100svh',
+        boxSizing: 'border-box' as const,
         display: 'flex',
         flexDirection: 'column',
-        padding: 'clamp(28px, 4vw, 48px) clamp(20px, 5vw, 60px) clamp(20px, 3vw, 36px)',
+        padding: 'clamp(16px, 3vw, 40px) clamp(20px, 5vw, 60px) clamp(12px, 2vw, 28px)',
+        boxSizing: 'border-box' as const,
         overflow: 'hidden',
       }}
     >
@@ -227,7 +229,7 @@ export function FasesCuidado() {
           width: '100%',
           margin: '0 auto',
           flex: 1,
-          minHeight: 420,
+          minHeight: 'clamp(280px, 45vh, 420px)',
           background: '#1a1a1a',
         }}
       >

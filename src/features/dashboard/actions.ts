@@ -55,3 +55,10 @@ export async function toggleChecklistItem(
   return { ok: true }
 }
 
+export async function signOutAction() {
+  const supabase = await createServerClient()
+  await supabase.auth.signOut()
+  
+  import('next/navigation').then((mod) => mod.redirect('/login'))
+}
+

@@ -1,21 +1,20 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useState, useTransition } from 'react'
-import { createClient as createBrowserClient } from '@/lib/supabase/client'
+import { useState } from 'react'
+import { signOutAction } from '../actions'
 
 export function LogoutButton() {
-  const router = useRouter()
-  const [isPending, startTransition] = useTransition()
+  const [isPending, setIsPending] = useState(false)
   const [hover, setHover] = useState(false)
 
-  function handleLogout() {
-    startTransition(async () => {
-      const supabase = createBrowserClient()
-      await supabase.auth.signOut()
-      router.refresh()
-      router.push('/login')
-    })
+  async function handleLogout() {
+    setIsPending(true)
+    try {
+      await signOutAction()
+    } catch (error) {
+      console.error('Erro ao sair:', error)
+      setIsPending(false)
+    }
   }
 
   return (

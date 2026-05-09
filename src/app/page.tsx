@@ -12,18 +12,20 @@ import {
   CTAFinal,
   Footer,
   WhatsAppFloat,
+  SplashScreen,
 } from '@/features/landing'
 import { SmoothScroll } from '@/lib/utils/SmoothScroll'
 
 export default function Home() {
   return (
     <SmoothScroll>
+      <SplashScreen />
       <CustomCursor />
       <Header />
       <WhatsAppFloat />
       <main className="relative bg-[var(--color-cream)]">
         {/* 1. Hero — sticky bottom para deixar rolar um pouco mais e mostrar se for longa */}
-        <div className="sticky bottom-0 z-0 w-full min-h-screen flex flex-col justify-start">
+        <div id="hero" className="sticky bottom-0 z-0 w-full min-h-screen flex flex-col justify-start">
           <Hero />
         </div>
 
@@ -42,34 +44,30 @@ export default function Home() {
           <ManualSection />
         </div>
 
-        {/* 5. FasesCuidado — deck card: 130vh/sticky apenas em desktop */}
-        <div className="relative md:h-[130vh]">
-          <div className="w-full bg-[var(--color-cream)] md:sticky md:top-0 md:z-40">
-            <FasesCuidado />
-          </div>
+        {/* 5. FasesCuidado — deck card */}
+        <div className="w-full bg-[var(--color-cream)] md:sticky md:top-0 md:z-40">
+          <FasesCuidado />
+        </div>
+        {/* runway: FasesCuidado fica visível por mais 20vh antes da Consultoria subir */}
+        <div className="hidden md:block md:h-[20vh]" aria-hidden />
+
+        {/* 6. Consultoria — deck card, z maior que FasesCuidado */}
+        <div className="w-full bg-[#d3c0a2] md:sticky md:top-0 md:z-[45]">
+          <Consultoria />
         </div>
 
-        {/* 6. Consultoria — deck card: 120vh/sticky apenas em desktop */}
-        <div className="relative md:h-[120vh]">
-          <div className="w-full bg-[var(--color-cream)] md:sticky md:top-0 md:z-[45] md:h-screen md:overflow-hidden">
-            <Consultoria />
-          </div>
-        </div>
-
-        {/* 7. Por quem viveu — scroll normal (conteúdo mais alto que viewport) */}
-        <div className="relative z-50 w-full bg-[var(--color-cream)]">
+        {/* 7. Por quem viveu — scroll normal */}
+        <div className="relative w-full bg-[var(--color-cream)] md:z-50">
           <PorQuemViveu />
         </div>
 
-        {/* 8. Conteúdo — deck card: 130vh/sticky apenas em desktop */}
-        <div className="relative md:h-[130vh]">
-          <div className="w-full bg-[var(--color-green-dark)] md:sticky md:top-0 md:z-[55] md:h-screen md:overflow-hidden">
-            <Conteudo />
-          </div>
+        {/* 8. Conteúdo — deck card */}
+        <div className="w-full bg-[#626853] md:sticky md:top-0 md:z-[55]">
+          <Conteudo />
         </div>
 
-        {/* 9. CTA final */}
-        <div className="sticky top-0 z-[60] h-screen w-full overflow-hidden bg-[var(--color-cream)] flex items-center">
+        {/* 9. CTA final — deck card */}
+        <div className="w-full bg-[var(--color-cream)] md:sticky md:top-0 md:z-[60]">
           <CTAFinal />
         </div>
       </main>

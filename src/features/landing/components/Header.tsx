@@ -4,7 +4,7 @@ import NextImage from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 import { Menu, X, ArrowRight, ChevronDown, User } from 'lucide-react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 
 /* ─── Nav links — single source of truth ──────────────────────────────── */
 const NAV_LINKS: { label: string; href: string; chevron?: true }[] = [
@@ -23,21 +23,39 @@ const PIL = 'rgba(89, 95, 67, 0.80)'    // #595F43 @ 80%
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const { scrollY }      = useScroll()
-  const headerOpacity    = useTransform(scrollY, [0, 250], [1, 0])
-  const pointerEvents    = useTransform(scrollY, [200, 250], ['auto', 'none'] as const)
+  const { scrollY } = useScroll()
+  const [hidden, setHidden] = useState(false)
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const previous = scrollY.getPrevious() ?? 0
+    if (latest <= 50) {
+      // Sempre mostrar no topo
+      setHidden(false)
+    } else if (latest > previous && latest > 150) {
+      // Rolando para baixo e já passou do topo -> esconder
+      setHidden(true)
+    } else if (latest < previous) {
+      // Rolando para cima -> mostrar
+      setHidden(false)
+    }
+  })
 
   return (
     <>
       {/* ── Floating pill header — no spacer, pill overlays hero photo ── */}
       <motion.header
+        variants={{
+          visible: { y: 0, opacity: 1 },
+          hidden: { y: '-100%', opacity: 0 },
+        }}
+        animate={hidden ? 'hidden' : 'visible'}
+        transition={{ duration: 0.35, ease: 'easeInOut' }}
         style={{
           position: 'fixed',
           top: 0, left: 0, right: 0,
           zIndex: 100,
           padding: '12px clamp(12px, 2vw, 24px)',
-          opacity: headerOpacity,
-          pointerEvents: pointerEvents,
+          pointerEvents: hidden ? 'none' : 'auto',
         }}
       >
         {/* ── Pill ──────────────────────────────────────────────────────── */}
@@ -58,8 +76,8 @@ export function Header() {
           }}
         >
           {/* Logo: circular icon-only */}
-          <Link
-            href="/"
+          <a
+            href="#hero"
             style={{ textDecoration: 'none', flexShrink: 0 }}
           >
             <div
@@ -79,7 +97,7 @@ export function Header() {
                 style={{ width: '100%', height: 'auto', transform: 'scale(1.35)' }}
               />
             </div>
-          </Link>
+          </a>
 
           {/* Desktop nav */}
           <nav

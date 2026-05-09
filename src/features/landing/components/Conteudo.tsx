@@ -8,59 +8,36 @@ import Link from 'next/link'
 
 const ARTIGOS = [
   {
-    icon: '/icons/brand/msgs.svg',
+    tag: 'FAMÍLIA',
     title: 'Como conversar com seus pais sobre o futuro sem que ninguém fuja da mesa',
-    subtitle: 'Roteiro para iniciar conversas difíceis.',
-    href: '#',
-    bg: '#8B9E7A',
+    author: 'Julianne Pimentel',
+    date: 'Mar 12, 2026 - 5 mins de leitura',
+    bg: '#B8C9AE',
     titleColor: '#1e2e1e',
-    subtitleColor: 'rgba(30, 46, 30, 0.6)',
-    ctaColor: '#1e2e1e',
+    tagColor: 'rgba(30, 46, 30, 0.6)',
+    photo: '/conversa-pais.png',
   },
   {
-    icon: '/icons/brand/file-content.svg',
+    tag: 'ORGANIZAÇÃO',
     title: '5 documentos que toda família deveria ter prontos antes dos 70 anos dos pais',
-    subtitle: 'Organização jurídica e financeira para evitar urgências.',
-    href: '#',
-    bg: '#EDCE90',
+    author: 'Luciana Moura',
+    date: 'Mar 03, 2026 - 6 mins de leitura',
+    bg: '#EBD197',
     titleColor: '#6B3A18',
-    subtitleColor: 'rgba(107, 58, 24, 0.65)',
-    ctaColor: 'var(--color-terracotta)',
+    tagColor: 'rgba(107, 58, 24, 0.65)',
+    photo: '/5-documentos.png',
   },
   {
-    icon: '/icons/brand/roadmap.svg',
+    tag: 'MÉTODO',
     title: 'Em qual fase de cuidado sua família está?',
-    subtitle: 'Identifique sinais e entenda o momento atual do envelhecimento.',
-    href: '#',
-    bg: '#EDE8DC',
+    author: 'Julianne Pimentel',
+    date: 'Mar 19, 2026 - 4 mins de leitura',
+    bg: '#EAE5D9',
     titleColor: '#2a2520',
-    subtitleColor: 'rgba(42, 37, 32, 0.55)',
-    ctaColor: '#2a2520',
+    tagColor: 'rgba(42, 37, 32, 0.55)',
+    photo: '/qual-momento.png',
   },
 ]
-
-/* ─── Brand lineart icon — neutral white-translucent bg works on all card colors ─ */
-
-function ArticleIcon({ src }: { src: string }) {
-  return (
-    <div
-      style={{
-        width: 56,
-        height: 56,
-        borderRadius: 12,
-        background: 'rgba(255, 255, 255, 0.4)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 24,
-        flexShrink: 0,
-      }}
-    >
-      {/* 24px display — viewBox 18×18 scales stroke to ~1.33px effective */}
-      <img src={src} width={24} height={24} alt="" aria-hidden />
-    </div>
-  )
-}
 
 /* ─── Component ─────────────────────────────────────────────────────── */
 
@@ -69,14 +46,13 @@ export function Conteudo() {
     <section
       id="conteudo"
       style={{
-        background: 'var(--color-green-dark)',
+        background: '#626853', // Match the olive green background
         height: '100svh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         padding: '0 clamp(20px, 5vw, 64px)',
-        overflow: 'hidden',
       }}
     >
       <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto' }}>
@@ -85,39 +61,37 @@ export function Conteudo() {
         <div
           style={{
             textAlign: 'center',
-            marginBottom: 'clamp(32px, 4vw, 48px)',
+            marginBottom: 'clamp(24px, 4vw, 40px)',
           }}
         >
           <p
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: 12.65,
+              fontSize: 11,
               fontWeight: 700,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
-              color: 'rgba(245, 240, 232, 0.5)',
-              marginBottom: 16,
+              color: 'rgba(245, 240, 232, 0.6)',
+              marginBottom: 20,
             }}
           >
             Conteúdo
           </p>
 
-          {/* Italic serif — explicitly shown in reference */}
           <h2
             style={{
               fontFamily: 'var(--font-serif)',
               fontStyle: 'italic',
-              fontSize: 'clamp(36px, 5vw, 64px)',
+              fontSize: 'clamp(28px, 3.5vw, 44px)',
               fontWeight: 400,
-              lineHeight: 1.12,
-              color: 'var(--color-cream)',
+              lineHeight: 1.15,
+              color: '#f6f2ea',
               letterSpacing: '-0.02em',
-              maxWidth: 800,
+              maxWidth: 700,
               margin: '0 auto',
-              textWrap: 'balance',
             }}
           >
-            Orientações para conversas que ninguém sabe como começar.
+            Orientações para conversas que<br />ninguém sabe como começar.
           </h2>
         </div>
 
@@ -126,7 +100,7 @@ export function Conteudo() {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: 'clamp(12px, 1.5vw, 18px)',
+            gap: 'clamp(16px, 2vw, 24px)',
           }}
         >
           {ARTIGOS.map((a, i) => (
@@ -134,64 +108,108 @@ export function Conteudo() {
               key={i}
               style={{
                 background: a.bg,
-                borderRadius: 20,
-                padding: 'clamp(24px, 3vw, 32px)',
+                borderRadius: 12,
                 display: 'flex',
                 flexDirection: 'column',
+                overflow: 'hidden',
               }}
             >
-              {/* Icon — unique per article */}
-              <ArticleIcon src={a.icon} />
+              {/* Image (Top Half) */}
+              <div style={{ height: 220, width: '100%', overflow: 'hidden', position: 'relative' }}>
+                <img
+                  src={a.photo}
+                  alt={a.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'center',
+                    display: 'block',
+                  }}
+                />
+              </div>
 
-              {/* Title */}
-              <p
+              {/* Content Area (Bottom Half) */}
+              <div
                 style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: 'clamp(16.1px, 1.495vw, 19.55px)',
-                  fontWeight: 700,
-                  lineHeight: 1.4,
-                  color: a.titleColor,
-                  marginBottom: 10,
+                  padding: '24px 24px 32px 24px',
+                  display: 'flex',
+                  flexDirection: 'column',
                   flex: 1,
                 }}
               >
-                {a.title}
-              </p>
+                {/* Tag */}
+                <span
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 10,
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    color: a.titleColor,
+                    opacity: 0.7,
+                    marginBottom: 10,
+                  }}
+                >
+                  {a.tag}
+                </span>
 
-              {/* Subtitle */}
-              <p
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: 'clamp(12.65px, 1.035vw, 14.95px)',
-                  color: a.subtitleColor,
-                  lineHeight: 1.5,
-                  marginBottom: 22,
-                }}
-              >
-                {a.subtitle}
-              </p>
+                {/* Title */}
+                <p
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 17,
+                    fontWeight: 700,
+                    lineHeight: 1.35,
+                    color: a.titleColor,
+                    marginBottom: 'auto',
+                  }}
+                >
+                  {a.title}
+                </p>
 
-              {/* CTA */}
-              <Link
-                href={a.href}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 5,
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: 14.95,
-                  fontWeight: 600,
-                  color: a.ctaColor,
-                  textDecoration: 'none',
-                  letterSpacing: '0.01em',
-                }}
-              >
-                Ler artigo →
-              </Link>
+                {/* Footer (Author & Date) */}
+                <div style={{ display: 'flex', alignItems: 'center', marginTop: 32, gap: 12 }}>
+                  {/* Avatar Placeholder */}
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#aab6c9' }} />
+                  
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 700, color: a.titleColor }}>
+                      {a.author}
+                    </span>
+                    <span style={{ fontFamily: 'var(--font-sans)', fontSize: 10, color: a.tagColor, marginTop: 2 }}>
+                      {a.date}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           ))}
         </div>
+
+        {/* ── Bottom Button ── */}
+        <div style={{ textAlign: 'center', marginTop: 32 }}>
+          <button
+            style={{
+              background: '#C2D1B2',
+              color: '#1e2e1e',
+              fontFamily: 'var(--font-sans)',
+              fontSize: 13,
+              fontWeight: 700,
+              padding: '10px 24px',
+              borderRadius: 24,
+              border: 'none',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+            }}
+          >
+            Ver mais &rarr;
+          </button>
+        </div>
+
       </div>
     </section>
   )
 }
+
