@@ -1,7 +1,6 @@
 'use client'
 
 import NextImage from 'next/image'
-import Link from 'next/link'
 import { useState } from 'react'
 import { Menu, X, ArrowRight, ChevronDown, User } from 'lucide-react'
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion'

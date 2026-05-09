@@ -2,7 +2,6 @@
 
 /* eslint-disable @next/next/no-img-element */
 
-import Link from 'next/link'
 
 /* ─── Article card data ─────────────────────────────────────────────── */
 
