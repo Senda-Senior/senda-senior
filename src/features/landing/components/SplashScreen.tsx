@@ -31,7 +31,7 @@ export function SplashScreen() {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, filter: 'blur(10px)' }}
           transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }} // var(--ease-senda)
-          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#626853]"
+          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[var(--color-sage-dark)]"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}

@@ -18,8 +18,8 @@ const FASES = [
     subtitle: 'Seus pais ainda são autônomos.',
     desc: 'É hora de planejar — não de esperar.',
     tagline: 'Prevenir é o maior cuidado.',
-    bg: '#e8ede4',
-    bgExpanded: '#dde5d8',
+    bg: 'var(--color-sage-pale)',
+    bgExpanded: 'var(--color-sage-pale-dark)',
     numColor: 'var(--color-green)',
     titleColor: 'var(--color-ink)',
     accentColor: 'var(--color-green-dark)',
@@ -41,7 +41,7 @@ const FASES = [
     subtitle: 'Os primeiros sinais apareceram.',
     desc: 'É hora de começar a agir — não de improvisar.',
     tagline: 'Organizar é forma de amor.',
-    bg: '#d9c9a8',
+    bg: 'var(--color-warm-tan)',
     bgExpanded: '#cfc09a',
     numColor: 'var(--color-terracotta)',
     titleColor: 'var(--color-ink)',
@@ -64,8 +64,8 @@ const FASES = [
     subtitle: 'Necessidades urgentes.',
     desc: 'Idosos que requerem supervisão constante.',
     tagline: 'Na urgência, clareza salva.',
-    bg: '#c98a65',
-    bgExpanded: '#b5724a',
+    bg: 'var(--color-terracotta-light)',
+    bgExpanded: 'var(--color-terracotta)',
     numColor: 'var(--color-cream)',
     titleColor: 'var(--color-cream)',
     accentColor: 'var(--color-cream)',
@@ -506,7 +506,7 @@ export function DesktopManualSection() {
                     width: activeIndex === i ? 28 : 8,
                     background: activeIndex === i
                       ? 'var(--color-gold-light)'
-                      : 'rgba(245,240,232,0.25)',
+                      : 'var(--color-cream-25)',
                   }}
                   transition={{ duration: 0.35, ease: 'easeInOut' }}
                   style={{ height: 8, borderRadius: 4 }}
