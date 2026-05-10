@@ -31,11 +31,11 @@ export const MANUAIS: Manual[] = [
     // Card: sage green
     cardBg: 'rgba(198, 212, 188, 0.97)',
     labelColor: '#3a5c3a',
-    titleColor: '#1e3320',
-    taglineColor: '#1e3320',
+    titleColor: 'var(--color-forest)',
+    taglineColor: 'var(--color-forest)',
     descColor: 'rgba(30, 51, 32, 0.6)',
-    btnBg: '#1e3320',
-    btnColor: '#f5f0e8',
+    btnBg: 'var(--color-forest)',
+    btnColor: 'var(--color-cream)',
     link: 'https://hotmart.com/pt-br', // TODO: Inserir link de checkout real do Prevent Care
   },
   {
@@ -52,7 +52,7 @@ export const MANUAIS: Manual[] = [
     taglineColor: '#3a2008',
     descColor: 'rgba(58, 32, 8, 0.6)',
     btnBg: 'var(--color-terracotta)',
-    btnColor: '#f5f0e8',
+    btnColor: 'var(--color-cream)',
     link: 'https://hotmart.com/pt-br', // TODO: Inserir link de checkout real do Care
   },
   {
@@ -65,8 +65,8 @@ export const MANUAIS: Manual[] = [
     // Card: terracotta / burnt sienna
     cardBg: 'rgba(148, 72, 50, 0.97)',
     labelColor: 'rgba(245, 240, 232, 0.75)',
-    titleColor: '#f5f0e8',
-    taglineColor: '#f5f0e8',
+    titleColor: 'var(--color-cream)',
+    taglineColor: 'var(--color-cream)',
     descColor: 'rgba(245, 240, 232, 0.55)',
     btnBg: '#D4AA6A',
     btnColor: '#3a2008',
