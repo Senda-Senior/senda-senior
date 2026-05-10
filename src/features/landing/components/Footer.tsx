@@ -5,9 +5,9 @@ import NextImage from 'next/image'
 import { NAV_COLUMNS, SOCIALS } from '@/features/landing/data/footer'
 
 /* ─── Color tokens (dark ink on gold background) ─────────────────────── */
-const INK = '#2a2520'
-const INK_MUTED = 'rgba(42, 37, 32, 0.58)'
-const BG = '#EDCE90'
+const INK = 'var(--color-ink)'
+const INK_MUTED = 'var(--color-ink-58)'
+const BG = 'var(--color-gold-beige)'
 
 /* ─── Footer ──────────────────────────────────────────────────────────── */
 
@@ -45,7 +45,7 @@ export function Footer() {
               className="h-[64px] w-auto max-w-none -translate-x-[29px] object-contain object-left"
             />
           </div>
-          <p className="font-sans text-[14.95px] leading-[1.65] text-[rgba(42,37,32,0.58)]">
+          <p className="font-sans text-[14.95px] leading-[1.65] text-[var(--color-ink-58)]">
             O cuidado que começa<br />antes da urgência.
           </p>
         </div>
@@ -60,7 +60,7 @@ export function Footer() {
               <a
                 key={link.label}
                 href={link.href}
-                className="mb-[12px] block font-sans text-[14.95px] text-[rgba(42,37,32,0.58)] no-underline transition-[color] duration-[200ms]"
+                className="mb-[12px] block font-sans text-[14.95px] text-[var(--color-ink-58)] no-underline transition-[color] duration-[200ms]"
               >
                 {link.label}
               </a>
@@ -70,7 +70,7 @@ export function Footer() {
 
         {/* Newsletter + social icons */}
         <div>
-          <p className="mb-[38px] font-sans text-[16.1px] font-semibold text-[#2a2520]">
+          <p className="mb-[38px] font-sans text-[16.1px] font-semibold text-[var(--color-ink)]">
             Inscreva-se no nosso Newsletter
           </p>
 
@@ -142,7 +142,7 @@ export function Footer() {
                 key={label}
                 href={href}
                 aria-label={label}
-                className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[8px] bg-[rgba(42,37,32,0.12)] text-[#2a2520] no-underline transition-[background] duration-[200ms]"
+                className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[8px] bg-[rgba(42,37,32,0.12)] text-[var(--color-ink)] no-underline transition-[background] duration-[200ms]"
               >
                 <Icon size={15} strokeWidth={1.8} />
               </a>
