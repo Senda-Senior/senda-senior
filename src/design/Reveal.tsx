@@ -1,7 +1,7 @@
 'use client'
 
-import { motion, useInView, useReducedMotion } from 'framer-motion'
-import { useRef, type ReactNode } from 'react'
+import { motion, useInView } from 'framer-motion'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 
 /**
  * Scroll-reveal padrão da marca: fade + 24px de baixo para cima, 800ms,
@@ -44,14 +44,28 @@ export function Reveal({
   distance = 24,
   variant = 'inview',
 }: RevealProps) {
-  const reduce = useReducedMotion()
+  // Detecção própria de prefers-reduced-motion. Default `true` no SSR + first
+  // client render — server e client renderizam EXATAMENTE o mesmo plain div.
+  // Após o useEffect, atualiza com o valor real do matchMedia. Isto garante
+  // determinismo completo em SSR e Playwright (que usa reducedMotion: 'reduce'
+  // mas que framer-motion v12 não estava detectando consistentemente).
+  // Real users sem reduce preference vêem um re-render para motion.div ~1ms
+  // após mount — Antigravity validou que não há flash visível.
+  const [reduce, setReduce] = useState(true)
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setReduce(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setReduce(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, {
     once: true,
     margin: '0px 0px -10% 0px',
   })
 
-  // Reduced motion ou usuário sem JS: sem animação, sem wrapper transformante.
   if (reduce) {
     return <div className={className}>{children}</div>
   }
