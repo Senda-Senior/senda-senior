@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion'
 import NextImage from 'next/image'
 
+import { FOUNDERS, FOUNDER_PHOTOS, type Founder } from '@/features/landing/data/por-quem-viveu'
+
 /* ─── Animation variants ────────────────────────────────────────────── */
 
 const fadeUp = {
@@ -18,31 +20,9 @@ const stagger = {
   show: { transition: { staggerChildren: 0.12 } },
 }
 
-/* ─── Founder card data ─────────────────────────────────────────────── */
-
-const FOUNDERS = [
-  {
-    name: 'Luciana Moura',
-    role: 'Co-Fundadora',
-    bio: 'Vivo pessoalmente o desafio e a responsabilidade de cuidar de minha mãe idosa de 92 anos. Essa experiência transformou-se em método e orientação para outras famílias que precisam se preparar, não improvisar.',
-    reverse: false,
-  },
-  {
-    name: 'Julianne Pimentel',
-    role: 'Co-Fundadora',
-    bio: 'Acompanhou de perto o envelhecimento de sua mãe, enfrentando cada etapa sem preparo. Hoje, oferece a outras famílias o caminho estruturado que faltou para ela.',
-    reverse: true,
-  },
-]
-
-const FOUNDER_PHOTOS: Record<string, string> = {
-  'Luciana Moura':    '/brand/photos/founder-luciana.png',
-  'Julianne Pimentel':'/brand/photos/founder-julianne.png',
-}
-
 /* ─── Founder card ──────────────────────────────────────────────────── */
 
-function FounderCard({ name, role, bio, reverse }: (typeof FOUNDERS)[0]) {
+function FounderCard({ name, role, bio, reverse }: Founder) {
   const photo = FOUNDER_PHOTOS[name]
   return (
     <motion.div

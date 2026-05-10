@@ -3,13 +3,7 @@
 import { Reveal } from '@/design'
 import { BrandClusterImage, BrandStar, StarCluster } from '@/features/landing/shared/BrandStar'
 import { QuoteMark, SectionDivider } from '@/features/landing/shared/BrandDecorative'
-
-const PROFILES = [
-  'Para quem percebeu que seus pais estão envelhecendo e quer se preparar com calma.',
-  'Para famílias que preferem decidir juntas, antes que a urgência decida por elas.',
-  'Para quem sente que está deixando de ser filho para virar cuidador — e não sabe por onde começar.',
-  'Para quem quer organizar o cuidado sem tirar a autonomia de quem ama.',
-]
+import { PROFILES } from '@/features/landing/data/para-quem'
 
 export function ParaQuem() {
   return (
