@@ -30,13 +30,16 @@ export default defineConfig({
     },
   },
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  /* Single worker to prevent runaway node process spawning on Windows.
+   * History: 2026-05-10 a Playwright OOM crash left 412 orphan node procs
+   * consuming 23.8 GB RAM. Sequential execution + single worker prevents
+   * the worker explosion. Local + CI both use 1. */
+  workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. */
@@ -122,7 +125,9 @@ export default defineConfig({
   /* Folder for test artifacts (screenshots on failure, videos, traces). */
   outputDir: 'test-results/',
 
-  /* Run your local dev server before starting the tests */
+  /* Run your local dev server before starting the tests.
+   * NODE_OPTIONS gives Turbopack/Next 4GB heap (default 1.5GB causes OOM
+   * crash under repeated test runs, which was leaving orphan workers). */
   webServer: {
     command: 'npm run dev',
     env: {
@@ -130,6 +135,7 @@ export default defineConfig({
       NEXT_PUBLIC_SUPABASE_ANON_KEY: 'playwright-test-anon-key',
       NEXT_PUBLIC_SITE_URL: 'http://localhost:3000',
       E2E_DISABLE_RATE_LIMIT: 'true',
+      NODE_OPTIONS: '--max-old-space-size=4096',
     },
     port: 3000,
     timeout: 120 * 1000,
