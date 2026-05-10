@@ -92,8 +92,8 @@ export function QuemSomos() {
                 style={{
                   borderRadius: 16,
                   overflow: 'hidden',
-                  border: '1px solid rgba(42,37,32,0.07)',
-                  boxShadow: '0 8px 32px rgba(42,37,32,0.07)',
+                  border: '1px solid var(--color-ink-07)',
+                  boxShadow: '0 8px 32px var(--color-ink-07)',
                 }}
               >
                 {/* Photo — top half (Prancheta 10 style) */}
@@ -117,7 +117,7 @@ export function QuemSomos() {
                     style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'linear-gradient(to top, rgba(42,37,32,0.45) 0%, transparent 55%)',
+                      background: 'linear-gradient(to top, var(--color-ink-45) 0%, transparent 55%)',
                       pointerEvents: 'none',
                     }}
                   />

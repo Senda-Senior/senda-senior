@@ -32,7 +32,7 @@ function FounderCard({ name, role, bio, reverse }: Founder) {
         gridTemplateColumns: reverse ? '55fr 45fr' : '45fr 55fr',
         borderRadius: 20,
         overflow: 'hidden',
-        background: '#EDCE90',
+        background: 'var(--color-gold-beige)',
         minHeight: 'clamp(240px, 30vh, 320px)',
       }}
     >

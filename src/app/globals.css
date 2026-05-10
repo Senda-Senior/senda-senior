@@ -16,10 +16,36 @@
   --color-green: #4a5e4a;
   --color-green-dark: #2d3d2d;
 
+  /* Sage (verde acinzentado — usado em Conteudo, FasesCuidado) */
+  --color-sage-pale: #e8ede4;
+  --color-sage-pale-dark: #dde5d8;
+  --color-sage-muted: #c2d1b2;
+  --color-sage-light: #b8c9ae;
+  --color-sage-dark: #626853;
+  --color-forest: #1e3320;
+  --color-forest-dark: #1e2e1e;
+
+  /* Olive (verde-oliva — usado em Header pill + Consultoria) */
+  --color-olive: #595f43;
+  --color-olive-30: rgba(89, 95, 67, 0.30);
+  --color-olive-65: rgba(89, 95, 67, 0.65);
+  --color-olive-72: rgba(89, 95, 67, 0.72);
+  --color-olive-80: rgba(89, 95, 67, 0.80);
+
   /* Cremes (Background) */
   --color-cream: #f5f0e8;
   --color-cream-mid: #eae3d4;
   --color-cream-dark: #ddd6c5;
+  --color-cream-25: rgba(245, 240, 232, 0.25);
+  --color-cream-60: rgba(245, 240, 232, 0.60);
+  --color-cream-80: rgba(245, 240, 232, 0.80);
+  --color-cream-85: rgba(245, 240, 232, 0.85);
+  --color-cream-88: rgba(245, 240, 232, 0.88);
+
+  /* Bege (warm tones — usado em Conteudo + Consultoria bg) */
+  --color-warm-beige: #d3c0a2;
+  --color-warm-tan: #d9c9a8;
+  --color-warm-cream: #eae5d9;
 
   /* Terracotas (Accent / CTA) */
   --color-terracotta-pale: #f0e0d0;
@@ -27,18 +53,37 @@
   --color-terracotta: #b5724a;
   --color-terracotta-dark: #915a3a;
 
-  /* Dourado (paleta de estrelas do design) */
+  /* Dourado (paleta de estrelas do design + gold-beige usado em Footer) */
   --color-gold: #c9a86c;
   --color-gold-light: #dbc49a;
+  --color-gold-beige: #edce90;
+  --color-golden-beige: #ebd197;
+
+  /* Brown rich (Conteudo card accent) */
+  --color-brown-rich: #6b3a18;
 
   /* Escuros (Texto / Neutros) */
   --color-ink: #2a2520;
   --color-ink-sub: #4a4540;
   --color-ink-muted: #7a7268;
   --color-ink-sand: #a8997e;
+  --color-ink-05: rgba(42, 37, 32, 0.05);
+  --color-ink-07: rgba(42, 37, 32, 0.07);
+  --color-ink-08: rgba(42, 37, 32, 0.08);
+  --color-ink-40: rgba(42, 37, 32, 0.40);
+  --color-ink-45: rgba(42, 37, 32, 0.45);
+  --color-ink-55: rgba(42, 37, 32, 0.55);
+  --color-ink-58: rgba(42, 37, 32, 0.58);
   --color-danger: #b91c1c;
   --color-danger-soft: rgba(185, 28, 28, 0.08);
   --color-danger-border: rgba(185, 28, 28, 0.15);
+
+  /* Brand externa (WhatsApp) */
+  --color-whatsapp: #25d366;
+
+  /* White / Black overlays (usados em backdrops + masks) */
+  --color-white-90: rgba(255, 255, 255, 0.90);
+  --color-black-16: rgba(0, 0, 0, 0.16);
 
   /* Tipografia */
   --font-serif: var(--serif);
@@ -57,6 +102,7 @@
   /* Shadows */
   --shadow-card-sm: 0 4px 16px rgba(0, 0, 0, 0.04);
   --shadow-terracotta-button: 0 4px 20px rgba(181, 114, 74, 0.25);
+  --shadow-inset-separator: inset 28px 0 48px -12px rgba(0, 0, 0, 0.14);
 }
 
 /* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â

@@ -55,7 +55,7 @@ export function ParaQuem() {
             <Reveal key={i} delay={0.1 + i * 0.1}>
               <div style={{
                 padding: 'clamp(32px, 4vw, 48px) 0',
-                borderBottom: i < PROFILES.length - 1 ? '1px solid rgba(42,37,32,0.08)' : 'none',
+                borderBottom: i < PROFILES.length - 1 ? '1px solid var(--color-ink-08)' : 'none',
                 display: 'flex', alignItems: 'baseline', gap: 'clamp(20px, 3vw, 40px)',
               }}>
                 <span style={{

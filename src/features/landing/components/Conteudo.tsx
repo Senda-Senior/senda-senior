@@ -10,7 +10,7 @@ export function Conteudo() {
   return (
     <section
       id="conteudo"
-      className="flex flex-col items-center justify-center bg-[#626853] min-h-[100svh] px-[clamp(20px,5vw,64px)] py-16 md:py-0"
+      className="flex flex-col items-center justify-center bg-[var(--color-sage-dark)] min-h-[100svh] px-[clamp(20px,5vw,64px)] py-16 md:py-0"
     >
       <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto' }}>
 
@@ -28,7 +28,7 @@ export function Conteudo() {
               fontWeight: 700,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
-              color: 'rgba(245, 240, 232, 0.6)',
+              color: 'var(--color-cream-60)',
               marginBottom: 20,
             }}
           >
@@ -141,8 +141,8 @@ export function Conteudo() {
         <div style={{ textAlign: 'center', marginTop: 32 }}>
           <button
             style={{
-              background: '#C2D1B2',
-              color: '#1e2e1e',
+              background: 'var(--color-sage-muted)',
+              color: 'var(--color-forest-dark)',
               fontFamily: 'var(--font-sans)',
               fontSize: 13,
               fontWeight: 700,

@@ -135,7 +135,7 @@ export function Hero() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     background: 'transparent',
-                    border: '1px solid rgba(42, 37, 32, 0.4)',
+                    border: '1px solid var(--color-ink-40)',
                     color: 'var(--color-ink)',
                     padding: '15px 32px',
                     borderRadius: 30, // pill
@@ -145,12 +145,12 @@ export function Hero() {
                     transition: 'all 0.3s',
                   }}
                   onMouseEnter={e => { 
-                    e.currentTarget.style.background = 'rgba(42, 37, 32, 0.05)'
+                    e.currentTarget.style.background = 'var(--color-ink-05)'
                     e.currentTarget.style.borderColor = 'var(--color-ink)'
                   }}
                   onMouseLeave={e => { 
                     e.currentTarget.style.background = 'transparent'
-                    e.currentTarget.style.borderColor = 'rgba(42, 37, 32, 0.4)'
+                    e.currentTarget.style.borderColor = 'var(--color-ink-40)'
                   }}
                 >
                   Falar no Whatsapp
