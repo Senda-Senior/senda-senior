@@ -95,6 +95,15 @@ export async function checkRateLimit(
   identifier: string,
   bucket: RateLimitBucket = 'global',
 ): Promise<RateLimitResult> {
+  if (serverEnv.E2E_DISABLE_RATE_LIMIT === 'true') {
+    return {
+      success: true,
+      remaining: BUCKETS[bucket].max,
+      reset: Date.now() + WINDOW_MS,
+      mode: 'memory',
+    }
+  }
+
   if (distributedLimiters) {
     const limiter = distributedLimiters[bucket]
     const { success, remaining, reset } = await limiter.limit(identifier)

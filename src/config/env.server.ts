@@ -25,12 +25,14 @@ const serverSchema = z.object({
     .url('UPSTASH_REDIS_REST_URL deve ser URL válida.')
     .optional(),
   UPSTASH_REDIS_REST_TOKEN: z.string().min(1).optional(),
+  E2E_DISABLE_RATE_LIMIT: z.enum(['true']).optional(),
 })
 
 const serverProcessEnv = {
   SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
   UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
+  E2E_DISABLE_RATE_LIMIT: process.env.E2E_DISABLE_RATE_LIMIT,
 }
 
 const parsed = serverSchema.safeParse(serverProcessEnv)

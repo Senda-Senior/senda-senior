@@ -77,6 +77,12 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'npm run dev',
+    env: {
+      NEXT_PUBLIC_SUPABASE_URL: 'https://example.supabase.co',
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: 'playwright-test-anon-key',
+      NEXT_PUBLIC_SITE_URL: 'http://localhost:3000',
+      E2E_DISABLE_RATE_LIMIT: 'true',
+    },
     port: 3000,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,
