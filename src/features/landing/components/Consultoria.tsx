@@ -23,7 +23,7 @@ function ServiceIcon({ src }: { src: string }) {
         width: 42,
         height: 42,
         borderRadius: 8,
-        background: '#595f43',
+        background: 'var(--color-olive)',
         flexShrink: 0,
         display: 'flex',
         alignItems: 'center',
@@ -52,7 +52,7 @@ export function Consultoria() {
     <section
       id="consultoria"
       style={{
-        background: '#d3c0a2',
+        background: 'var(--color-warm-beige)',
         height: '100svh',
         display: 'flex',
         alignItems: 'center',
@@ -81,7 +81,7 @@ export function Consultoria() {
               fontWeight: 700,
               letterSpacing: '0.18em',
               textTransform: 'uppercase',
-              color: '#595f43',
+              color: 'var(--color-olive)',
               marginBottom: 24,
             }}
           >
@@ -97,7 +97,7 @@ export function Consultoria() {
               fontStyle: 'italic',
               lineHeight: 1.08,
               letterSpacing: '-0.025em',
-              color: '#595f43',
+              color: 'var(--color-olive)',
               marginBottom: 32,
               textWrap: 'balance',
             }}
@@ -110,7 +110,7 @@ export function Consultoria() {
               fontFamily: 'var(--font-sans)',
               fontSize: 'clamp(14.95px, 1.265vw, 17.25px)',
               lineHeight: 1.7,
-              color: 'rgba(89, 95, 67, 0.72)',
+              color: 'var(--color-olive-72)',
               marginBottom: 44,
               maxWidth: 380,
             }}
@@ -126,7 +126,7 @@ export function Consultoria() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: 10,
-              background: '#595f43',
+              background: 'var(--color-olive)',
               color: 'white',
               padding: '13px 26px',
               borderRadius: 100,
@@ -154,7 +154,7 @@ export function Consultoria() {
               top: 21,
               bottom: 21,
               width: 1,
-              background: 'rgba(89, 95, 67, 0.3)',
+              background: 'var(--color-olive-30)',
               zIndex: 0,
             }}
           />
@@ -177,7 +177,7 @@ export function Consultoria() {
                       fontFamily: 'var(--font-sans)',
                       fontSize: 'clamp(17.25px, 1.495vw, 20.7px)',
                       fontWeight: 700,
-                      color: '#595f43',
+                      color: 'var(--color-olive)',
                       marginBottom: 5,
                       lineHeight: 1.25,
                     }}
@@ -188,7 +188,7 @@ export function Consultoria() {
                     style={{
                       fontFamily: 'var(--font-sans)',
                       fontSize: 'clamp(13.8px, 1.0925vw, 16.1px)',
-                      color: 'rgba(89, 95, 67, 0.65)',
+                      color: 'var(--color-olive-65)',
                       lineHeight: 1.5,
                     }}
                   >

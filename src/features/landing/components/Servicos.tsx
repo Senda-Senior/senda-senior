@@ -54,7 +54,7 @@ export function Servicos() {
             <Reveal key={i} delay={i * 0.12}>
               <div style={{
                 padding: 'clamp(36px, 5vw, 56px) 0',
-                borderTop: '1px solid rgba(42,37,32,0.08)',
+                borderTop: '1px solid var(--color-ink-08)',
                 display: 'grid', gridTemplateColumns: 'auto 1fr', gap: 'clamp(24px, 3vw, 40px)',
                 alignItems: 'start',
               }} className="grid-pillar">

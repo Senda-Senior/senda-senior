@@ -171,7 +171,7 @@ function PilarSection({ label, title, text, index, image, imageAlt, icon, accent
                   display: 'flex',
                   alignItems: 'center',
                   gap: 8,
-                  background: 'rgba(245,240,232,0.88)',
+                  background: 'var(--color-cream-88)',
                   backdropFilter: 'blur(12px)',
                   padding: '8px 14px',
                   borderRadius: 8,
