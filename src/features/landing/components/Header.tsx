@@ -4,16 +4,7 @@ import NextImage from 'next/image'
 import { useState } from 'react'
 import { Menu, X, ArrowRight, ChevronDown, User } from 'lucide-react'
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
-
-/* ─── Nav links — single source of truth ──────────────────────────────── */
-const NAV_LINKS: { label: string; href: string; chevron?: true }[] = [
-  { label: 'Início',    href: '/' },
-  { label: 'Sobre',     href: '#sobre' },
-  { label: 'Manuais',   href: '#manual' },
-  { label: 'Serviços',  href: '#servicos', chevron: true },
-  { label: 'Conteúdos', href: '#conteudo' },
-  { label: 'Contato',   href: '#contato' },
-]
+import { NAV_LINKS } from '@/features/landing/data/header'
 
 /* ─── Color tokens (cream on olive pill) ──────────────────────────────── */
 const C   = 'rgba(245, 240, 232, 1.00)' // cream full
