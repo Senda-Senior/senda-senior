@@ -46,7 +46,7 @@ export function SplashScreen() {
               width={98}
               height={98}
               priority
-              style={{ objectFit: 'contain' }}
+              style={{ width: 'auto', height: 'auto', objectFit: 'contain' }}
             />
             {/* Texto Senda Sênior e subtítulo */}
             <NextImage
@@ -56,7 +56,7 @@ export function SplashScreen() {
               height={56}
               priority
               className="-mt-3"
-              style={{ objectFit: 'contain' }}
+              style={{ width: 'auto', height: 'auto', objectFit: 'contain' }}
             />
           </motion.div>
         </motion.div>

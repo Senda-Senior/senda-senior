@@ -44,15 +44,7 @@ export function Conteudo() {
   return (
     <section
       id="conteudo"
-      style={{
-        background: '#626853', // Match the olive green background
-        height: '100svh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '0 clamp(20px, 5vw, 64px)',
-      }}
+      className="flex flex-col items-center justify-center bg-[#626853] min-h-[100svh] px-[clamp(20px,5vw,64px)] py-16 md:py-0"
     >
       <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto' }}>
 
@@ -95,13 +87,7 @@ export function Conteudo() {
         </div>
 
         {/* ── 3-column grid ── */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: 'clamp(16px, 2vw, 24px)',
-          }}
-        >
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-[clamp(16px,2vw,24px)]">
           {ARTIGOS.map((a, i) => (
             <div
               key={i}
