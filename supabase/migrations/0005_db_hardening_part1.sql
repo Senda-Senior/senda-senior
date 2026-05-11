@@ -41,6 +41,12 @@ create policy "vault_tiers_read"
   using (true);
 
 -- ═══ §2.3 — vault_classifier_overrides (P7/D7.1-D7.6) ═════════════
+-- DROP defensivo: types.ts referenciava esta tabela com schema antigo
+-- (`id` como PK, sem `last_matched_at`). Tabela pode existir no banco
+-- com esse schema legado — drop + recreate garante estado consistente.
+-- Seguro pré-launch (actions.ts.upsert nunca funcionou nela, zero data).
+drop table if exists public.vault_classifier_overrides cascade;
+
 create table if not exists public.vault_classifier_overrides (
   user_id          uuid        not null references auth.users(id) on delete cascade,
   pattern          text        not null check (length(pattern) between 1 and 256),
