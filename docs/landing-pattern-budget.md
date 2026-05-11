@@ -1,144 +1,106 @@
 # Landing Pattern Budget
 
-**Status:** vigente a partir de Phase 4 (pilot Servicos). Define o contrato de uso dos primitivos do design system na landing page.
+**Status:** revisado após pilot Phase 4. Define **a fronteira real** entre o que `<Section>` (de `src/design/`) absorve e o que fica bespoke nos componentes da landing.
 
-**Por quê existe este documento:** Phase 5 vai aplicar este padrão em 13 componentes. Sem critério escrito, cada componente vira uma decisão nova e o pattern degenera. Este doc é o gabarito; quem refatora segue, quem não cabe é caso documentado de exceção.
+**Histórico:** A versão original deste doc (commit f8d2b83) propunha aplicar `<Section>` a todos os componentes da landing, com critério de abort para componentes HEAVY. O pilot em `Consultoria.tsx` revelou que **a premissa estava errada** — a estrutura "deck-card 100svh com centro vertical" predomina e é fundamentalmente incompatível com `<Section>` (que assume scroll-page com padding vertical generoso e conteúdo top-aligned). Tentar forçar resultaria em uma cascata de overrides ou inflação de Section com props conflitantes.
 
----
-
-## 1. O que `<Section>` (de `src/design/Section.tsx`) absorve
-
-Toda seção da landing page é um wrapper `<section>` com:
-
-- **Padding vertical generoso** (`clamp(80px, 10vw, 140px)`)
-- **Padding horizontal responsivo** (`clamp(20px, 4vw, 60px)`)
-- **max-width interno** centralizado (1100px content / 740px prose / 1200px wide / none full)
-- **Tom de fundo** (cream / cream-mid / terracotta-pale / green / dark / white / transparent)
-- **Cor de texto correlata** (ink em fundos claros, white em fundos escuros)
-
-`<Section>` resolve **todos os 6 itens acima** em uma única tag. Nenhum componente da landing deve reimplementar wrapper + padding + max-width + background inline.
-
-```tsx
-// ANTES (padrão antigo, repetido 14x):
-<section id="x" style={{
-  padding: 'clamp(80px,10vw,140px) clamp(20px,4vw,60px)',
-  background: 'var(--color-cream-mid)',
-}}>
-  <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-    {children}
-  </div>
-</section>
-
-// DEPOIS:
-<Section id="x" tone="creamMid" maxWidth="content">
-  {children}
-</Section>
-```
+Este doc é o gravestone consciente dessa decisão: **paramos de unificar wrappers**. O refactor encerra com os ganhos já conquistados (data extraction, color tokens, Reveal real) sem gerar abstração prematura.
 
 ---
 
-## 2. O que NÃO absorver (fica inline ou bespoke)
+## 1. Onde `<Section>` faz sentido
 
-### 2.1. Tipografia bespoke (clamp values únicos)
+`<Section>` é apropriado para componentes com:
+- Scroll-page natural (não sticky/deck-card)
+- Padding vertical generoso (`clamp(80px, 10vw, 140px)`)
+- Conteúdo top-aligned dentro do max-width
+- Tone que existe em sua paleta (cream / cream-mid / terracotta-pale / green / dark / white / transparent)
 
-H2/H3/labels com `clamp()` de tamanho específico ficam **inline** ou usam **CSS classes existentes** (`label-premium`, `display-serif`, etc). Não inventamos prop `<Heading variant="h2-servicos">` — viraria zoológico de variants.
+Na landing atual, **nenhum** componente vivo se encaixa cleanly. `<Section>` permanece disponível em `src/design/` para uso futuro (páginas internas, blog, marketing pages secundárias) mas **não será adotado nos componentes da landing**.
+
+---
+
+## 2. Por que deck-cards NÃO usam `<Section>`
+
+A landing é construída como deck de cartas sticky (`page.tsx` — cada wrapper tem `md:sticky md:top-0 md:z-XX`). Os componentes deck-card têm padrão estrutural próprio:
 
 ```tsx
-// OK:
-<h2 style={{
-  fontFamily: 'var(--font-serif)',
-  fontSize: 'clamp(36px, 4.5vw, 56px)',
-  fontWeight: 500, lineHeight: 1.1,
-  color: 'var(--color-ink)',
+<section style={{
+  height: '100svh',           // full viewport
+  display: 'flex',
+  alignItems: 'center',        // conteúdo verticalmente centrado
+  padding: '0 clamp(...)',     // ZERO vertical padding (intencional)
+  background: 'var(--color-X)',
 }}>
 ```
 
-### 2.2. Grids únicos / layouts internos
+Comparado a `<Section>`:
 
-Listas, grids de cards, deck patterns: ficam inline (Tailwind ou style). Não inventamos `<Grid cols={3}>`. CSS Grid e Flexbox já são primitivos.
+| Atributo | `<Section>` provê | Deck-card precisa |
+|---|---|---|
+| Vertical padding | `clamp(80px, 10vw, 140px)` | `0` |
+| Conteúdo align | top | center vertical |
+| Height | natural (depende do conteúdo) | `100svh` |
+| Tones disponíveis | 7 fixos | varia (warm-beige, green-dark, custom hex) |
+| max-width | tokenizado (740/1100/1200/none) | varia (1160, 1200, 1400, etc.) |
 
-### 2.3. Decorações absolutamente posicionadas (SCurve, Pattern, StarCluster)
+Forçar Section aqui exigiria **4+ overrides via className**, **tones novos**, e **max-widths customizados** — equivalente a anular tudo que Section provê e re-fazer via classes. Anti-pattern.
 
-**Caso especial:** decorações que precisam estender além do max-width do conteúdo (ex: `left: -10%` em SCurveDecoration) ficam **dentro do `<Section>`** mas como filhos diretos do content wrapper. Isso significa que elas serão clippadas/contidas pela max-width do content div, não pela full bleed da section.
+**Componentes deck-card (ficam bespoke por design):**
+- `Manifesto`, `FundadorasStrip`, `FasesCuidado`, `Consultoria`, `Conteudo`, `CTAFinal`
+- `Hero`, `ManualSection` (têm padrões próprios mais complexos)
 
-**Tradeoff aceito:** a perda de cobertura é ≤60px por lado em desktop. Decorações com opacity ≤0.1 são **visualmente equivalentes** dentro vs fora do max-width. Se uma decoração precisar genuinamente de full-bleed (ex: full-width image background), use `tone="transparent"` + wrapper customizado **OU** documenta como exceção HEAVY.
+**Componentes não-deck (também ficam bespoke pelo padrão local):**
+- `PorQuemViveu` (scroll normal mas tem layout próprio)
+- `Footer` (footer pattern, não section pattern)
 
-**Nunca** adicione prop `decorations` ou render-prop `before`/`after` ao `<Section>`. Resolve com:
-- `<Section className="relative overflow-hidden" ...>` (já dá os ganchos)
-- Decorações como filhos diretos com `position: absolute`
+---
 
-### 2.4. Padding vertical maior que o default
+## 3. O que **realmente** ganhamos no refactor
 
-Algumas seções (Hero, Servicos) usam padding vertical maior: `clamp(100px, 12vw, 180px)`.
+Estes ganhos são reais e devem ser preservados/estendidos:
 
-**Decisão:** override via `className` Tailwind arbitrary, **não** prop nova:
+### 3.1. Data extraction (`src/features/landing/data/`)
+✅ **Mantido e expandido.** Cada componente vivo tem seu data file separado. Tipo co-localizado. Sem barrel re-export. Padrão de uso:
 
 ```tsx
-<Section className="!py-[clamp(100px,12vw,180px)]" tone="creamMid">
+import { CONSULTORIA_SERVICES } from '@/features/landing/data/consultoria'
 ```
 
-(O `!` força sobrescrever o `py-[clamp(80px,...)]` do Section.)
+**Ação futura:** novos componentes seguem este padrão. Mover qualquer array residual encontrado.
 
-Se >3 componentes usarem o mesmo override, **promovemos** a uma variante (`density="generous"`). Antes disso, fica inline.
+### 3.2. Color tokens (`@theme` em `globals.css`)
+✅ **Pass 1 feito** (Phase 2). Faltam ~51 cores hardcoded residuais (ver `docs/phase-2-residue.txt`).
 
----
+**Ação imediata:** Phase 2 Pass 2 — substituir resíduos por vars tokenizadas. Zero mudança visual esperada.
 
-## 3. O que reusar (CSS classes existentes em `globals.css`)
+### 3.3. Reveal real (`src/design/Reveal.tsx`)
+✅ **Implementado e validado** (commit ff4b966). Lenis-aware, reduced-motion safe. Usado por todos os componentes que precisam de scroll-reveal.
 
-Classes já definidas que devem ser usadas (foram identificadas no audit como **inutilizadas** em vários lugares):
-
-| Classe | Onde usar |
-|---|---|
-| `.label-premium` | Eyebrow labels (uppercase + tracking) acima de H2 |
-| `.btn-pill` | Pill buttons arredondados |
-| `.btn-terracotta-hover` | Botão terracotta sólido com hover |
-| `.btn-outline-terracotta-hover` | Botão outline terracotta com hover (Servicos CTA usa) |
-| `.hover-fade-soft` | Links com fade sutil no hover |
-| `.grid-pillar` | Grid de pilares (já presente em Servicos) |
-| `.display-serif` | Headlines serif grandes (se aplicável) |
-
-Antes de inline-stylar um botão / label / link, **grep pela classe** em `globals.css`. Se existe, usa.
+**Ação futura:** novos componentes que precisem de fade-in usam `<Reveal>` direto. Não reinventar.
 
 ---
 
-## 4. Critério de abort para componentes HEAVY (Phase 5)
+## 4. O que NÃO fazer no futuro
 
-Para componentes complexos (ParaQuem, Conteudo, FasesCuidado, ManualSection, Pilares, PorQuemViveu, Problema):
-
-**Regra:** se aplicar `<Section>` exigir QUALQUER um dos seguintes, **abort** o refactor desse componente e documenta:
-
-1. **Adicionar prop nova** ao `<Section>` (qualquer prop além das 4 atuais: `tone`, `maxWidth`, `className`, `id`)
-2. **Adicionar tone novo** que não seja reuso direto de uma cor já existente em `@theme`
-3. **Wrapper extra** ao redor de `<Section>` para compensar limitação (ex: `<div class="extra-wrapper"><Section>...</Section></div>`)
-4. **Mais de 5 inline styles complexos** dentro do `<Section>` que duplicam o que `<Section>` faria se tivesse uma prop a mais
-
-**Decisão na falha:**
-- **Opção A:** mantém o componente bespoke (não usa `<Section>`). Documenta no `landing-audit.md` como "exceção HEAVY: [nome]" com motivo.
-- **Opção B:** cria um segundo primitivo `<DeckSectionHeavy>` em `src/design/` com as props extras necessárias. **Só se ≥3 componentes precisarem do mesmo escape hatch.**
-
-Opção A é o default. Opção B é raro.
+- ❌ Não tentar (de novo) aplicar `<Section>` em deck-cards. A análise foi feita; a decisão é consciente.
+- ❌ Não criar `<DeckSection>` paralelo "pra não deixar feio". O padrão deck-card é 5 linhas inline e cada componente tem layout interno divergente — não há reuso real.
+- ❌ Não estender `<Section>` com props `density`/`align`/`height`. Section tem o escopo certo; alargar quebra o que já funciona.
+- ❌ Não refatorar visuais cuidadosamente decididos por componente em nome de "coerência". Cada deck-card tem intenção própria; respeitar isso É a coerência.
 
 ---
 
-## 5. Critério de sucesso por componente (Phase 5)
+## 5. Estado final do refactor `refactor/landing-coherence`
 
-Cada componente refatorado deve passar **todos** estes:
+| Phase | Status | Saída |
+|---|---|---|
+| 0 — Safety net | ✅ | `tests/landing.spec.ts` + baseline PNGs |
+| 1 — Data extraction | ✅ | `src/features/landing/data/` |
+| 2 — Color tokens (Pass 1) | ✅ | ~30 vars novas em `@theme` |
+| 2 — Color tokens (Pass 2) | ⏳ pendente | Substituir 51 resíduos |
+| 3 — Reveal real | ✅ | `src/design/Reveal.tsx` Lenis-aware |
+| 4 — Pilot Servicos | ❌ abortado | Componente era órfão; pilot em Consultoria revelou descompasso Section vs deck-card |
+| 5 — Rollout Section | ❌ cancelado | Premissa rejeitada — ver §2 |
+| Cleanup | ✅ | 6 componentes órfãos + 4 data files deletados (commit 5561007) |
 
-- [ ] `<Section>` substitui o wrapper externo (`<section style={{...}}>` → `<Section ...>`)
-- [ ] Zero hex/rgba hardcoded (todos via `var(--color-*)` ou Tailwind)
-- [ ] Dados em `src/features/landing/data/` (já feito em Phase 1)
-- [ ] CSS classes existentes usadas onde aplicável (botões, labels)
-- [ ] Antigravity screenshot diff: zero pixels alterados
-- [ ] Smoke test manual do usuário OK
-
-Se diff falhar, **investigar antes de re-baselinar**. Re-baseline é último recurso e exige aprovação explícita.
-
----
-
-## 6. Anti-padrões (NÃO fazer)
-
-- ❌ Criar componente novo em `src/design/` (`<Heading>`, `<Container>`, `<Grid>`) — primitivos atuais bastam
-- ❌ Adicionar variantes a `<Section>` (`density`, `decorations`, `as`) — inline override resolve
-- ❌ Renomear classes CSS existentes (quebra Tailwind purge + outros consumidores)
-- ❌ Agrupar refactors de múltiplos componentes em um commit — um commit por componente para diff isolado
-- ❌ Ignorar Antigravity diff "porque parece igual" — diff é canônico
+**Encerramento:** após Pass 2, branch `refactor/landing-coherence` é mergeada em `main`. Refactor terminado.
