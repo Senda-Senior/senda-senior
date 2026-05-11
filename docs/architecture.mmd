@@ -1,0 +1,81 @@
+graph TB
+    %% ========= Camadas (fluxo principal = coluna central, poucas arestas) =========
+    Browser([Browser])
+
+    subgraph Edge["Next.js Edge Runtime"]
+        Proxy["src/proxy.ts<br/>middleware<br/>CSP · rate-limit · auth"]
+    end
+
+    subgraph App["src/app — App Router"]
+        Root["layout.tsx<br/>+ globals.css"]
+        RoutesNote["Rotas montam slices por página:<br/>/ → landing · /login, /auth/callback → auth<br/>/dashboard, /profile, … → dashboard · /vault → vault<br/>/manual, /manual/[slug] → manual"]
+    end
+
+    subgraph Feat["src/features — vertical slices"]
+        direction LR
+        FLand["landing"]
+        FAuth["auth"]
+        FDash["dashboard"]
+        FVault["vault"]
+        FMan["manual"]
+    end
+
+    subgraph Design["src/design — primitivos"]
+        DMods["Button, Card, Field, Label,<br/>Section, Reveal, Divider,<br/>ConfirmDialog, cn()"]
+    end
+
+    subgraph Plat["src/lib + src/config — plataforma"]
+        direction TB
+        LibServer["lib/server/<br/>auth · rate-limit · proxy helpers · CSP"]
+        LibSupa["lib/supabase/<br/>client · server · admin · types"]
+        LibUtils["lib/utils/<br/>SmoothScroll / Lenis"]
+        Config["config/<br/>env.ts · env.server.ts"]
+    end
+
+    subgraph Ext["Externos"]
+        Supabase[("Supabase<br/>auth + storage + db")]
+        Hotmart[/"Hotmart / WhatsApp<br/>(links na landing)"/]
+    end
+
+    %% --- Request path (1 trilho, sem cruzar 5×5) ---
+    Browser -->|HTTP| Proxy
+    Proxy --> Root
+    Root --> RoutesNote
+    RoutesNote --> Feat
+
+    %% --- UI compartilhada: uma aresta para o subgraph ---
+    Feat --> Design
+
+    %% --- Dados / servidor: só quem precisa (dashboard + vault) ---
+    FDash --> LibServer
+    FVault --> LibServer
+    FDash --> LibSupa
+    FVault --> LibSupa
+
+    Proxy --> LibServer
+    LibServer --> LibSupa
+    LibSupa --> Supabase
+
+    LibSupa --> Config
+    LibServer --> Config
+
+    %% --- Landing-only ---
+    FLand --> LibUtils
+
+    %% --- Créditos cruzados ---
+    FVault -.->|"importa<br/>LogoutButton"| FDash
+    FLand -.->|links| Hotmart
+
+    %% --- Estilo ---
+    classDef route fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    classDef feat fill:#fef3c7,stroke:#d97706,color:#78350f
+    classDef lib fill:#dcfce7,stroke:#16a34a,color:#14532d
+    classDef ext fill:#f3e8ff,stroke:#9333ea,color:#581c87
+    classDef edge fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+
+    class Root,RoutesNote route
+    class FLand,FAuth,FDash,FVault,FMan feat
+    class DMods,LibServer,LibSupa,LibUtils,Config lib
+    class Supabase,Hotmart ext
+    class Proxy edge
+          

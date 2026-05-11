@@ -1,0 +1,154 @@
+flowchart TB
+  subgraph Client["Cliente"]
+    BR(["Browser"])
+  end
+
+  subgraph Edge["Next.js - src/proxy.ts"]
+    PX["proxy request matcher no-static"]
+    RL["checkRateLimit Upstash ou in-memory"]
+    CSP["buildCSP nonce strict dashboard vault"]
+    AU["resolveAuthUser"]
+    RD1["Redirect anonimo login com next"]
+    RD2["Redirect logado em login para dashboard"]
+  end
+
+  subgraph AppRouter["App Router - src/app"]
+    RLAYOUT["layout.tsx + globals.css"]
+    subgraph RoutesInv["Rotas inventario"]
+      direction TB
+      RT0["slash landing + SmoothScroll"]
+      RT1["login auth cliente"]
+      RT2["auth callback route PKCE"]
+      RT3a["dashboard requireUser"]
+      RT3b["vault requireUser"]
+      RT4["manual slug DigitalReader"]
+      RT5["profile settings health legal pricing financial help stubs"]
+    end
+  end
+
+  subgraph Feat["features slices"]
+    direction LR
+    subgraph FLand["landing"]
+      direction TB
+      SC["SmoothScroll"]
+      TOP["SplashScreen CustomCursor Header WhatsAppFloat"]
+      MID["Hero Manifesto FundadorasStrip ManualSection"]
+      LOW["FasesCuidado Consultoria PorQuemViveu Conteudo CTAFinal"]
+      FO["Footer"]
+      LD["landing data ts"]
+      SC --> TOP
+      TOP --> MID
+      MID --> LOW
+      LOW --> FO
+      TOP -.-> LD
+      MID -.-> LD
+      LOW -.-> LD
+    end
+    FAuth["auth"]
+    FDash["dashboard"]
+    FVault["vault"]
+    FMan["manual"]
+  end
+
+  subgraph LibSrv["lib/server"]
+    IDX["index requireUser checkRateLimit assertSameOrigin"]
+    AUT["auth.ts"]
+    PROXYLIB["proxy routes headers CSP session"]
+  end
+
+  subgraph LibSupa["lib/supabase"]
+    CL["client.ts browser"]
+    SV["server.ts SSR cookies"]
+    AD["admin.ts service role"]
+    TP["types.ts Database"]
+  end
+
+  subgraph CFG["config"]
+    ENV["env.ts"]
+    ENVS["env.server.ts"]
+  end
+
+  subgraph Design["src/design primitivos"]
+    DM["Button Card Field Label Section Reveal Divider ConfirmDialog cn"]
+  end
+
+  subgraph LibUtils["lib/utils"]
+    U1["SmoothScroll Lenis"]
+  end
+
+  subgraph Ext["Externos"]
+    SB[("Supabase Auth DB Storage")]
+    US[("Upstash Redis opcional")]
+  end
+
+  subgraph Persist["Supabase uso por slice"]
+    T1[("care_checklist_items")]
+    T2[("vault tabelas + Storage")]
+    T3[("sessao auth PKCE")]
+  end
+
+  subgraph VaultPipe["vault pipeline upload Server Actions"]
+    direction LR
+    VU["VaultUploader UI"]
+    VCL["client upload.ts hash.ts"]
+    VAC["actions prepareUpload confirmUpload"]
+    VST["storage signed URLs"]
+    VDB["Supabase row + blob"]
+    VU --> VCL --> VAC --> VST
+    VST --> VDB
+  end
+
+  BR -->|HTTP| PX
+  PX --> RL
+  PX --> CSP
+  PX --> AU
+  PX --> RD1
+  PX --> RD2
+  PX --> RLAYOUT
+  RLAYOUT --> RoutesInv
+
+  RT0 --> FLand
+  RT1 --> FAuth
+  RT2 --> FAuth
+  RT3a --> FDash
+  RT3b --> FVault
+  RT4 --> FMan
+  RT5 --> IDX
+
+  PX --> IDX
+  RL --> IDX
+  IDX --> ENVS
+  IDX -.->|se configurado| US
+  AU --> PROXYLIB
+  PROXYLIB --> SV
+
+  RLAYOUT -->|paginas server| AUT
+  AUT --> SV
+  AUT --> IDX
+
+  SV --> SB
+  AD --> SB
+  CL --> SB
+  SV --> ENV
+  AD --> ENVS
+
+  FLand --> DM
+  FAuth --> DM
+  FDash --> DM
+  FVault --> DM
+  FMan --> DM
+
+  FLand --> U1
+
+  FDash --> IDX
+  FVault --> IDX
+  FDash --> SV
+  FVault --> SV
+
+  FDash --> T1
+  FVault --> T2
+  FAuth --> T3
+
+  FVault -.->|importa LogoutButton| FDash
+
+  VaultPipe --> FVault
