@@ -1,6 +1,12 @@
 /**
  * Data for `src/features/landing/components/FasesCuidado.tsx`.
- * Phase 1 of refactor/landing-coherence — extracted from inline const.
+ *
+ * NOTE on inline color literals (#3a5c3a, #5c3a18, rgba(198,212,188,0.97), etc):
+ * Each phase card has a unique palette by design — these colors ARE data,
+ * not tokens. Tokenizing them as --color-phase-N-X would just bloat @theme
+ * with single-use vars. Brand colors that ARE reused (e.g. brown-deep,
+ * gold-warm) are tokenized; per-card bespoke shades stay inline here.
+ * See docs/landing-pattern-budget.md §3.2 (color tokens) for the full rule.
  */
 
 export type Manual = {
@@ -48,9 +54,9 @@ export const MANUAIS: Manual[] = [
     // Card: warm golden / tan
     cardBg: 'rgba(208, 170, 110, 0.97)',
     labelColor: '#5c3a18',
-    titleColor: '#3a2008',
-    taglineColor: '#3a2008',
-    descColor: 'rgba(58, 32, 8, 0.6)',
+    titleColor: 'var(--color-brown-deep)',
+    taglineColor: 'var(--color-brown-deep)',
+    descColor: 'var(--color-brown-deep-60)',
     btnBg: 'var(--color-terracotta)',
     btnColor: 'var(--color-cream)',
     link: 'https://hotmart.com/pt-br', // TODO: Inserir link de checkout real do Care
@@ -68,8 +74,8 @@ export const MANUAIS: Manual[] = [
     titleColor: 'var(--color-cream)',
     taglineColor: 'var(--color-cream)',
     descColor: 'var(--color-cream-55)',
-    btnBg: '#D4AA6A',
-    btnColor: '#3a2008',
+    btnBg: 'var(--color-gold-warm)',
+    btnColor: 'var(--color-brown-deep)',
     link: 'https://hotmart.com/pt-br', // TODO: Inserir link de checkout real do Immediate Care
   },
 ]

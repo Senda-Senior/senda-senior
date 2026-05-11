@@ -22,7 +22,7 @@ export const ARTIGOS: Artigo[] = [
     date: 'Mar 12, 2026 - 5 mins de leitura',
     bg: 'var(--color-sage-light)',
     titleColor: 'var(--color-forest-dark)',
-    tagColor: 'rgba(30, 46, 30, 0.6)',
+    tagColor: 'var(--color-forest-60)',
     photo: '/conversa-pais.png',
   },
   {

@@ -86,7 +86,7 @@ function FounderCard({ name, role, bio, reverse }: Founder) {
           style={{
             fontFamily: 'var(--font-sans)',
             fontSize: 14.95,
-            color: 'rgba(40, 42, 40, 0.48)',
+            color: 'var(--color-ink-45)',
           }}
         >
           {role}
@@ -171,7 +171,7 @@ export function PorQuemViveu() {
               fontFamily: 'var(--font-sans)',
               fontSize: 'clamp(16.1px, 1.3225vw, 18.4px)',
               lineHeight: 1.7,
-              color: 'rgba(40, 42, 40, 0.58)',
+              color: 'var(--color-ink-58)',
               maxWidth: 480,
             }}
           >
