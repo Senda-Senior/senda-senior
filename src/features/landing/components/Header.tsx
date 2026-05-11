@@ -4,21 +4,12 @@ import NextImage from 'next/image'
 import { useState } from 'react'
 import { Menu, X, ArrowRight, ChevronDown, User } from 'lucide-react'
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
-
-/* ─── Nav links — single source of truth ──────────────────────────────── */
-const NAV_LINKS: { label: string; href: string; chevron?: true }[] = [
-  { label: 'Início',    href: '/' },
-  { label: 'Sobre',     href: '#sobre' },
-  { label: 'Manuais',   href: '#manual' },
-  { label: 'Serviços',  href: '#servicos', chevron: true },
-  { label: 'Conteúdos', href: '#conteudo' },
-  { label: 'Contato',   href: '#contato' },
-]
+import { NAV_LINKS } from '@/features/landing/data/header'
 
 /* ─── Color tokens (cream on olive pill) ──────────────────────────────── */
-const C   = 'rgba(245, 240, 232, 1.00)' // cream full
-const CM  = 'rgba(245, 240, 232, 0.80)' // cream readable muted
-const PIL = 'rgba(89, 95, 67, 0.80)'    // #595F43 @ 80%
+const C   = 'var(--color-cream)' // cream full
+const CM  = 'var(--color-cream-80)' // cream readable muted
+const PIL = 'var(--color-olive-80)'    // var(--color-olive) @ 80%
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -83,7 +74,7 @@ export function Header() {
               style={{
                 width: 65, height: 65,
                 borderRadius: '50%',
-                border: '1.5px solid rgba(245,240,232,0.25)',
+                border: '1.5px solid var(--color-cream-25)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}
             >
@@ -212,7 +203,7 @@ export function Header() {
             <a
               href="/login"
               onClick={() => setMenuOpen(false)}
-              style={{ fontSize: 18.4, fontWeight: 600, color: 'var(--color-ink)', border: '1px solid rgba(42,37,32,0.4)', padding: '14px 0', borderRadius: 30, textDecoration: 'none', textAlign: 'center' }}
+              style={{ fontSize: 18.4, fontWeight: 600, color: 'var(--color-ink)', border: '1px solid var(--color-ink-40)', padding: '14px 0', borderRadius: 30, textDecoration: 'none', textAlign: 'center' }}
             >
               Login
             </a>

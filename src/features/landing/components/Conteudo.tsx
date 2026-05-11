@@ -2,41 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 
-
-/* ─── Article card data ─────────────────────────────────────────────── */
-
-const ARTIGOS = [
-  {
-    tag: 'FAMÍLIA',
-    title: 'Como conversar com seus pais sobre o futuro sem que ninguém fuja da mesa',
-    author: 'Julianne Pimentel',
-    date: 'Mar 12, 2026 - 5 mins de leitura',
-    bg: '#B8C9AE',
-    titleColor: '#1e2e1e',
-    tagColor: 'rgba(30, 46, 30, 0.6)',
-    photo: '/conversa-pais.png',
-  },
-  {
-    tag: 'ORGANIZAÇÃO',
-    title: '5 documentos que toda família deveria ter prontos antes dos 70 anos dos pais',
-    author: 'Luciana Moura',
-    date: 'Mar 03, 2026 - 6 mins de leitura',
-    bg: '#EBD197',
-    titleColor: '#6B3A18',
-    tagColor: 'rgba(107, 58, 24, 0.65)',
-    photo: '/5-documentos.png',
-  },
-  {
-    tag: 'MÉTODO',
-    title: 'Em qual fase de cuidado sua família está?',
-    author: 'Julianne Pimentel',
-    date: 'Mar 19, 2026 - 4 mins de leitura',
-    bg: '#EAE5D9',
-    titleColor: '#2a2520',
-    tagColor: 'rgba(42, 37, 32, 0.55)',
-    photo: '/qual-momento.png',
-  },
-]
+import { ARTIGOS } from '@/features/landing/data/conteudo'
 
 /* ─── Component ─────────────────────────────────────────────────────── */
 
@@ -44,7 +10,7 @@ export function Conteudo() {
   return (
     <section
       id="conteudo"
-      className="flex flex-col items-center justify-center bg-[#626853] min-h-[100svh] px-[clamp(20px,5vw,64px)] py-16 md:py-0"
+      className="flex flex-col items-center justify-center bg-[var(--color-sage-dark)] min-h-[100svh] px-[clamp(20px,5vw,64px)] py-16 md:py-0"
     >
       <div style={{ maxWidth: 1100, width: '100%', margin: '0 auto' }}>
 
@@ -62,7 +28,7 @@ export function Conteudo() {
               fontWeight: 700,
               letterSpacing: '0.2em',
               textTransform: 'uppercase',
-              color: 'rgba(245, 240, 232, 0.6)',
+              color: 'var(--color-cream-60)',
               marginBottom: 20,
             }}
           >
@@ -76,7 +42,7 @@ export function Conteudo() {
               fontSize: 'clamp(28px, 3.5vw, 44px)',
               fontWeight: 400,
               lineHeight: 1.15,
-              color: '#f6f2ea',
+              color: 'var(--color-cream)',
               letterSpacing: '-0.02em',
               maxWidth: 700,
               margin: '0 auto',
@@ -175,8 +141,8 @@ export function Conteudo() {
         <div style={{ textAlign: 'center', marginTop: 32 }}>
           <button
             style={{
-              background: '#C2D1B2',
-              color: '#1e2e1e',
+              background: 'var(--color-sage-muted)',
+              color: 'var(--color-forest-dark)',
               fontFamily: 'var(--font-sans)',
               fontSize: 13,
               fontWeight: 700,
