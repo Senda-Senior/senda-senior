@@ -388,7 +388,7 @@ export default function Login() {
     <div className="relative min-h-screen overflow-hidden bg-[#1d1713] text-ink">
       <NextImage
         aria-hidden
-        src="/brand/photos/care.png"
+        src="/brand/photos/care.webp"
         alt=""
         fill
         priority

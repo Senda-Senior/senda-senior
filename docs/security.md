@@ -35,7 +35,7 @@ assets estáticos ──┘
 |----------|----------------------------|---------------|
 | `global` | geral                      | 100 / 60s / ip |
 | `auth`   | `/login`, `/update-password` | 10 / 60s / ip  |
-| `upload` | `/api/vault/upload`        | 30 / 60s / ip  |
+| `upload` | server action `prepareUpload` (vault) | 30 / 60s / ip  |
 
 Modo distribuído ativo quando `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` presentes. Response inclui `X-RateLimit-Mode` para debug.
 
@@ -69,4 +69,4 @@ Modo distribuído ativo quando `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TO
 ## pendências conhecidas
 
 - falta endpoint de health check e audit log estruturado.
-- testes automatizados pendentes (vitest + playwright).
+- audit log estruturado pendente (rls + logs vercel são a base atual; ver vault/security.md "auditoria").

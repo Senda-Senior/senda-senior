@@ -1,0 +1,16 @@
+# Phase 2 residue (HISTORICAL — closed)
+
+Status: archived after refactor/landing-coherence merged to main.
+
+This file originally listed 51 hardcoded color values from the landing
+(post Phase 2 Pass 1) for Pass 2 review. Outcome:
+
+- 43 colors tokenized in @theme:
+  - Pass 2A (commit 95aa9b1): 22 alpha-variation substitutions, 26 new tokens
+  - Pass 2B (commit cbf6cb3): 18 drift-color substitutions, 6 new tokens
+- 8 colors intentionally kept inline in src/features/landing/data/fases-cuidado.ts
+  — per-phase bespoke palettes that ARE data, not tokens. See comment at top
+  of that data file for rationale, and docs/landing-pattern-budget.md §3.
+
+Kept here as historical record of the refactor scope. Safe to delete if/when
+that history is no longer relevant.
