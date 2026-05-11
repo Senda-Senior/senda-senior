@@ -18,8 +18,8 @@ const FASES = [
     subtitle: 'Seus pais ainda são autônomos.',
     desc: 'É hora de planejar — não de esperar.',
     tagline: 'Prevenir é o maior cuidado.',
-    bg: '#e8ede4',
-    bgExpanded: '#dde5d8',
+    bg: 'var(--color-sage-pale)',
+    bgExpanded: 'var(--color-sage-pale-dark)',
     numColor: 'var(--color-green)',
     titleColor: 'var(--color-ink)',
     accentColor: 'var(--color-green-dark)',
@@ -28,9 +28,9 @@ const FASES = [
     iconSrc: '/icons/brand/shield-check.svg',
     iconFilter: 'brightness(0) invert(1)',
     expandedText: [
-      'Neste momento, o foco e avaliar com calma a autonomia e as condicoes de saude dos pais, sem esperar o primeiro susto para agir.',
-      'Tambem e hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a seguranca da casa com um olhar preventivo.',
-      'Quando esse planejamento inclui previsao de gastos e papeis da familia, o cuidado comeca antes da urgencia e com muito mais leveza.',
+      'Neste momento, o foco é avaliar com calma a autonomia e as condições de saúde dos pais, sem esperar o primeiro susto para agir.',
+      'Também é hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a segurança da casa com um olhar preventivo.',
+      'Quando esse planejamento inclui previsão de gastos e papéis da família, o cuidado começa antes da urgência e com muito mais leveza.',
     ],
   },
   {
@@ -41,7 +41,7 @@ const FASES = [
     subtitle: 'Os primeiros sinais apareceram.',
     desc: 'É hora de começar a agir — não de improvisar.',
     tagline: 'Organizar é forma de amor.',
-    bg: '#d9c9a8',
+    bg: 'var(--color-warm-tan)',
     bgExpanded: '#cfc09a',
     numColor: 'var(--color-terracotta)',
     titleColor: 'var(--color-ink)',
@@ -51,9 +51,9 @@ const FASES = [
     iconSrc: '/icons/brand/heart.svg',
     iconFilter: 'brightness(0) invert(1)',
     expandedText: [
-      'Neste momento, o foco e avaliar com calma a autonomia e as condicoes de saude dos pais, sem esperar o primeiro susto para agir.',
-      'Tambem e hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a seguranca da casa com um olhar preventivo.',
-      'Quando esse planejamento inclui previsao de gastos e papeis da familia, o cuidado comeca antes da urgencia e com muito mais leveza.',
+      'Neste momento, o foco é avaliar com calma a autonomia e as condições de saúde dos pais, sem esperar o primeiro susto para agir.',
+      'Também é hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a segurança da casa com um olhar preventivo.',
+      'Quando esse planejamento inclui previsão de gastos e papéis da família, o cuidado começa antes da urgência e com muito mais leveza.',
     ],
   },
   {
@@ -64,8 +64,8 @@ const FASES = [
     subtitle: 'Necessidades urgentes.',
     desc: 'Idosos que requerem supervisão constante.',
     tagline: 'Na urgência, clareza salva.',
-    bg: '#c98a65',
-    bgExpanded: '#b5724a',
+    bg: 'var(--color-terracotta-light)',
+    bgExpanded: 'var(--color-terracotta)',
     numColor: 'var(--color-cream)',
     titleColor: 'var(--color-cream)',
     accentColor: 'var(--color-cream)',
@@ -74,9 +74,9 @@ const FASES = [
     iconSrc: '/icons/brand/life-ring.svg',
     iconFilter: 'none',
     expandedText: [
-      'Neste momento, o foco e avaliar com calma a autonomia e as condicoes de saude dos pais, sem esperar o primeiro susto para agir.',
-      'Tambem e hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a seguranca da casa com um olhar preventivo.',
-      'Quando esse planejamento inclui previsao de gastos e papeis da familia, o cuidado comeca antes da urgencia e com muito mais leveza.',
+      'Neste momento, o foco é avaliar com calma a autonomia e as condições de saúde dos pais, sem esperar o primeiro susto para agir.',
+      'Também é hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a segurança da casa com um olhar preventivo.',
+      'Quando esse planejamento inclui previsão de gastos e papéis da família, o cuidado começa antes da urgência e com muito mais leveza.',
     ],
   },
 ]
@@ -100,8 +100,8 @@ function FaseCard({
         borderRadius: 20,
         overflow: 'hidden',
         boxShadow: isExpanded
-          ? '0 32px 80px rgba(0,0,0,0.18)'
-          : '0 8px 32px rgba(0,0,0,0.08)',
+          ? '0 32px 80px var(--color-black-18)'
+          : '0 8px 32px var(--color-black-08)',
         cursor: 'default',
         width: '100%',
         transition: 'background 0.4s ease, box-shadow 0.4s ease',
@@ -467,7 +467,7 @@ export function DesktopManualSection() {
                 fontFamily: 'var(--font-sans)',
                 fontSize: 'clamp(16.1px, 1.38vw, 18.4px)',
                 lineHeight: 1.65,
-                color: 'rgba(245,240,232,0.75)',
+                color: 'var(--color-cream-75)',
                 maxWidth: 440,
                 marginBottom: 24,
               }}
@@ -506,7 +506,7 @@ export function DesktopManualSection() {
                     width: activeIndex === i ? 28 : 8,
                     background: activeIndex === i
                       ? 'var(--color-gold-light)'
-                      : 'rgba(245,240,232,0.25)',
+                      : 'var(--color-cream-25)',
                   }}
                   transition={{ duration: 0.35, ease: 'easeInOut' }}
                   style={{ height: 8, borderRadius: 4 }}
@@ -637,7 +637,7 @@ function MobileManualSection() {
             fontFamily: 'var(--font-sans)',
             fontSize: 17.25,
             lineHeight: 1.65,
-            color: 'rgba(245,240,232,0.7)',
+            color: 'var(--color-cream-70)',
           }}
         >
           Estruturamos o envelhecimento em três estágios para ajudar você a entender o presente e proteger o futuro. Esta classificação não rotula; ela orienta.

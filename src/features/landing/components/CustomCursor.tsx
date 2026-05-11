@@ -85,7 +85,7 @@ export function CustomCursor() {
     >
       {/* Cursor usa verde da marca — cor primária do design folder */}
       <div
-        className="flex h-[80px] w-[80px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--color-green)] shadow-[0_8px_32px_rgba(74,94,74,0.4)] transition-opacity duration-[200ms]"
+        className="flex h-[80px] w-[80px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--color-green)] shadow-[0_8px_32px_var(--color-green-40)] transition-opacity duration-[200ms]"
         style={{ opacity: hoveredText ? 0.95 : 0 }}
       >
         <span className="p-[4px] text-center text-[10px] font-bold uppercase tracking-[1px] text-white">

@@ -2,15 +2,15 @@ import { test, expect } from '@playwright/test';
 
 test('should load login page and show title', async ({ page }) => {
   // Navigate to the login page
-  await page.goto('/login');
+  await page.goto('/login?next=/dashboard');
   
   // Check that the page has loaded correctly
   await expect(page).toHaveURL(/.*\/login/);
   
   // Look for common login page elements using Accessibility Locators (Best Practice)
-  const emailInput = page.getByLabel('Email');
+  const emailInput = page.getByLabel('E-mail');
   const passwordInput = page.getByLabel('Senha');
-  const submitButton = page.getByRole('button', { name: /entrar/i });
+  const submitButton = page.getByRole('button', { name: /entrar na senda/i });
   
   // Verify that key elements are present
   await expect(emailInput).toBeVisible();
@@ -27,16 +27,16 @@ test('should load login page and show title', async ({ page }) => {
 });
 
 test('should show error for invalid login', async ({ page }) => {
-  await page.goto('/login');
+  await page.goto('/login?next=/dashboard');
   
   // Fill with invalid credentials using Accessible Locators
-  await page.getByLabel('Email').fill('invalid@test.com');
+  await page.getByLabel('E-mail').fill('invalid@test.com');
   await page.getByLabel('Senha').fill('wrongpassword');
   
   // Attempt to submit
-  await page.getByRole('button', { name: /entrar/i }).click();
+  await page.getByRole('button', { name: /entrar na senda/i }).click();
   
   // Wait for the error message to appear
-  const errorMessage = page.locator('.bg-\\[\\#FEF2F2\\]'); // Div de erro baseado nas suas classes do Tailwind
+  const errorMessage = page.locator('.bg-\\[\\#fff3f1\\]');
   await expect(errorMessage).toBeVisible({ timeout: 10000 });
 });

@@ -27,7 +27,7 @@ export function Manifesto() {
           flexDirection: 'column',
           justifyContent: 'center',
           background:
-            'radial-gradient(ellipse 70% 55% at 12% 92%, rgba(0,0,0,0.16) 0%, transparent 55%)',
+            'radial-gradient(ellipse 70% 55% at 12% 92%, var(--color-black-16) 0%, transparent 55%)',
         }}
       >
         {/* Decorative Watermark */}
@@ -88,7 +88,7 @@ export function Manifesto() {
                 fontFamily: 'var(--font-sans)',
                 fontSize: 'clamp(15px, 1.3vw, 16px)',
                 lineHeight: 1.6,
-                color: 'rgba(245,240,232,0.85)', // Creme com leve transparência
+                color: 'var(--color-cream-85)', // Creme com leve transparência
                 maxWidth: 440,
                 marginBottom: 48,
               }}
@@ -127,7 +127,7 @@ export function Manifesto() {
         style={{
           position: 'relative',
           minHeight: '100%',
-          boxShadow: 'inset 28px 0 48px -12px rgba(0,0,0,0.14)', // Sombra para separar o verde da foto
+          boxShadow: 'var(--shadow-inset-separator)', // Sombra para separar o verde da foto
         }}
       >
         {/* Usando <img> direto — Next.js não otimiza SVG, fill replicado via position absolute */}

@@ -6,14 +6,14 @@ test.describe('Vault Operations', () => {
   
   test('should navigate to vault section', async ({ page }) => {
     // First, we need to login (using a test account or mock)
-    await page.goto('/login');
+    await page.goto('/login?next=/dashboard');
     
     // Fill in test credentials
-    await page.getByLabel('Email').fill('test@example.com');
+    await page.getByLabel('E-mail').fill('test@example.com');
     await page.getByLabel('Senha').fill('testpassword123');
     
     // Submit login form
-    await page.getByRole('button', { name: /entrar/i }).click();
+    await page.getByRole('button', { name: /entrar na senda/i }).click();
     
     // Navigate to vault if not already there (this assumes successful login navigation)
     // Note: If authentication fails (e.g. no supabase connection), this will timeout.

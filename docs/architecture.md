@@ -52,10 +52,19 @@ web/
     │   ├── page.tsx            landing (server component compondo clients)
     │   ├── opengraph-image.tsx og dinâmico via ImageResponse
     │   ├── apple-icon.tsx      apple touch icon dinâmico
+    │   ├── auth/callback/      route handler PKCE (Supabase)
     │   ├── dashboard/          área autenticada
+    │   ├── financial/          stub force-dynamic, requireUser
+    │   ├── health/             stub force-dynamic, requireUser
+    │   ├── help/               stub force-dynamic, requireUser
+    │   ├── legal/              stub force-dynamic, requireUser
     │   ├── login/              auth público
+    │   ├── manual/             leitor digital ([slug] dinâmico)
+    │   ├── pricing/            stub force-dynamic, requireUser
+    │   ├── profile/            stub force-dynamic, requireUser
+    │   ├── settings/           stub force-dynamic, requireUser
     │   ├── update-password/    pós reset
-    │   └── manual/             leitor digital
+    │   └── vault/              cofre digital (force-dynamic, requireUser)
     │
     ├── proxy.ts                edge middleware (nome canônico em next 16)
     │
@@ -69,7 +78,8 @@ web/
     │   ├── auth/               schemas zod
     │   ├── dashboard/          data, actions, checklistCatalog, components/
     │   ├── landing/            seções da home, shared/
-    │   └── manual/             data (capítulos), components/
+    │   ├── manual/             data (capítulos), components/
+    │   └── vault/              cofre digital (actions, data, classifier, components/, client/)
     │
     └── lib/
         ├── server/auth.ts      getUser(), requireUser() — server-only
