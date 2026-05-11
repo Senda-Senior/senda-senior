@@ -1,39 +1,98 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { useLenis } from 'lenis/react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 
 /**
- * Pass-through wrapper para conteúdo que eventualmente terá scroll-reveal.
+ * Scroll-reveal padrão da marca: fade + 24px de baixo para cima, 800ms,
+ * ease editorial (guia §6). `delay` empilha para criar cascata em listas.
  *
- * Status atual: NO-OP — apenas renderiza children num div.
+ *   <Reveal>...</Reveal>                    ← reveal ao entrar no viewport
+ *   <Reveal delay={0.12}>...</Reveal>       ← cascata
+ *   <Reveal variant="mount">...</Reveal>    ← anima imediatamente no mount (above-the-fold)
  *
- * Histórico:
- *   - 2026-05-10: tentativa de implementação com Framer Motion + IntersectionObserver
- *     (commits 819555e + 408b3c1) foi revertida porque interação com Lenis (`root` mode
- *     em src/lib/utils/SmoothScroll.tsx) + padrão sticky-deck (src/app/page.tsx) +
- *     useState/useEffect causou IO não disparar confiavelmente em elementos abaixo da
- *     dobra. Resultado: conteúdo dentro de <Reveal> ficava em `opacity:0` permanente
- *     em scroll real no browser.
+ * Implementação Lenis-aware:
+ *   - Project wraps everything in <ReactLenis root> (src/lib/utils/SmoothScroll.tsx).
+ *     Lenis usa CSS transform na body para smooth scroll, o que QUEBRA
+ *     IntersectionObserver e por consequência useInView/whileInView do
+ *     framer-motion. Tentativa anterior (commits 819555e + 408b3c1) deixava
+ *     conteúdo abaixo da dobra invisível em scroll real.
+ *   - Esta versão hooka direto no scroll do Lenis via useLenis(cb), e usa
+ *     getBoundingClientRect (que respeita transform) para decidir quando
+ *     animar. Funciona em sticky-deck + Lenis sem pegadinha.
  *
- * Reattempt requer: investigar Lenis ↔ IntersectionObserver, possivelmente migrar
- * para `lenis.on('scroll')` direto ou usar uma alternativa scroll-driven que respeite
- * smooth scroll com transform.
- *
- * Aceita as mesmas props da implementação animada para que componentes existentes
- * continuem compilando sem mudança.
+ * Acessibilidade + screenshot determinismo:
+ *   - prefers-reduced-motion: reduce → retorna div estático sem animação.
+ *   - Playwright config (landing-* projects) usa reducedMotion: 'reduce',
+ *     então tests capturam rest state determinístico.
  */
 
 export interface RevealProps {
   children: ReactNode
-  /** No-op nesta versão. Manteremos pra quando reativarmos animação. */
+  /** Delay em segundos antes da animação. Stack delays = cascata. */
   delay?: number
   className?: string
-  /** No-op nesta versão. */
+  /** Distância em pixels que o conteúdo sobe ao entrar. Default 24. */
   distance?: number
-  /** No-op nesta versão. */
+  /**
+   * `inview` (padrão): anima quando elemento entra no viewport (90% bottom).
+   * `mount`: anima imediatamente no mount — above-the-fold (hero/header).
+   */
   variant?: 'inview' | 'mount'
 }
 
-export function Reveal({ children, className }: RevealProps) {
-  return <div className={className}>{children}</div>
+const SENDA_EASE = [0.25, 0.46, 0.45, 0.94] as const // ↔ --ease-senda
+
+/** Trigger animation when element top crosses this fraction of viewport from top. */
+const TRIGGER_THRESHOLD = 0.9
+
+function isInViewport(el: HTMLElement): boolean {
+  const rect = el.getBoundingClientRect()
+  return rect.top < window.innerHeight * TRIGGER_THRESHOLD && rect.bottom > 0
+}
+
+export function Reveal({
+  children,
+  delay = 0,
+  className,
+  distance = 24,
+  variant = 'inview',
+}: RevealProps) {
+  const reduce = useReducedMotion() ?? false
+  const ref = useRef<HTMLDivElement>(null)
+  // 'mount' starts visible immediately. 'inview' waits for scroll to fire.
+  const [inView, setInView] = useState(variant === 'mount')
+
+  // Initial visibility check on mount: handles above-the-fold inview elements
+  // (Hero etc). Without this, they'd wait for first scroll event before animating.
+  useEffect(() => {
+    if (variant === 'mount' || inView || !ref.current) return
+    if (isInViewport(ref.current)) setInView(true)
+  }, [variant, inView])
+
+  // Lenis-driven scroll detection. Lenis transforms body for smooth scroll, which
+  // breaks IntersectionObserver — using lenis.on('scroll') (via useLenis) bypasses
+  // that. Callback fires on every scroll frame; we check rect (transform-aware)
+  // and unsubscribe via inView state guard once triggered.
+  useLenis(() => {
+    if (inView || variant === 'mount' || !ref.current) return
+    if (isInViewport(ref.current)) setInView(true)
+  })
+
+  if (reduce) {
+    return <div className={className}>{children}</div>
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      initial={{ opacity: 0, y: distance }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: distance }}
+      transition={{ duration: 0.8, delay, ease: SENDA_EASE }}
+    >
+      {children}
+    </motion.div>
+  )
 }
