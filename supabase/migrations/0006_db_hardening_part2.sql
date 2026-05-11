@@ -6,8 +6,10 @@
 -- Origem: docs/db-research.md §4 + §5 + §6 + docs/db-design-principles.md
 --         (P3, P4, P6, P10)
 --
+-- IDEMPOTÊNCIA: re-executável em qualquer estado parcial. Mesma estratégia
+-- de 0005 (IF NOT EXISTS, DO blocks com EXCEPTION, OR REPLACE, DROP/CREATE).
+--
 -- Edge Functions associadas em supabase/functions/storage-cleanup-on-blob-delete/
--- e supabase/functions/audit-event-cleanup/
 -- ───────────────────────────────────────────────────────────────────
 
 -- ═══ §3.2 — RLS para vault_classifier_overrides (P7/D7.3) ═══════════
@@ -21,7 +23,7 @@ create policy "vault_classifier_overrides_owner"
   with check (user_id = auth.uid());
 
 -- ═══ §3.3 — Audit log particionado (P4/D4.1-D4.6) ═══════════════════
-create table public.vault_audit_events (
+create table if not exists public.vault_audit_events (
   id              bigserial,
   created_at      timestamptz not null default now(),
   actor_user_id   uuid references auth.users(id) on delete set null,
@@ -200,6 +202,8 @@ set allowed_mime_types = array[
 where id = 'vault';
 
 -- ═══ §3.6 — pg_cron jobs (E) ═══════════════════════════════════════
+-- Pré-requisito: extensão pg_cron habilitada no Dashboard (Database → Extensions).
+-- Idempotência: cron.unschedule() antes de cada schedule() — segura mesmo se job não existe.
 create extension if not exists pg_cron;
 
 create or replace function public.vault_files_purge_soft_deleted()
@@ -229,6 +233,10 @@ begin
 end;
 $$;
 
+do $$ begin
+  perform cron.unschedule('vault_purge_soft_deleted');
+exception when others then null;
+end $$;
 select cron.schedule(
   'vault_purge_soft_deleted',
   '0 3 * * *',
@@ -255,6 +263,10 @@ begin
 end;
 $$;
 
+do $$ begin
+  perform cron.unschedule('vault_purge_pending');
+exception when others then null;
+end $$;
 select cron.schedule(
   'vault_purge_pending',
   '*/15 * * * *',
@@ -280,6 +292,10 @@ begin
 end;
 $$;
 
+do $$ begin
+  perform cron.unschedule('vault_audit_purge_expired');
+exception when others then null;
+end $$;
 select cron.schedule(
   'vault_audit_purge_expired',
   '0 4 * * *',
@@ -308,6 +324,10 @@ begin
 end;
 $$;
 
+do $$ begin
+  perform cron.unschedule('vault_audit_create_partition');
+exception when others then null;
+end $$;
 select cron.schedule(
   'vault_audit_create_partition',
   '0 0 1 * *',

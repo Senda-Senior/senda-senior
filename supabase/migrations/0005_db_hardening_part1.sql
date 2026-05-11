@@ -5,15 +5,18 @@
 -- Origem: docs/db-audit.md (F01, F02, F05) + docs/db-research.md +
 --         docs/db-design-principles.md (P1-P3, P5, P7-P9)
 --
--- Idempotente em ambiente dev (drop+recreate onde quebra invariantes).
--- Em prod aplicar com backup. Última migration destrutiva (P9/D9.1).
--- Próximas migrations (0007+): additive-only (ALTER ADD COLUMN, etc).
+-- IDEMPOTÊNCIA: este script pode ser re-executado em qualquer estado parcial.
+-- Supabase Dashboard SQL Editor não envolve em transação única — cada
+-- statement commita individual, então re-runs precisam ser safe.
+-- Estratégias: IF NOT EXISTS em tabelas/colunas/índices, DO blocks com
+-- EXCEPTION handler para constraints/policies, OR REPLACE em funções,
+-- DROP IF EXISTS antes de CREATE TRIGGER.
 -- ───────────────────────────────────────────────────────────────────
 
 -- ═══ §2.2 — vault_tiers (P8/D8.3) ═══════════════════════════════════
 -- NOTE: spec texto diz CHECK (version_limit >= 1) mas seed enterprise usa -1
 -- (ilimitado). CHECK aqui permite -1 OU >= 1 para alinhar com §2.6 / Wave 2 A.
-create table public.vault_tiers (
+create table if not exists public.vault_tiers (
   slug              text        primary key,
   label             text        not null,
   limit_bytes       bigint      not null check (limit_bytes > 0),
@@ -31,13 +34,14 @@ on conflict (slug) do nothing;
 
 alter table public.vault_tiers enable row level security;
 
+drop policy if exists "vault_tiers_read" on public.vault_tiers;
 create policy "vault_tiers_read"
   on public.vault_tiers for select
   to authenticated
   using (true);
 
 -- ═══ §2.3 — vault_classifier_overrides (P7/D7.1-D7.6) ═════════════
-create table public.vault_classifier_overrides (
+create table if not exists public.vault_classifier_overrides (
   user_id          uuid        not null references auth.users(id) on delete cascade,
   pattern          text        not null check (length(pattern) between 1 and 256),
   category_slug    text        not null references public.vault_system_categories(slug) on delete cascade,
@@ -49,7 +53,7 @@ create table public.vault_classifier_overrides (
   primary key (user_id, pattern)
 );
 
-create index vault_classifier_overrides_recent
+create index if not exists vault_classifier_overrides_recent
   on public.vault_classifier_overrides (user_id, last_matched_at desc nulls last);
 
 drop trigger if exists vault_classifier_overrides_updated_at
@@ -134,47 +138,75 @@ end;
 $$;
 
 -- ═══ §2.4 — CHECK constraints (P1/D1.1-D1.8) ═══════════════════════
+-- Cada ALTER ADD CONSTRAINT em DO block que ignora duplicate_object (idempotente).
 
-alter table public.vault_files
-  add constraint vault_files_original_name_length
-    check (length(original_name) between 1 and 255);
+do $$ begin
+  alter table public.vault_files
+    add constraint vault_files_original_name_length
+      check (length(original_name) between 1 and 255);
+exception when duplicate_object then null;
+end $$;
 
-alter table public.vault_files
-  add constraint vault_files_text_content_size
-    check (text_content is null or length(text_content) <= 10485760);  -- 10MB max
+do $$ begin
+  alter table public.vault_files
+    add constraint vault_files_text_content_size
+      check (text_content is null or length(text_content) <= 10485760);
+exception when duplicate_object then null;
+end $$;
 
-alter table public.vault_categories
-  add constraint vault_categories_label_length
-    check (length(label) between 1 and 64);
+do $$ begin
+  alter table public.vault_categories
+    add constraint vault_categories_label_length
+      check (length(label) between 1 and 64);
+exception when duplicate_object then null;
+end $$;
 
-alter table public.vault_categories
-  add constraint vault_categories_slug_format
-    check (slug ~ '^[a-z0-9_-]+$' and length(slug) between 1 and 64);
+do $$ begin
+  alter table public.vault_categories
+    add constraint vault_categories_slug_format
+      check (slug ~ '^[a-z0-9_-]+$' and length(slug) between 1 and 64);
+exception when duplicate_object then null;
+end $$;
 
-alter table public.vault_tags
-  add constraint vault_tags_label_length
-    check (length(label) between 1 and 64);
+do $$ begin
+  alter table public.vault_tags
+    add constraint vault_tags_label_length
+      check (length(label) between 1 and 64);
+exception when duplicate_object then null;
+end $$;
 
-alter table public.vault_tags
-  add constraint vault_tags_slug_format
-    check (slug ~ '^[a-z0-9_-]+$' and length(slug) between 1 and 64);
+do $$ begin
+  alter table public.vault_tags
+    add constraint vault_tags_slug_format
+      check (slug ~ '^[a-z0-9_-]+$' and length(slug) between 1 and 64);
+exception when duplicate_object then null;
+end $$;
 
-alter table public.vault_file_blobs
-  add constraint vault_file_blobs_mime_format
-    check (mime_type ~ '^[a-z0-9.\-+]+\/[a-z0-9.\-+]+$' and length(mime_type) <= 255);
+do $$ begin
+  alter table public.vault_file_blobs
+    add constraint vault_file_blobs_mime_format
+      check (mime_type ~ '^[a-z0-9.\-+]+\/[a-z0-9.\-+]+$' and length(mime_type) <= 255);
+exception when duplicate_object then null;
+end $$;
 
-alter table public.vault_file_blobs
-  add constraint vault_file_blobs_extension_format
-    check (length(extension) between 0 and 16 and extension = lower(extension));
+do $$ begin
+  alter table public.vault_file_blobs
+    add constraint vault_file_blobs_extension_format
+      check (length(extension) between 0 and 16 and extension = lower(extension));
+exception when duplicate_object then null;
+end $$;
 
 -- ═══ §2.5 — content_sha256 denormalizado (P2/D2.1) ══════════════════
 
 alter table public.vault_files
   add column if not exists content_sha256 text;
 
-alter table public.vault_files
-  add constraint vault_files_content_sha256_format
-    check (content_sha256 is null or length(content_sha256) = 64);
+do $$ begin
+  alter table public.vault_files
+    add constraint vault_files_content_sha256_format
+      check (content_sha256 is null or length(content_sha256) = 64);
+exception when duplicate_object then null;
+end $$;
 
 create unique index if not exists vault_files_user_content_unique
   on public.vault_files (user_id, content_sha256)
