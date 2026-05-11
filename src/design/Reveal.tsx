@@ -66,9 +66,15 @@ export function Reveal({
 
   // Initial visibility check on mount: handles above-the-fold inview elements
   // (Hero etc). Without this, they'd wait for first scroll event before animating.
+  // setState inside effect is intentional here — getBoundingClientRect requires
+  // post-layout DOM, can't be derived during render. Guard via inView prevents
+  // re-runs after first transition.
   useEffect(() => {
     if (variant === 'mount' || inView || !ref.current) return
-    if (isInViewport(ref.current)) setInView(true)
+    if (isInViewport(ref.current)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setInView(true)
+    }
   }, [variant, inView])
 
   // Lenis-driven scroll detection. Lenis transforms body for smooth scroll, which
