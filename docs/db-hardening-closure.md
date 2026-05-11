@@ -145,7 +145,27 @@ Todas as 12 funções (existentes + novas) agora têm `SET search_path` explíci
 
 ## 5. Follow-ups (próxima fase começa aqui)
 
-Identificados no [docs/db-pre-apply-checklist.md §6](db-pre-apply-checklist.md). **Nenhum é bloqueante mas valem ser fechados antes de vault hardening fase 2.**
+Identificados no [docs/db-pre-apply-checklist.md §6](db-pre-apply-checklist.md) + surgidos durante a aplicação (FU-F, FU-G). **Nenhum é bloqueante mas valem ser fechados antes de vault hardening fase 2.**
+
+### FU-F — REVOKE EXECUTE em SECURITY DEFINER functions (RESOLVIDO)
+
+**Status:** ✅ resolvido em migration 0007 (commit `c3fd17d`).
+
+**Problema:** Supabase Security Advisor flagou 16 warnings: "Public Can Execute SECURITY DEFINER Function" (8) + "Signed-In Users Can Execute SECURITY DEFINER Function" (8). Postgres concede EXECUTE pra PUBLIC por default, e Supabase expõe funções `public.*` como endpoints RPC. Combinado com SECURITY DEFINER (bypassa RLS) = qualquer usuário pode invocar operações privilegiadas via HTTP. Exemplo de exploração: `POST /rest/v1/rpc/vault_files_purge_soft_deleted` → purga arquivos soft-deleted de TODOS os users.
+
+**Fix:** migration 0007 com `REVOKE EXECUTE ON FUNCTION x FROM public, authenticated, anon` nas 7 funções nossas com DEFINER. Triggers e pg_cron rodam como `postgres` (owner) — não dependem desse grant, continuam funcionando. Verificado: cada função tem `can_execute = {postgres, service_role}`, sem `public/authenticated/anon`.
+
+**Warnings remanescentes (2):** `rls_auto_enable()` é função managed do Supabase platform. Não modificamos. Risco real baixo (só executa `ALTER TABLE ... ENABLE RLS`, sem manipulação de dados).
+
+### FU-G — Leaked Password Protection (DEFERIDO — paid plan)
+
+**Status:** ⏸️ deferido até upgrade pra Supabase Pro.
+
+**Problema:** Supabase Security Advisor flagou "Leaked Password Protection Disabled". Feature checa senhas no signup contra base de leaks (haveibeenpwned).
+
+**Fix quando upgrade:** Dashboard → Authentication → Policies → toggle "Leaked Password Protection" ON. 30 segundos.
+
+---
 
 ### FU-A — Política INSERT em `vault_audit_events`
 
@@ -258,13 +278,17 @@ Esta foi a fase **enabling**. Agora podemos retomar o objetivo original: **vault
 - ✅ Auditoria completa do estado atual
 - ✅ Princípios derivados de fontes autoritativas
 - ✅ Schema-alvo especificado com rastreabilidade
-- ✅ 2 migrations idempotentes implementadas
+- ✅ 3 migrations idempotentes implementadas (0005, 0006, 0007)
 - ✅ Edge Function deployada
 - ✅ Database Webhook configurado
 - ✅ 5 sanity queries verificadas
 - ✅ Audit pipeline end-to-end testado em produção
-- ✅ Follow-ups documentados pra próxima sessão
+- ✅ FU-F resolvido (REVOKE EXECUTE em SECURITY DEFINER functions)
+- ✅ Security Advisor: 17 → 3 warnings (2 não-nossos + 1 paid-only)
+- ✅ Branch `chore/db-hardening` merged em `dev`
+- ✅ Follow-ups documentados pra próxima sessão (FU-A a FU-E)
 - ⏸️ RLS test suite (deferida; rodar quando `.env.test` preenchido)
-- ⏸️ 0007 com FU-A a FU-E (próxima sessão)
+- ⏸️ FU-G — Leaked Password Protection (deferido até Pro plan)
+- ⏸️ FU-A a FU-E em migration 0008 (próxima sessão)
 
-**Status:** ✅ **fase encerrada com sucesso.** Banco passou de "MVP frágil" para "produção que aguenta inspeção", com cadeia de decisões 100% rastreável.
+**Status:** ✅ **fase encerrada com sucesso.** Banco passou de "MVP frágil" para "produção que aguenta inspeção", com cadeia de decisões 100% rastreável. Security Advisor com apenas warnings não-acionáveis no plano atual.
