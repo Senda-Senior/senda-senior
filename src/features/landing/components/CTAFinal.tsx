@@ -52,7 +52,7 @@ export function CTAFinal() {
               fontFamily: 'var(--font-sans)',
               fontSize: 'clamp(14.95px, 1.265vw, 17.25px)',
               lineHeight: 1.65,
-              color: 'rgba(42, 37, 32, 0.55)',
+              color: 'var(--color-ink-55)',
               marginBottom: 44,
             }}
           >
@@ -106,7 +106,7 @@ export function CTAFinal() {
                 color: 'var(--color-ink)',
                 padding: '13px 28px',
                 borderRadius: 100,
-                border: '1.5px solid rgba(42, 37, 32, 0.35)',
+                border: '1.5px solid var(--color-ink-35)',
                 fontSize: 17.25,
                 fontWeight: 600,
                 textDecoration: 'none',

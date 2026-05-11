@@ -4,61 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 
-/* ─── Data ──────────────────────────────────────────────────────────── */
-
-const MANUAIS = [
-  {
-    id: 0,
-    tab: 'Prevent Care',
-    photo: '/brand/photos/prevent-care.png',
-    title: 'Prevent\nCare',
-    tagline: 'Cuidar preventivamente é se organizar enquanto ainda está tudo bem.',
-    desc: 'Planejamento preventivo para famílias com pais autônomos.',
-    // Card: sage green
-    cardBg: 'rgba(198, 212, 188, 0.97)',
-    labelColor: '#3a5c3a',
-    titleColor: '#1e3320',
-    taglineColor: '#1e3320',
-    descColor: 'rgba(30, 51, 32, 0.6)',
-    btnBg: '#1e3320',
-    btnColor: '#f5f0e8',
-    link: 'https://hotmart.com/pt-br', // TODO: Inserir link de checkout real do Prevent Care
-  },
-  {
-    id: 1,
-    tab: 'Care',
-    photo: '/brand/photos/care.png',
-    title: 'Care',
-    tagline: 'O guia para quem já percebeu os primeiros sinais.',
-    desc: 'Idosos funcionais, mas que já sinalizam a necessidade de apoio.',
-    // Card: warm golden / tan
-    cardBg: 'rgba(208, 170, 110, 0.97)',
-    labelColor: '#5c3a18',
-    titleColor: '#3a2008',
-    taglineColor: '#3a2008',
-    descColor: 'rgba(58, 32, 8, 0.6)',
-    btnBg: 'var(--color-terracotta)',
-    btnColor: '#f5f0e8',
-    link: 'https://hotmart.com/pt-br', // TODO: Inserir link de checkout real do Care
-  },
-  {
-    id: 2,
-    tab: 'Immediate Care',
-    photo: '/brand/photos/immediate-care.png',
-    title: 'Immediate\nCare',
-    tagline: 'O guia para quem precisa agir agora.',
-    desc: 'Organização e suporte para famílias que não podem mais esperar.',
-    // Card: terracotta / burnt sienna
-    cardBg: 'rgba(148, 72, 50, 0.97)',
-    labelColor: 'rgba(245, 240, 232, 0.75)',
-    titleColor: '#f5f0e8',
-    taglineColor: '#f5f0e8',
-    descColor: 'rgba(245, 240, 232, 0.55)',
-    btnBg: '#D4AA6A',
-    btnColor: '#3a2008',
-    link: 'https://hotmart.com/pt-br', // TODO: Inserir link de checkout real do Immediate Care
-  },
-]
+import { MANUAIS } from '@/features/landing/data/fases-cuidado'
 
 /* ─── Component ─────────────────────────────────────────────────────── */
 
@@ -123,7 +69,7 @@ export function FasesCuidado() {
             fontFamily: 'var(--font-sans)',
             fontSize: 'clamp(14.95px, 1.265vw, 17.25px)',
             lineHeight: 1.6,
-            color: 'rgba(40, 42, 40, 0.55)',
+            color: 'var(--color-ink-55)',
             maxWidth: 480,
             margin: '0 auto',
           }}
@@ -148,7 +94,7 @@ export function FasesCuidado() {
           <motion.button
             key={i}
             onClick={() => setActive(i)}
-            whileHover={active !== i ? { backgroundColor: 'rgba(212, 170, 106, 0.14)' } : {}}
+            whileHover={active !== i ? { backgroundColor: 'var(--color-gold-warm-14)' } : {}}
             whileTap={{ scale: 0.97 }}
             transition={{ duration: 0.18, ease: 'easeOut' }}
             style={{
@@ -164,7 +110,7 @@ export function FasesCuidado() {
               fontSize: 16.1,
               fontWeight: active === i ? 600 : 500,
               background: 'transparent',
-              color: active === i ? '#3a2008' : 'rgba(40, 42, 40, 0.5)',
+              color: active === i ? 'var(--color-brown-deep)' : 'var(--color-ink-50)',
               letterSpacing: '-0.01em',
               transition: 'color 0.22s ease',
             }}
@@ -175,7 +121,7 @@ export function FasesCuidado() {
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background: '#D4AA6A',
+                  background: 'var(--color-gold-warm)',
                   borderRadius: 100,
                   zIndex: 0,
                 }}
@@ -195,13 +141,13 @@ export function FasesCuidado() {
                 width: 17,
                 height: 17,
                 borderRadius: '50%',
-                border: `1.5px solid ${active === i ? '#3a2008' : 'rgba(40,42,40,0.3)'}`,
+                border: `1.5px solid ${active === i ? 'var(--color-brown-deep)' : 'var(--color-ink-30)'}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: 8,
                 fontWeight: 700,
-                color: active === i ? '#3a2008' : 'rgba(40,42,40,0.4)',
+                color: active === i ? 'var(--color-brown-deep)' : 'var(--color-ink-40)',
                 flexShrink: 0,
                 lineHeight: 1,
                 transition: 'border-color 0.22s ease, color 0.22s ease',
@@ -260,7 +206,7 @@ export function FasesCuidado() {
             position: 'absolute',
             inset: 0,
             background:
-              'linear-gradient(90deg, rgba(0,0,0,0.18) 0%, transparent 55%)',
+              'linear-gradient(90deg, var(--color-black-18) 0%, transparent 55%)',
             pointerEvents: 'none',
           }}
         />
