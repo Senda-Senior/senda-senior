@@ -843,6 +843,15 @@ Ordem de execução **obrigatória**:
 10. PR pra merge em dev (NÃO main, conforme requisito do usuário)
 ```
 
+### 5.1 Webhook: `vault_file_blobs` DELETE → `storage-cleanup-on-blob-delete`
+
+Postgres não dispara HTTP nativo para Edge Functions. Use **Database Webhooks** (Dashboard → Database → Webhooks) ou a API equivalente:
+
+- **Table:** `public.vault_file_blobs`
+- **Events:** Delete
+- **HTTP Request:** URL da função deployada (`…/functions/v1/storage-cleanup-on-blob-delete`), método POST, corpo JSON no formato do webhook (inclui `type`, `table`, `old_record` com `storage_path`).
+- **Secrets:** configure cabeçalhos conforme a doc de Webhooks do Supabase (ex.: `Authorization` com secret de invocação), sem commitar chaves em migrations.
+
 ---
 
 ## 6. Rollback plan
