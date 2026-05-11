@@ -23,7 +23,7 @@ export const ARTIGOS: Artigo[] = [
     bg: 'var(--color-sage-light)',
     titleColor: 'var(--color-forest-dark)',
     tagColor: 'var(--color-forest-60)',
-    photo: '/conversa-pais.png',
+    photo: '/conversa-pais.webp',
   },
   {
     tag: 'ORGANIZAÇÃO',
@@ -33,7 +33,7 @@ export const ARTIGOS: Artigo[] = [
     bg: 'var(--color-golden-beige)',
     titleColor: 'var(--color-brown-rich)',
     tagColor: 'var(--color-brown-rich-65)',
-    photo: '/5-documentos.png',
+    photo: '/5-documentos.webp',
   },
   {
     tag: 'MÉTODO',
@@ -43,6 +43,6 @@ export const ARTIGOS: Artigo[] = [
     bg: 'var(--color-warm-cream)',
     titleColor: 'var(--color-ink)',
     tagColor: 'var(--color-ink-55)',
-    photo: '/qual-momento.png',
+    photo: '/qual-momento.webp',
   },
 ]
