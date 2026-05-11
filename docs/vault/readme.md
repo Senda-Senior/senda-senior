@@ -20,8 +20,8 @@ cofre digital de documentos do usuário. subsistema independente, integrado ao d
 | algoritmo de classificação (spec)          | ok         |
 | api contract                               | ok         |
 | decisões arquiteturais pendentes           | ver questions |
-| migration sql                              | pendente   |
-| implementação de código                    | pendente   |
+| migration sql                              | aplicado (0002, 0003, 0004) |
+| implementação de código                    | em produção                  |
 
 ## decisões arquiteturais chave
 
