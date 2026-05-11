@@ -28,9 +28,9 @@ const FASES = [
     iconSrc: '/icons/brand/shield-check.svg',
     iconFilter: 'brightness(0) invert(1)',
     expandedText: [
-      'Neste momento, o foco e avaliar com calma a autonomia e as condicoes de saude dos pais, sem esperar o primeiro susto para agir.',
-      'Tambem e hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a seguranca da casa com um olhar preventivo.',
-      'Quando esse planejamento inclui previsao de gastos e papeis da familia, o cuidado comeca antes da urgencia e com muito mais leveza.',
+      'Neste momento, o foco é avaliar com calma a autonomia e as condições de saúde dos pais, sem esperar o primeiro susto para agir.',
+      'Também é hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a segurança da casa com um olhar preventivo.',
+      'Quando esse planejamento inclui previsão de gastos e papéis da família, o cuidado começa antes da urgência e com muito mais leveza.',
     ],
   },
   {
@@ -51,9 +51,9 @@ const FASES = [
     iconSrc: '/icons/brand/heart.svg',
     iconFilter: 'brightness(0) invert(1)',
     expandedText: [
-      'Neste momento, o foco e avaliar com calma a autonomia e as condicoes de saude dos pais, sem esperar o primeiro susto para agir.',
-      'Tambem e hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a seguranca da casa com um olhar preventivo.',
-      'Quando esse planejamento inclui previsao de gastos e papeis da familia, o cuidado comeca antes da urgencia e com muito mais leveza.',
+      'Neste momento, o foco é avaliar com calma a autonomia e as condições de saúde dos pais, sem esperar o primeiro susto para agir.',
+      'Também é hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a segurança da casa com um olhar preventivo.',
+      'Quando esse planejamento inclui previsão de gastos e papéis da família, o cuidado começa antes da urgência e com muito mais leveza.',
     ],
   },
   {
@@ -74,9 +74,9 @@ const FASES = [
     iconSrc: '/icons/brand/life-ring.svg',
     iconFilter: 'none',
     expandedText: [
-      'Neste momento, o foco e avaliar com calma a autonomia e as condicoes de saude dos pais, sem esperar o primeiro susto para agir.',
-      'Tambem e hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a seguranca da casa com um olhar preventivo.',
-      'Quando esse planejamento inclui previsao de gastos e papeis da familia, o cuidado comeca antes da urgencia e com muito mais leveza.',
+      'Neste momento, o foco é avaliar com calma a autonomia e as condições de saúde dos pais, sem esperar o primeiro susto para agir.',
+      'Também é hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a segurança da casa com um olhar preventivo.',
+      'Quando esse planejamento inclui previsão de gastos e papéis da família, o cuidado começa antes da urgência e com muito mais leveza.',
     ],
   },
 ]
