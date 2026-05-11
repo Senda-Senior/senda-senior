@@ -4,8 +4,11 @@
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
 
+// eslint-disable-next-line no-restricted-syntax
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+// eslint-disable-next-line no-restricted-syntax
 const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+// eslint-disable-next-line no-restricted-syntax -- SUPABASE_SERVICE_ROLE_KEY is a server secret not exposed via @/config/env
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const hasEnv = Boolean(url && anonKey && serviceKey);
