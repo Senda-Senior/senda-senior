@@ -30,7 +30,7 @@ export const MANUAIS: Manual[] = [
   {
     id: 0,
     tab: 'Prevent Care',
-    photo: '/brand/photos/prevent-care.png',
+    photo: '/brand/photos/prevent-care.webp',
     title: 'Prevent\nCare',
     tagline: 'Cuidar preventivamente é se organizar enquanto ainda está tudo bem.',
     desc: 'Planejamento preventivo para famílias com pais autônomos.',
@@ -47,7 +47,7 @@ export const MANUAIS: Manual[] = [
   {
     id: 1,
     tab: 'Care',
-    photo: '/brand/photos/care.png',
+    photo: '/brand/photos/care.webp',
     title: 'Care',
     tagline: 'O guia para quem já percebeu os primeiros sinais.',
     desc: 'Idosos funcionais, mas que já sinalizam a necessidade de apoio.',
@@ -64,7 +64,7 @@ export const MANUAIS: Manual[] = [
   {
     id: 2,
     tab: 'Immediate Care',
-    photo: '/brand/photos/immediate-care.png',
+    photo: '/brand/photos/immediate-care.webp',
     title: 'Immediate\nCare',
     tagline: 'O guia para quem precisa agir agora.',
     desc: 'Organização e suporte para famílias que não podem mais esperar.',

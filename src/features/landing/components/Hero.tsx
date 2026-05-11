@@ -25,7 +25,7 @@ export function Hero() {
         }}
       >
         <NextImage
-          src="/brand/photos/hero-mockup.png"
+          src="/brand/photos/hero-mockup.webp"
           alt="Família conversando sobre cuidados"
           fill
           priority
