@@ -106,7 +106,7 @@ export function CTAFinal() {
                 color: 'var(--color-ink)',
                 padding: '13px 28px',
                 borderRadius: 100,
-                border: '1.5px solid rgba(42, 37, 32, 0.35)',
+                border: '1.5px solid var(--color-ink-35)',
                 fontSize: 17.25,
                 fontWeight: 600,
                 textDecoration: 'none',

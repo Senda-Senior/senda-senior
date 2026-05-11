@@ -32,7 +32,7 @@ export const ARTIGOS: Artigo[] = [
     date: 'Mar 03, 2026 - 6 mins de leitura',
     bg: 'var(--color-golden-beige)',
     titleColor: 'var(--color-brown-rich)',
-    tagColor: 'rgba(107, 58, 24, 0.65)',
+    tagColor: 'var(--color-brown-rich-65)',
     photo: '/5-documentos.png',
   },
   {
