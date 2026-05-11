@@ -42,7 +42,7 @@ export function Conteudo() {
               fontSize: 'clamp(28px, 3.5vw, 44px)',
               fontWeight: 400,
               lineHeight: 1.15,
-              color: '#f6f2ea',
+              color: 'var(--color-cream)',
               letterSpacing: '-0.02em',
               maxWidth: 700,
               margin: '0 auto',

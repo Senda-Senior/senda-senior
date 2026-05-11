@@ -131,7 +131,7 @@ export function FundadorasStrip() {
                       width: 48,
                       height: 48,
                       borderRadius: 12,
-                      background: 'rgba(255,255,255,0.4)',
+                      background: 'var(--color-white-40)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
