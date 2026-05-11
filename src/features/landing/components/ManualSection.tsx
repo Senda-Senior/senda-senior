@@ -100,8 +100,8 @@ function FaseCard({
         borderRadius: 20,
         overflow: 'hidden',
         boxShadow: isExpanded
-          ? '0 32px 80px rgba(0,0,0,0.18)'
-          : '0 8px 32px rgba(0,0,0,0.08)',
+          ? '0 32px 80px var(--color-black-18)'
+          : '0 8px 32px var(--color-black-08)',
         cursor: 'default',
         width: '100%',
         transition: 'background 0.4s ease, box-shadow 0.4s ease',
@@ -467,7 +467,7 @@ export function DesktopManualSection() {
                 fontFamily: 'var(--font-sans)',
                 fontSize: 'clamp(16.1px, 1.38vw, 18.4px)',
                 lineHeight: 1.65,
-                color: 'rgba(245,240,232,0.75)',
+                color: 'var(--color-cream-75)',
                 maxWidth: 440,
                 marginBottom: 24,
               }}
@@ -637,7 +637,7 @@ function MobileManualSection() {
             fontFamily: 'var(--font-sans)',
             fontSize: 17.25,
             lineHeight: 1.65,
-            color: 'rgba(245,240,232,0.7)',
+            color: 'var(--color-cream-70)',
           }}
         >
           Estruturamos o envelhecimento em três estágios para ajudar você a entender o presente e proteger o futuro. Esta classificação não rotula; ela orienta.

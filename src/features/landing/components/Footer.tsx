@@ -53,7 +53,7 @@ export function Footer() {
         {/* Nav columns */}
         {NAV_COLUMNS.map((col) => (
           <div key={col.title}>
-            <h4 className="mb-[20px] font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-[rgba(42,37,32,0.38)]">
+            <h4 className="mb-[20px] font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-ink-38)]">
               {col.title}
             </h4>
             {col.links.map((link) => (
@@ -81,10 +81,10 @@ export function Footer() {
               alignItems: 'center',
               width: 'min(100%, 366px)',
               height: 36,
-              background: 'rgba(255, 255, 255, 0.5)',
+              background: 'var(--color-white-50)',
               borderRadius: 100,
-              border: '1px solid rgba(42, 37, 32, 0.12)',
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.35)',
+              border: '1px solid var(--color-ink-12)',
+              boxShadow: 'inset 0 1px 0 var(--color-white-35)',
               overflow: 'hidden',
               marginBottom: 20,
             }}
@@ -142,7 +142,7 @@ export function Footer() {
                 key={label}
                 href={href}
                 aria-label={label}
-                className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[8px] bg-[rgba(42,37,32,0.12)] text-[var(--color-ink)] no-underline transition-[background] duration-[200ms]"
+                className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[8px] bg-[var(--color-ink-12)] text-[var(--color-ink)] no-underline transition-[background] duration-[200ms]"
               >
                 <Icon size={15} strokeWidth={1.8} />
               </a>
@@ -156,7 +156,7 @@ export function Footer() {
         style={{
           maxWidth: 1160,
           margin: '0 auto',
-          borderTop: '1px solid rgba(42, 37, 32, 0.16)',
+          borderTop: '1px solid var(--color-ink-16)',
           padding: '18px 0 22px',
           display: 'flex',
           justifyContent: 'space-between',

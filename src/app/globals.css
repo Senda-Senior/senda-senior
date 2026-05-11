@@ -14,6 +14,8 @@
   --color-green-pale: #c8d4c0;
   --color-green-light: #8aab8a;
   --color-green: #4a5e4a;
+  --color-green-08: rgba(74, 94, 74, 0.08);
+  --color-green-40: rgba(74, 94, 74, 0.40);
   --color-green-dark: #2d3d2d;
 
   /* Sage (verde acinzentado — usado em Conteudo, FasesCuidado) */
@@ -24,6 +26,7 @@
   --color-sage-dark: #626853;
   --color-forest: #1e3320;
   --color-forest-dark: #1e2e1e;
+  --color-forest-60: rgba(30, 51, 32, 0.60);
 
   /* Olive (verde-oliva — usado em Header pill + Consultoria) */
   --color-olive: #595f43;
@@ -41,6 +44,10 @@
   --color-cream-80: rgba(245, 240, 232, 0.80);
   --color-cream-85: rgba(245, 240, 232, 0.85);
   --color-cream-88: rgba(245, 240, 232, 0.88);
+  --color-cream-55: rgba(245, 240, 232, 0.55);
+  --color-cream-68: rgba(245, 240, 232, 0.68);
+  --color-cream-70: rgba(245, 240, 232, 0.70);
+  --color-cream-75: rgba(245, 240, 232, 0.75);
 
   /* Bege (warm tones — usado em Conteudo + Consultoria bg) */
   --color-warm-beige: #d3c0a2;
@@ -51,6 +58,7 @@
   --color-terracotta-pale: #f0e0d0;
   --color-terracotta-light: #c98a65;
   --color-terracotta: #b5724a;
+  --color-terracotta-04: rgba(181, 114, 74, 0.04);
   --color-terracotta-dark: #915a3a;
 
   /* Dourado (paleta de estrelas do design + gold-beige usado em Footer) */
@@ -61,6 +69,7 @@
 
   /* Brown rich (Conteudo card accent) */
   --color-brown-rich: #6b3a18;
+  --color-brown-rich-65: rgba(107, 58, 24, 0.65);
 
   /* Escuros (Texto / Neutros) */
   --color-ink: #2a2520;
@@ -74,6 +83,10 @@
   --color-ink-45: rgba(42, 37, 32, 0.45);
   --color-ink-55: rgba(42, 37, 32, 0.55);
   --color-ink-58: rgba(42, 37, 32, 0.58);
+  --color-ink-12: rgba(42, 37, 32, 0.12);
+  --color-ink-14: rgba(42, 37, 32, 0.14);
+  --color-ink-16: rgba(42, 37, 32, 0.16);
+  --color-ink-35: rgba(42, 37, 32, 0.35);
   --color-danger: #b91c1c;
   --color-danger-soft: rgba(185, 28, 28, 0.08);
   --color-danger-border: rgba(185, 28, 28, 0.15);
@@ -82,8 +95,23 @@
   --color-whatsapp: #25d366;
 
   /* White / Black overlays (usados em backdrops + masks) */
+  --color-white-04: rgba(255, 255, 255, 0.04);
+  --color-white-07: rgba(255, 255, 255, 0.07);
+  --color-white-08: rgba(255, 255, 255, 0.08);
+  --color-white-35: rgba(255, 255, 255, 0.35);
+  --color-white-38: rgba(255, 255, 255, 0.38);
+  --color-white-40: rgba(255, 255, 255, 0.40);
+  --color-white-50: rgba(255, 255, 255, 0.50);
+  --color-white-70: rgba(255, 255, 255, 0.70);
+  --color-white-78: rgba(255, 255, 255, 0.78);
+  --color-white-88: rgba(255, 255, 255, 0.88);
   --color-white-90: rgba(255, 255, 255, 0.90);
+  --color-black-08: rgba(0, 0, 0, 0.08);
   --color-black-16: rgba(0, 0, 0, 0.16);
+  --color-black-18: rgba(0, 0, 0, 0.18);
+  --color-black-20: rgba(0, 0, 0, 0.20);
+  --color-black-26: rgba(0, 0, 0, 0.26);
+  --color-black-30: rgba(0, 0, 0, 0.30);
 
   /* Tipografia */
   --font-serif: var(--serif);
@@ -262,17 +290,17 @@ body.reader-locked {
   }
 
   .btn-glass-hover:hover {
-    background: rgba(255, 255, 255, 0.9) !important;
+    background: var(--color-white-90) !important;
   }
 
   .btn-white-lift:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 8px 32px var(--color-black-20) !important;
   }
 
   .btn-white-lift-strong:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 12px 48px var(--color-black-20) !important;
   }
 
   .btn-outline-white-hover:hover {

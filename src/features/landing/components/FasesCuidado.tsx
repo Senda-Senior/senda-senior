@@ -206,7 +206,7 @@ export function FasesCuidado() {
             position: 'absolute',
             inset: 0,
             background:
-              'linear-gradient(90deg, rgba(0,0,0,0.18) 0%, transparent 55%)',
+              'linear-gradient(90deg, var(--color-black-18) 0%, transparent 55%)',
             pointerEvents: 'none',
           }}
         />

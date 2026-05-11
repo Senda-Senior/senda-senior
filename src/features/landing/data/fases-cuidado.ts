@@ -33,7 +33,7 @@ export const MANUAIS: Manual[] = [
     labelColor: '#3a5c3a',
     titleColor: 'var(--color-forest)',
     taglineColor: 'var(--color-forest)',
-    descColor: 'rgba(30, 51, 32, 0.6)',
+    descColor: 'var(--color-forest-60)',
     btnBg: 'var(--color-forest)',
     btnColor: 'var(--color-cream)',
     link: 'https://hotmart.com/pt-br', // TODO: Inserir link de checkout real do Prevent Care
@@ -64,10 +64,10 @@ export const MANUAIS: Manual[] = [
     desc: 'Organização e suporte para famílias que não podem mais esperar.',
     // Card: terracotta / burnt sienna
     cardBg: 'rgba(148, 72, 50, 0.97)',
-    labelColor: 'rgba(245, 240, 232, 0.75)',
+    labelColor: 'var(--color-cream-75)',
     titleColor: 'var(--color-cream)',
     taglineColor: 'var(--color-cream)',
-    descColor: 'rgba(245, 240, 232, 0.55)',
+    descColor: 'var(--color-cream-55)',
     btnBg: '#D4AA6A',
     btnColor: '#3a2008',
     link: 'https://hotmart.com/pt-br', // TODO: Inserir link de checkout real do Immediate Care
