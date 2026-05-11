@@ -69,7 +69,7 @@ export function FasesCuidado() {
             fontFamily: 'var(--font-sans)',
             fontSize: 'clamp(14.95px, 1.265vw, 17.25px)',
             lineHeight: 1.6,
-            color: 'rgba(40, 42, 40, 0.55)',
+            color: 'var(--color-ink-55)',
             maxWidth: 480,
             margin: '0 auto',
           }}
@@ -94,7 +94,7 @@ export function FasesCuidado() {
           <motion.button
             key={i}
             onClick={() => setActive(i)}
-            whileHover={active !== i ? { backgroundColor: 'rgba(212, 170, 106, 0.14)' } : {}}
+            whileHover={active !== i ? { backgroundColor: 'var(--color-gold-warm-14)' } : {}}
             whileTap={{ scale: 0.97 }}
             transition={{ duration: 0.18, ease: 'easeOut' }}
             style={{
@@ -110,7 +110,7 @@ export function FasesCuidado() {
               fontSize: 16.1,
               fontWeight: active === i ? 600 : 500,
               background: 'transparent',
-              color: active === i ? '#3a2008' : 'rgba(40, 42, 40, 0.5)',
+              color: active === i ? 'var(--color-brown-deep)' : 'var(--color-ink-50)',
               letterSpacing: '-0.01em',
               transition: 'color 0.22s ease',
             }}
@@ -121,7 +121,7 @@ export function FasesCuidado() {
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background: '#D4AA6A',
+                  background: 'var(--color-gold-warm)',
                   borderRadius: 100,
                   zIndex: 0,
                 }}
@@ -141,13 +141,13 @@ export function FasesCuidado() {
                 width: 17,
                 height: 17,
                 borderRadius: '50%',
-                border: `1.5px solid ${active === i ? '#3a2008' : 'rgba(40,42,40,0.3)'}`,
+                border: `1.5px solid ${active === i ? 'var(--color-brown-deep)' : 'var(--color-ink-30)'}`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: 8,
                 fontWeight: 700,
-                color: active === i ? '#3a2008' : 'rgba(40,42,40,0.4)',
+                color: active === i ? 'var(--color-brown-deep)' : 'var(--color-ink-40)',
                 flexShrink: 0,
                 lineHeight: 1,
                 transition: 'border-color 0.22s ease, color 0.22s ease',

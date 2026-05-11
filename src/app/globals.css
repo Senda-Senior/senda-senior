@@ -66,10 +66,14 @@
   --color-gold-light: #dbc49a;
   --color-gold-beige: #edce90;
   --color-golden-beige: #ebd197;
+  --color-gold-warm: #d4aa6a;
+  --color-gold-warm-14: rgba(212, 170, 106, 0.14);
 
   /* Brown rich (Conteudo card accent) */
   --color-brown-rich: #6b3a18;
   --color-brown-rich-65: rgba(107, 58, 24, 0.65);
+  --color-brown-deep: #3a2008;
+  --color-brown-deep-60: rgba(58, 32, 8, 0.60);
 
   /* Escuros (Texto / Neutros) */
   --color-ink: #2a2520;
@@ -87,6 +91,8 @@
   --color-ink-14: rgba(42, 37, 32, 0.14);
   --color-ink-16: rgba(42, 37, 32, 0.16);
   --color-ink-35: rgba(42, 37, 32, 0.35);
+  --color-ink-30: rgba(42, 37, 32, 0.30);
+  --color-ink-50: rgba(42, 37, 32, 0.50);
   --color-danger: #b91c1c;
   --color-danger-soft: rgba(185, 28, 28, 0.08);
   --color-danger-border: rgba(185, 28, 28, 0.15);
