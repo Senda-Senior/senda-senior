@@ -94,7 +94,6 @@ export function Consultoria() {
               // Large and dramatic — dominates the left column in reference
               fontSize: 'clamp(42px, 5.5vw, 68px)',
               fontWeight: 400,
-              fontStyle: 'italic',
               lineHeight: 1.08,
               letterSpacing: '-0.025em',
               color: 'var(--color-olive)',

@@ -70,7 +70,7 @@ export function Footer() {
 
         {/* Newsletter + social icons */}
         <div>
-          <p className="mb-[38px] font-sans text-[16.1px] font-semibold text-[var(--color-ink)]">
+          <p className="mb-[16px] font-sans text-[16.1px] font-semibold text-[var(--color-ink)]">
             Inscreva-se no nosso Newsletter
           </p>
 

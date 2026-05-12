@@ -32,6 +32,7 @@ export const metadata: Metadata = {
   },
 }
 
+// Definicão das fontes 
 const fraunces = Fraunces({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
@@ -47,6 +48,7 @@ const dmSans = DM_Sans({
   display: 'swap',
 })
 
+// Layout principal da aplicação
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={`${fraunces.variable} ${dmSans.variable}`}>

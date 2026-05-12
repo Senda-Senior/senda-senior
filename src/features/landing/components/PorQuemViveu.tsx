@@ -156,6 +156,7 @@ export function PorQuemViveu() {
               fontFamily: 'var(--font-serif)',
               fontSize: 'clamp(32px, 4.5vw, 52px)',
               fontWeight: 400,
+              fontStyle: 'italic',
               lineHeight: 1.1,
               letterSpacing: '-0.02em',
               color: 'var(--color-ink)',

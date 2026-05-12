@@ -38,7 +38,6 @@ export function Conteudo() {
           <h2
             style={{
               fontFamily: 'var(--font-serif)',
-              fontStyle: 'italic',
               fontSize: 'clamp(28px, 3.5vw, 44px)',
               fontWeight: 400,
               lineHeight: 1.15,

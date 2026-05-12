@@ -7,8 +7,8 @@ import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import { NAV_LINKS } from '@/features/landing/data/header'
 
 /* ─── Color tokens (cream on olive pill) ──────────────────────────────── */
-const C   = 'var(--color-cream)' // cream full
-const CM  = 'var(--color-cream-80)' // cream readable muted
+const C = 'var(--color-cream)' // cream full
+const CM = 'var(--color-cream-80)' // cream readable muted
 const PIL = 'var(--color-olive-80)'    // var(--color-olive) @ 80%
 
 export function Header() {
@@ -59,34 +59,25 @@ export function Header() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '0 20px',
+            padding: '0 20px 0 1px',
             maxWidth: 1280,
             margin: '0 auto',
             gap: 20,
           }}
         >
-          {/* Logo: circular icon-only */}
+          {/* Logo: icon-only, no synthetic ring */}
           <a
             href="#hero"
-            style={{ textDecoration: 'none', flexShrink: 0 }}
+            style={{ textDecoration: 'none', flexShrink: 0, lineHeight: 0, marginLeft: -6 }}
           >
-            <div
-              style={{
-                width: 65, height: 65,
-                borderRadius: '50%',
-                border: '1.5px solid var(--color-cream-25)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}
-            >
-              <NextImage
-                src="/brand/logo-white-only-hd-nobg.png"
-                alt="Senda Sênior"
-                width={65}
-                height={65}
-                priority
-                style={{ width: '100%', height: 'auto', transform: 'scale(1.35)' }}
-              />
-            </div>
+            <NextImage
+              src="/brand/logo-white-only-hd-nobg.png"
+              alt="Senda Sênior"
+              width={110}
+              height={110}
+              priority
+              style={{ width: 105, height: 'auto' }}
+            />
           </a>
 
           {/* Desktop nav */}
@@ -95,28 +86,28 @@ export function Header() {
             style={{ display: 'flex', alignItems: 'center', gap: 24, flex: 1, justifyContent: 'center' }}
           >
             {NAV_LINKS.map(({ label, href, chevron }) => (
-            <a
-              key={label}
-              href={href}
-              style={{
-                fontSize: 17.25,
-                fontWeight: 500,
-                color: CM,
-                textDecoration: 'none',
-                letterSpacing: '0.01em',
-                transition: 'color 0.2s',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 3,
-                whiteSpace: 'nowrap',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.color = C }}
-              onMouseLeave={e => { e.currentTarget.style.color = CM }}
-            >
-              {label}
-              {chevron && <ChevronDown size={12} strokeWidth={2} />}
-            </a>
-          ))}
+              <a
+                key={label}
+                href={href}
+                style={{
+                  fontSize: 17.25,
+                  fontWeight: 500,
+                  color: CM,
+                  textDecoration: 'none',
+                  letterSpacing: '0.01em',
+                  transition: 'color 0.2s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 3,
+                  whiteSpace: 'nowrap',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.color = C }}
+                onMouseLeave={e => { e.currentTarget.style.color = CM }}
+              >
+                {label}
+                {chevron && <ChevronDown size={12} strokeWidth={2} />}
+              </a>
+            ))}
           </nav>
 
           {/* Desktop CTA group */}
