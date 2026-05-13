@@ -1,16 +1,10 @@
 'use client'
 
-import { BookOpen, Files, HeartHandshake, Users } from 'lucide-react'
+/* eslint-disable @next/next/no-img-element */
+
 import { Reveal } from '@/design'
 
 import { CARDS } from '@/features/landing/data/fundadoras-strip'
-
-const ICONS = {
-  'book-open': BookOpen,
-  'heart-handshake': HeartHandshake,
-  files: Files,
-  users: Users,
-} as const
 
 export function FundadorasStrip() {
   return (
@@ -131,8 +125,6 @@ export function FundadorasStrip() {
             Nossos produtos:
           </p>
           {CARDS.map((card, i) => {
-            const Icon = ICONS[card.icon]
-
             return (
               <Reveal key={i} delay={0.1 + i * 0.05}>
                 <div
@@ -152,10 +144,20 @@ export function FundadorasStrip() {
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      color: 'var(--color-ink)',
                     }}
                   >
-                    <Icon size={42} strokeWidth={1.3} aria-hidden />
+                    <img
+                      src={card.icon}
+                      alt=""
+                      aria-hidden
+                      width={42}
+                      height={42}
+                      style={{
+                        width: 42,
+                        height: 42,
+                        display: 'block',
+                      }}
+                    />
                   </div>
                   
                   <div>
