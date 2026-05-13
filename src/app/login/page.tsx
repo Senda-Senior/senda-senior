@@ -9,6 +9,7 @@ import {
   useState,
   type ChangeEvent,
   type FormEvent,
+  type ReactNode,
 } from 'react'
 import { LoaderCircle, X } from 'lucide-react'
 import {
@@ -47,7 +48,7 @@ function providerLabel(provider: OAuthProvider): string {
 function getOAuthErrorMessage(provider: OAuthProvider, message: string): string {
   const lower = message.toLowerCase()
   if (lower.includes('provider') && lower.includes('not enabled')) {
-    return `${providerLabel(provider)} indisponivel no momento.`
+    return `${providerLabel(provider)} indisponível no momento.`
   }
   return message
 }
@@ -67,7 +68,7 @@ function AuthTab({
   onClick,
 }: {
   active: boolean
-  children: React.ReactNode
+  children: ReactNode
   onClick: () => void
 }) {
   return (
@@ -249,12 +250,11 @@ export default function Login() {
     const params = new URLSearchParams(window.location.search)
     const errorParam = params.get('error')
     const modeParam = params.get('mode')
-    const nextParam = params.get('next')
 
     if (modeParam === 'register' || modeParam === 'reset') {
       setMode(modeParam)
-    } else if (!nextParam) {
-      setMode('register')
+    } else {
+      setMode('login')
     }
 
     if (errorParam) {
@@ -315,7 +315,7 @@ export default function Login() {
           return
         }
 
-        setSuccess('Enviamos um link de recuperacao para o seu email.')
+        setSuccess('Enviamos um link de recuperação para o seu e-mail.')
         clearModeResetTimeout()
         modeResetTimeoutRef.current = window.setTimeout(() => switchMode('login'), 2600)
         return
@@ -342,11 +342,11 @@ export default function Login() {
         return
       }
 
-      setSuccess('Conta criada. Confirme seu email para concluir o acesso.')
+      setSuccess('Conta criada. Confirme seu e-mail para concluir o acesso.')
       clearModeResetTimeout()
       modeResetTimeoutRef.current = window.setTimeout(() => switchMode('login'), 2800)
     } catch (caughtError) {
-      setError(extractMessage(caughtError, 'Nao foi possivel concluir agora.'))
+      setError(extractMessage(caughtError, 'Não foi possível concluir agora.'))
     } finally {
       setLoading(false)
     }
@@ -368,7 +368,7 @@ export default function Login() {
         setError(getOAuthErrorMessage(provider, oauthError.message))
       }
     } catch (caughtError) {
-      setError(extractMessage(caughtError, 'Falha ao iniciar autenticacao social.'))
+      setError(extractMessage(caughtError, 'Falha ao iniciar autenticação social.'))
     } finally {
       setLoading(false)
     }
@@ -381,7 +381,7 @@ export default function Login() {
     : isReset
       ? 'Enviar link'
       : isRegister
-        ? 'Juntar-se a Senda'
+        ? 'Juntar-se à Senda'
         : 'Entrar na Senda'
 
   return (
@@ -402,7 +402,7 @@ export default function Login() {
 
       <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-8 sm:px-6">
         <div className="relative w-full max-w-[440px]">
-          <div className="relative mx-auto w-full max-w-[440px] rounded-[16px] bg-[#EAE5DB] px-8 py-12 shadow-[0_24px_90px_rgba(0,0,0,0.36)] sm:px-10 sm:py-14 min-h-[600px] flex flex-col justify-center">
+          <div className="relative mx-auto flex min-h-[600px] w-full max-w-[440px] flex-col justify-center rounded-[16px] bg-[#EAE5DB] px-8 py-12 shadow-[0_24px_90px_rgba(0,0,0,0.36)] sm:px-10 sm:py-14">
             <div className="absolute right-5 top-5">
               <Link
                 href="/"
@@ -444,11 +444,11 @@ export default function Login() {
                     label="Senha"
                     type="password"
                     autoComplete={isRegister ? 'new-password' : 'current-password'}
-                    placeholder="Senha (mín 8 caracteres)"
+                    placeholder="Senha (mín. 6 caracteres)"
                     value={password}
                     onChange={handlePasswordChange}
                     error={fieldErrors.password}
-                    minLength={8}
+                    minLength={6}
                   />
                 ) : null}
 
@@ -460,7 +460,7 @@ export default function Login() {
                       onChange={(event) => setMarketingConsent(event.target.checked)}
                       className="h-4 w-4 rounded-[3px] border border-[#b7ab9b] bg-transparent text-ink focus:ring-0"
                     />
-                    <span>Concordo em receber conteúdo lorem ipsum lorem ispum</span>
+                    <span>Concordo em receber conteúdos e novidades da Senda Sênior por e-mail.</span>
                   </label>
                 ) : null}
 
@@ -550,7 +550,20 @@ export default function Login() {
                 Ao prosseguir, você estará concordando com os
                 <br />
                 <span className="font-bold text-[#2a2420]">
-                  Termos de Uso & Política de Privacidade da Senda Sênior.
+                  <Link
+                    href="/termos-de-servico"
+                    className="underline underline-offset-2 transition-colors hover:text-[#a86545]"
+                  >
+                    Termos de Uso
+                  </Link>{' '}
+                  e{' '}
+                  <Link
+                    href="/politica-de-privacidade"
+                    className="underline underline-offset-2 transition-colors hover:text-[#a86545]"
+                  >
+                    Política de Privacidade
+                  </Link>{' '}
+                  da Senda Sênior.
                 </span>
               </p>
             </div>

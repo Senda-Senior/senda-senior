@@ -2,6 +2,8 @@
 
 /* eslint-disable @next/next/no-img-element */
 
+import Link from 'next/link'
+
 import { ARTIGOS } from '@/features/landing/data/conteudo'
 
 /* ─── Component ─────────────────────────────────────────────────────── */
@@ -139,7 +141,8 @@ export function Conteudo() {
 
         {/* ── Bottom Button ── */}
         <div style={{ textAlign: 'center', marginTop: 32 }}>
-          <button
+          <Link
+            href="/em-construcao"
             style={{
               background: 'var(--color-sage-muted)',
               color: 'var(--color-forest-dark)',
@@ -153,10 +156,11 @@ export function Conteudo() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
+              textDecoration: 'none',
             }}
           >
             Ver mais &rarr;
-          </button>
+          </Link>
         </div>
 
       </div>
