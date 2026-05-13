@@ -86,10 +86,10 @@ export function Footer() {
 
       <div className="landing-max flex flex-wrap items-center justify-between gap-2 border-t border-[var(--color-ink-16)] py-[18px] pb-[22px] font-sans text-[13.8px] text-[var(--color-ink-58)]">
         <div className="flex flex-wrap gap-5">
-          <a href="/legal" className={LEGAL_LINK}>
+          <a href="/termos-de-servico" className={LEGAL_LINK}>
             Termos de Serviço
           </a>
-          <a href="/legal" className={LEGAL_LINK}>
+          <a href="/politica-de-privacidade" className={LEGAL_LINK}>
             Política de Privacidade
           </a>
         </div>

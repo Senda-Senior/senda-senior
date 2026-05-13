@@ -3,10 +3,12 @@
  */
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
+import { env } from '@/config/env';
+import { serverEnv } from '@/config/env.server';
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const url = env.NEXT_PUBLIC_SUPABASE_URL;
+const anonKey = env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const serviceKey = serverEnv.SUPABASE_SERVICE_ROLE_KEY;
 
 const hasEnv = Boolean(url && anonKey && serviceKey);
 

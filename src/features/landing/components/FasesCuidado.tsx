@@ -26,7 +26,7 @@ const FASES = [
     checkColor: 'var(--color-green)',
     // Brand icon: shield-check — prevention/protection — white on dark-green bg
     iconSrc: '/icons/brand/shield-check.svg',
-    iconFilter: 'brightness(0) invert(1)',
+    iconFilter: 'none',
     expandedText: [
       'Avaliar autonomia e saúde atual dos pais',
       'Organizar documentos essenciais',
@@ -51,7 +51,7 @@ const FASES = [
     checkColor: 'var(--color-terracotta)',
     // Brand icon: heart — care/compassion — white on terracotta bg
     iconSrc: '/icons/brand/heart.svg',
-    iconFilter: 'brightness(0) invert(1)',
+    iconFilter: 'none',
     expandedText: [
       'Consulta médica ao Geriatra',
       'Adaptar o ambiente doméstico',
@@ -70,7 +70,7 @@ const FASES = [
     desc: 'Idosos que requerem supervisão constante.',
     tagline: 'Na urgência, clareza salva.',
     bg: 'var(--color-terracotta-light)',
-    bgExpanded: 'var(--color-terracotta)',
+    bgExpanded: 'var(--color-terracotta-light)',
     numColor: 'var(--color-cream)',
     titleColor: 'var(--color-cream)',
     accentColor: 'var(--color-cream)',
@@ -121,24 +121,24 @@ function FaseCard({
         {/* Brand icon mark — 32×32 container, 18px icon, filter per accentColor darkness */}
         <div
           style={{
-            width: 32,
-            height: 32,
-            borderRadius: 6,
-            background: fase.accentColor,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
             marginBottom: 28,
             flexShrink: 0,
           }}
         >
           <img
             src={fase.iconSrc}
-            width={18}
-            height={18}
+            width={36}
+            height={36}
             alt=""
             aria-hidden
-            style={{ filter: fase.iconFilter }}
+            style={{
+              width: 36,
+              height: 36,
+              display: 'block',
+              filter: fase.iconFilter,
+            }}
           />
         </div>
 
@@ -505,7 +505,7 @@ export function DesktopFasesCuidado() {
             </p>
 
             <Link
-              href="#contato"
+              href="#manuais"
               className="btn-terracotta-hover"
               style={{
                 display: 'inline-flex',

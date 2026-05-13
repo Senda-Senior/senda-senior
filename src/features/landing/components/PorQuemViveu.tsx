@@ -22,7 +22,7 @@ const stagger = {
 
 /* ─── Founder card ──────────────────────────────────────────────────── */
 
-function FounderCard({ name, role, bio, reverse }: Founder) {
+function FounderCard({ name, role, bio, credentials, reverse }: Founder) {
   const photo = FOUNDER_PHOTOS[name]
   return (
     <motion.div
@@ -91,6 +91,46 @@ function FounderCard({ name, role, bio, reverse }: Founder) {
         >
           {role}
         </p>
+        {credentials?.length ? (
+          <div
+            style={{
+              marginTop: 14,
+              paddingTop: 14,
+              borderTop: '1px solid rgba(42, 37, 32, 0.12)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 8,
+            }}
+          >
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: 11.5,
+                fontWeight: 700,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: 'var(--color-ink-45)',
+                margin: 0,
+              }}
+            >
+              Formação
+            </p>
+            {credentials.map((item) => (
+              <p
+                key={item}
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 13.8,
+                  lineHeight: 1.55,
+                  color: 'var(--color-ink-58)',
+                  margin: 0,
+                }}
+              >
+                {item}
+              </p>
+            ))}
+          </div>
+        ) : null}
       </div>
 
       {reverse && (

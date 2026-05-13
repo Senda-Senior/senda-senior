@@ -155,7 +155,7 @@ export function FundadorasStrip() {
                       color: 'var(--color-ink)',
                     }}
                   >
-                    <Icon size={44} strokeWidth={1.5} aria-hidden />
+                    <Icon size={42} strokeWidth={1.3} aria-hidden />
                   </div>
                   
                   <div>
@@ -173,7 +173,6 @@ export function FundadorasStrip() {
                       {card.title}
                     </h3>
                     <p
-                      className="landing-copy-justify"
                       style={{
                         fontFamily: 'var(--font-sans)',
                         fontSize: 14.95,
