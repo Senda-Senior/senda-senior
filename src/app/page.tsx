@@ -11,7 +11,6 @@ import {
   Conteudo,
   CTAFinal,
   Footer,
-  WhatsAppFloat,
   SplashScreen,
 } from '@/features/landing'
 import { SmoothScroll } from '@/lib/utils/SmoothScroll'
@@ -22,7 +21,6 @@ export default function Home() {
       <SplashScreen />
       <CustomCursor />
       <Header />
-      <WhatsAppFloat />
       <main className="relative bg-[var(--color-cream)]">
         {/* 1. Hero — sticky bottom para deixar rolar um pouco mais e mostrar se for longa */}
         <div id="hero" className="sticky bottom-0 z-0 w-full min-h-screen flex flex-col justify-start">

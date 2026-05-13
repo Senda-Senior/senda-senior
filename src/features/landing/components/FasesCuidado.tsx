@@ -16,7 +16,7 @@ const FASES = [
     fase: 'FASE 1',
     title: 'Prevent Care',
     subtitle: 'Seus pais ainda são autônomos.',
-    desc: 'É hora de planejar — não de esperar.',
+    desc: 'É hora de planejar, não de esperar.',
     tagline: 'Prevenir é o maior cuidado.',
     bg: 'var(--color-sage-pale)',
     bgExpanded: 'var(--color-sage-pale-dark)',
@@ -28,9 +28,11 @@ const FASES = [
     iconSrc: '/icons/brand/shield-check.svg',
     iconFilter: 'brightness(0) invert(1)',
     expandedText: [
-      'Neste momento, o foco é avaliar com calma a autonomia e as condições de saúde dos pais, sem esperar o primeiro susto para agir.',
-      'Também é hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a segurança da casa com um olhar preventivo.',
-      'Quando esse planejamento inclui previsão de gastos e papéis da família, o cuidado começa antes da urgência e com muito mais leveza.',
+      'Avaliar autonomia e saúde atual dos pais',
+      'Organizar documentos essenciais',
+      'Abrir conversas sobre o futuro',
+      'Avaliar a segurança do ambiente',
+      'Prever gastos futuros',
     ],
   },
   {
@@ -39,7 +41,7 @@ const FASES = [
     fase: 'FASE 2',
     title: 'Care',
     subtitle: 'Os primeiros sinais apareceram.',
-    desc: 'É hora de começar a agir — não de improvisar.',
+    desc: 'É hora de começar a agir, não de improvisar.',
     tagline: 'Organizar é forma de amor.',
     bg: 'var(--color-warm-tan)',
     bgExpanded: '#cfc09a',
@@ -51,9 +53,12 @@ const FASES = [
     iconSrc: '/icons/brand/heart.svg',
     iconFilter: 'brightness(0) invert(1)',
     expandedText: [
-      'Neste momento, o foco é avaliar com calma a autonomia e as condições de saúde dos pais, sem esperar o primeiro susto para agir.',
-      'Também é hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a segurança da casa com um olhar preventivo.',
-      'Quando esse planejamento inclui previsão de gastos e papéis da família, o cuidado começa antes da urgência e com muito mais leveza.',
+      'Consulta médica ao Geriatra',
+      'Adaptar o ambiente doméstico',
+      'Organizar rotinas',
+      'Dividir responsabilidades familiares',
+      'O papel do cuidador principal',
+      'Gerir profissionais',
     ],
   },
   {
@@ -74,9 +79,13 @@ const FASES = [
     iconSrc: '/icons/brand/life-ring.svg',
     iconFilter: 'none',
     expandedText: [
-      'Neste momento, o foco é avaliar com calma a autonomia e as condições de saúde dos pais, sem esperar o primeiro susto para agir.',
-      'Também é hora de organizar documentos essenciais, abrir conversas francas sobre o futuro e revisar a segurança da casa com um olhar preventivo.',
-      'Quando esse planejamento inclui previsão de gastos e papéis da família, o cuidado começa antes da urgência e com muito mais leveza.',
+      'Entender e aceitar que o momento é de vigilância 24h',
+      'Organizar rotinas',
+      'Adaptar ambientes',
+      'O papel do cuidador principal e o risco de colapso',
+      'Gestão financeira',
+      'Gestão de equipe',
+      'Decisões difíceis',
     ],
   },
 ]
@@ -201,23 +210,43 @@ function FaseCard({
                   marginBottom: 24,
                 }}
               />
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                {fase.expandedText.map((paragraph, i) => (
-                  <motion.p
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {fase.expandedText.map((item, i) => (
+                  <motion.div
                     key={i}
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 + i * 0.06, duration: 0.3 }}
                     style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: 'clamp(14.95px, 1.265vw, 16.1px)',
-                      color: fase.titleColor,
-                      lineHeight: 1.65,
-                      opacity: 0.9,
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: 10,
                     }}
                   >
-                    {paragraph}
-                  </motion.p>
+                    <span
+                      style={{
+                        color: fase.accentColor,
+                        fontSize: 18,
+                        lineHeight: 1.3,
+                        flexShrink: 0,
+                        opacity: 0.85,
+                      }}
+                    >
+                      •
+                    </span>
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: 'clamp(14.95px, 1.265vw, 16.1px)',
+                        color: fase.titleColor,
+                        lineHeight: 1.55,
+                        opacity: 0.9,
+                        margin: 0,
+                      }}
+                    >
+                      {item}
+                    </p>
+                  </motion.div>
                 ))}
               </div>
 

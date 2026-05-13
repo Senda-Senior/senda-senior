@@ -72,7 +72,7 @@ export function Manifesto() {
                 lineHeight: 1.1,
                 letterSpacing: '-0.02em',
                 color: 'var(--color-cream)',
-                marginBottom: 32,
+                marginBottom: 40,
               }}
             >
               Ninguém nos<br />
@@ -86,11 +86,11 @@ export function Manifesto() {
             <p
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: 'clamp(15px, 1.3vw, 16px)',
-                lineHeight: 1.6,
-                color: 'var(--color-cream-85)', // Creme com leve transparência
-                maxWidth: 440,
-                marginBottom: 48,
+                fontSize: 'clamp(15.5px, 1.35vw, 17px)',
+                lineHeight: 1.75,
+                color: 'var(--color-cream-85)',
+                maxWidth: 460,
+                marginBottom: 52,
               }}
             >
               A maioria das famílias só procura ajuda depois da primeira crise: uma queda, uma internação, um diagnóstico inesperado.<br /><br />

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Fraunces, DM_Sans } from 'next/font/google'
+import { WhatsAppFloat } from '@/features/landing'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         antes do React hidratar. Esse warning não reflete bug nosso.
       */}
       <body suppressHydrationWarning>
+        <WhatsAppFloat />
         {children}
       </body>
     </html>

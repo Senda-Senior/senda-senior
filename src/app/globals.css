@@ -16,7 +16,7 @@
   --color-green: #4a5e4a;
   --color-green-08: rgba(74, 94, 74, 0.08);
   --color-green-40: rgba(74, 94, 74, 0.40);
-  --color-green-dark: #2d3d2d;
+  --color-green-dark: #3f422c;
 
   /* Sage (verde acinzentado — usado em Conteudo, FasesCuidado) */
   --color-sage-pale: #e8ede4;
@@ -36,18 +36,18 @@
   --color-olive-80: rgba(89, 95, 67, 0.80);
 
   /* Cremes (Background) */
-  --color-cream: #f5f0e8;
-  --color-cream-mid: #eae3d4;
-  --color-cream-dark: #ddd6c5;
-  --color-cream-25: rgba(245, 240, 232, 0.25);
-  --color-cream-60: rgba(245, 240, 232, 0.60);
-  --color-cream-80: rgba(245, 240, 232, 0.80);
-  --color-cream-85: rgba(245, 240, 232, 0.85);
-  --color-cream-88: rgba(245, 240, 232, 0.88);
-  --color-cream-55: rgba(245, 240, 232, 0.55);
-  --color-cream-68: rgba(245, 240, 232, 0.68);
-  --color-cream-70: rgba(245, 240, 232, 0.70);
-  --color-cream-75: rgba(245, 240, 232, 0.75);
+  --color-cream: #e9e2d2;
+  --color-cream-mid: #ddd4c2;
+  --color-cream-dark: #cfc3ad;
+  --color-cream-25: rgba(233, 226, 210, 0.25);
+  --color-cream-60: rgba(233, 226, 210, 0.60);
+  --color-cream-80: rgba(233, 226, 210, 0.80);
+  --color-cream-85: rgba(233, 226, 210, 0.85);
+  --color-cream-88: rgba(233, 226, 210, 0.88);
+  --color-cream-55: rgba(233, 226, 210, 0.55);
+  --color-cream-68: rgba(233, 226, 210, 0.68);
+  --color-cream-70: rgba(233, 226, 210, 0.70);
+  --color-cream-75: rgba(233, 226, 210, 0.75);
 
   /* Bege (warm tones — usado em Conteudo + Consultoria bg) */
   --color-warm-beige: #d3c0a2;
@@ -56,18 +56,20 @@
 
   /* Terracotas (Accent / CTA) */
   --color-terracotta-pale: #f0e0d0;
-  --color-terracotta-light: #c98a65;
+  --color-terracotta-light: #c48d54;
   --color-terracotta: #b5724a;
   --color-terracotta-04: rgba(181, 114, 74, 0.04);
-  --color-terracotta-dark: #915a3a;
+  --color-terracotta-dark: #8a4e2e;
+  --color-cta-primary: #a6613a;
+  --color-cta-brown: #8a4e2e;
 
   /* Dourado (paleta de estrelas do design + gold-beige usado em Footer) */
-  --color-gold: #c9a86c;
-  --color-gold-light: #dbc49a;
-  --color-gold-beige: #edce90;
-  --color-golden-beige: #ebd197;
-  --color-gold-warm: #d4aa6a;
-  --color-gold-warm-14: rgba(212, 170, 106, 0.14);
+  --color-gold: #d7b77d;
+  --color-gold-light: #e5cfa1;
+  --color-gold-beige: #e5cfa1;
+  --color-golden-beige: #ead7b0;
+  --color-gold-warm: #c48d54;
+  --color-gold-warm-14: rgba(197, 141, 84, 0.14);
 
   /* Brown rich (Conteudo card accent) */
   --color-brown-rich: #6b3a18;
@@ -91,6 +93,7 @@
   --color-ink-14: rgba(42, 37, 32, 0.14);
   --color-ink-16: rgba(42, 37, 32, 0.16);
   --color-ink-35: rgba(42, 37, 32, 0.35);
+  --color-ink-38: rgba(42, 37, 32, 0.38);
   --color-ink-30: rgba(42, 37, 32, 0.30);
   --color-ink-50: rgba(42, 37, 32, 0.50);
   --color-danger: #b91c1c;
@@ -135,7 +138,7 @@
 
   /* Shadows */
   --shadow-card-sm: 0 4px 16px rgba(0, 0, 0, 0.04);
-  --shadow-terracotta-button: 0 4px 20px rgba(181, 114, 74, 0.25);
+  --shadow-terracotta-button: 0 10px 30px rgba(138, 78, 46, 0.24);
   --shadow-inset-separator: inset 28px 0 48px -12px rgba(0, 0, 0, 0.14);
 }
 
@@ -157,8 +160,8 @@ html {
 
 
   /* Header / footer: verdes com leve mistura ao creme — menos massa “tinta única” */
-  --header-surface: color-mix(in srgb, var(--color-green-dark) 88%, var(--color-cream) 12%);
-  --footer-surface: color-mix(in srgb, var(--color-green-dark) 90%, var(--color-cream) 10%);
+  --header-surface: rgba(89, 95, 67, 0.70);
+  --footer-surface: color-mix(in srgb, var(--color-green-dark) 86%, var(--color-cream) 14%);
 
   --green-ghost: var(--color-green-ghost);
   --green-muted: var(--color-green-muted);
@@ -321,7 +324,7 @@ body.reader-locked {
   }
 
   .footer-link-hover:hover {
-    color: white !important;
+    color: var(--color-cta-brown) !important;
   }
 }
 
@@ -413,9 +416,30 @@ body.reader-locked {
 
 /* Largura útil da landing — menos “ilha” no meio da tela */
 .landing-max {
-  width: min(1320px, 92vw);
+  width: min(1360px, calc(100vw - clamp(32px, 6vw, 104px)));
   margin-left: auto;
   margin-right: auto;
+}
+
+.landing-copy-justify {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: manual !important;
+  -webkit-hyphens: manual !important;
+  -ms-hyphens: manual !important;
+  hyphenate-character: '';
+  word-break: normal;
+  overflow-wrap: normal;
+  white-space: normal;
+  text-wrap: pretty;
+}
+
+/* Disable justification on narrow viewports — avoids white-space rivers */
+@media (max-width: 640px) {
+  .landing-copy-justify {
+    text-align: left;
+    hyphens: none;
+  }
 }
 
 /* Dashboard: foto de marca com proporção estável */
@@ -478,8 +502,17 @@ body.reader-locked {
   border-top: none;
 }
 
+/* Full 5-col footer above 1280px */
 #footer-grid {
-  grid-template-columns: 1fr repeat(3, auto) 1.2fr;
+  grid-template-columns: minmax(200px, 1.1fr) repeat(3, minmax(110px, auto)) minmax(260px, 1fr);
+}
+
+/* Notebook 1081-1280px: tighten columns before they break */
+@media (max-width: 1280px) and (min-width: 1081px) {
+  #footer-grid {
+    grid-template-columns: minmax(180px, 1fr) repeat(3, minmax(100px, auto)) minmax(220px, 1fr);
+    gap: clamp(20px, 2.5vw, 40px) !important;
+  }
 }
 
 /* ── SEAL / MARK STAMP ───────────────────────────────────────────── */
@@ -513,6 +546,28 @@ body.reader-locked {
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  align-items: stretch;
+}
+
+@media (max-width: 1080px) and (min-width: 769px) {
+  #footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(20px, 3vw, 36px) !important;
+  }
+}
+
+.whatsapp-float {
+  position: fixed !important;
+  right: max(20px, env(safe-area-inset-right, 20px));
+  bottom: max(20px, env(safe-area-inset-bottom, 20px));
+  z-index: 160 !important;
+  /* Force own compositing layer — prevents parent CSS transforms (e.g. Lenis)
+     from degrading fixed positioning to sticky-like behaviour */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
+  isolation: isolate;
 }
 
 @media (max-width: 768px) {
@@ -606,6 +661,10 @@ body.reader-locked {
     gap: 24px !important;
   }
 
+  .landing-max {
+    width: min(100%, calc(100vw - 32px));
+  }
+
   .fundadora-card {
     align-items: center !important;
     text-align: center !important;
@@ -682,7 +741,7 @@ body.reader-locked {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(245, 239, 230, 0.98);
+    background: rgba(233, 226, 210, 0.98);
     backdrop-filter: blur(20px);
     z-index: 200;
     flex-direction: column;
@@ -886,5 +945,88 @@ body.reader-locked {
   #footer-grid {
     grid-template-columns: 1fr 1fr;
     gap: 32px !important;
+  }
+}
+
+/* ── NOTEBOOK INTERMEDIATE BREAKPOINTS (769-900px) ──────────────────── */
+
+/* Nav: switch to hamburger at 900px to prevent pill cramping.
+   At 900px there are 6 links + login + CTA button; below this width
+   the pill compresses visibly. Mobile overlay styles are duplicated
+   here so the full-screen menu renders correctly above 768px. */
+@media (max-width: 900px) {
+  .nav-desktop {
+    display: none !important;
+  }
+
+  .show-mobile {
+    display: flex !important;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(233, 226, 210, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 200;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+  }
+
+  .mobile-menu a {
+    font-size: 23px !important;
+    font-weight: 600;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  /* Hero grid: stack text columns at narrow notebook / large tablet */
+  #hero .grid-pillar {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+
+  /* FundadorasStrip: product cards stay readable as single column */
+  .cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── NOTEBOOK CARDS (769-960px): stack 2x2 → 1 col for breathing room ── */
+@media (max-width: 960px) and (min-width: 769px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── MANIFESTO: stack at tablet landscape for readable text width ── */
+/* Mirrors hero collapse at 900px; avoids 368px cramped left column */
+@media (max-width: 900px) and (min-width: 769px) {
+  #manifesto-verde {
+    grid-template-columns: 1fr !important;
+    min-height: auto !important;
+  }
+
+  #manifesto-verde > div:last-child {
+    height: 56vw !important;
+    min-height: 240px !important;
+    max-height: 380px !important;
+  }
+
+  #manifesto-verde > div:last-child img {
+    object-position: top center !important;
+  }
+}
+
+/* ── HERO brand block: breathing room on narrow mobile ── */
+@media (max-width: 480px) {
+  #hero .hero-brand-block {
+    margin-bottom: 20px !important;
   }
 }
