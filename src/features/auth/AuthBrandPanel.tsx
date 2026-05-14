@@ -3,8 +3,6 @@
 import type { ReactNode } from 'react'
 import NextImage from 'next/image'
 
-const GRAIN_DATA_URL = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
-
 type AuthBrandPanelProps = {
   children: ReactNode
   /** Fotografia editorial — ex.: prancheta-7 ou card-elder-window */
@@ -13,10 +11,7 @@ type AuthBrandPanelProps = {
   objectPosition?: string
 }
 
-/**
- * Painel esquerdo das páginas de auth: foto de marca, overlay verde abstrato,
- * padrão caminho, estrelas, selo CARD — alinhado a `public/brand/`.
- */
+/** Painel esquerdo das páginas de auth: foto de marca, gradiente de leitura e selos — `public/brand/`. */
 export function AuthBrandPanel({ children, photoSrc, objectPosition = '22% 45%' }: AuthBrandPanelProps) {
   return (
     <div
@@ -58,59 +53,11 @@ export function AuthBrandPanel({ children, photoSrc, objectPosition = '22% 45%' 
       />
 
       <div
+        aria-hidden
         style={{
           position: 'absolute',
           inset: 0,
           zIndex: 2,
-          pointerEvents: 'none',
-        }}
-      >
-        <NextImage
-          src="/brand/green-abstract-overlay.jpg"
-          alt=""
-          aria-hidden
-          fill
-          sizes="45vw"
-          style={{
-            objectFit: 'cover',
-            opacity: 0.44,
-            mixBlendMode: 'soft-light',
-          }}
-        />
-      </div>
-
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 3,
-          opacity: 0.1,
-          backgroundImage: "url('/brand/pattern-caminho-greenmono-claro.png')",
-          backgroundSize: '520px auto',
-          backgroundRepeat: 'repeat',
-          pointerEvents: 'none',
-        }}
-      />
-
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 4,
-          opacity: 0.05,
-          backgroundImage: GRAIN_DATA_URL,
-          pointerEvents: 'none',
-        }}
-      />
-
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 5,
           background: 'linear-gradient(160deg, transparent 22%, rgba(0,0,0,0.3) 100%)',
           pointerEvents: 'none',
         }}

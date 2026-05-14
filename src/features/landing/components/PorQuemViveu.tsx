@@ -196,6 +196,7 @@ export function PorQuemViveu() {
               fontFamily: 'var(--font-serif)',
               fontSize: 'clamp(32px, 4.5vw, 52px)',
               fontWeight: 400,
+              fontStyle: 'italic',
               lineHeight: 1.1,
               letterSpacing: '-0.02em',
               color: 'var(--color-ink)',
@@ -215,10 +216,11 @@ export function PorQuemViveu() {
               maxWidth: 480,
             }}
           >
-            A Senda Sênior nasceu da vivência real de mulheres que acompanharam de
-            perto o envelhecimento de suas mães. Essa experiência se
-            transformou em método, manuais e consultoria para famílias que
-            querem se preparar, não improvisar.
+            A Senda Sênior é uma empresa de planejamento e assessoria para o
+            envelhecimento familiar. Fundada por Luciana e Julianne, duas
+            mulheres que viveram pessoalmente os desafios de cuidar de mães
+            idosas, oferecemos orientação estruturada para famílias em qualquer
+            fase do cuidado.
           </motion.p>
         </motion.div>
 

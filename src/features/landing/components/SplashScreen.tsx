@@ -48,15 +48,13 @@ export function SplashScreen() {
               priority
               style={{ width: 'auto', height: 'auto', objectFit: 'contain' }}
             />
-            {/* Texto Senda Sênior e subtítulo */}
             <NextImage
-              src="/senda-logo-text-w.png"
-              alt="Senda Sênior Planejamento & Assessoria"
-              width={182}
-              height={56}
+              src="/senda-logo-corrido-w.webp"
+              alt="Senda Sênior"
+              width={340}
+              height={88}
               priority
-              className="-mt-3"
-              style={{ width: 'auto', height: 'auto', objectFit: 'contain' }}
+              className="-mt-2 h-auto w-[clamp(148px,52vw,260px)]"
             />
           </motion.div>
         </motion.div>
