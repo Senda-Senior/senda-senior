@@ -426,22 +426,6 @@ export function DesktopFasesCuidado() {
           alignItems: 'stretch',
         }}
       >
-        {/* Subtle pattern overlay */}
-        <div
-          aria-hidden
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 0,
-            opacity: 0.08,
-            backgroundImage: "url('/brand/pattern-estrela-greenmono-dark.png')",
-            backgroundSize: '600px auto',
-            backgroundRepeat: 'repeat',
-            mixBlendMode: 'soft-light',
-            pointerEvents: 'none',
-          }}
-        />
-
         {/* ── Inner grid ── */}
         <div
           style={{

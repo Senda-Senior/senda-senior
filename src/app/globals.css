@@ -339,64 +339,6 @@ body.reader-locked {
   border: 0;
 }
 
-/* ── BRAND BEAT SECTIONS ──────────────────────────────────────────── */
-
-/* Full-bleed pattern section (Prancheta 6 / 9 / 11 energy) */
-.brand-beat {
-  position: relative;
-  overflow: hidden;
-}
-
-/* Pattern overlays for brand beats — used at high opacity */
-.beat-pattern-star {
-  position: absolute;
-  inset: 0;
-  background-image: url('/brand/pattern-estrela-vt-escuro.png');
-  background-size: 420px auto;
-  background-repeat: repeat;
-  pointer-events: none;
-}
-
-.beat-pattern-path {
-  position: absolute;
-  inset: 0;
-  background-image: url('/brand/pattern-caminho-vt-escuro.png');
-  background-size: 480px auto;
-  background-repeat: repeat;
-  pointer-events: none;
-}
-
-.beat-pattern-abstract {
-  position: absolute;
-  inset: 0;
-  background-image: url('/brand/pattern-abstrato-vt-escuro.png');
-  background-size: 480px auto;
-  background-repeat: repeat;
-  pointer-events: none;
-}
-
-/* Subtle section-level patterns (20–30% opacity) */
-.section-pattern-star {
-  position: absolute;
-  inset: 0;
-  background-image: url('/brand/pattern-estrela-greenmono-claro.png');
-  background-size: 800px auto;
-  background-repeat: repeat;
-  opacity: 0.22;
-  pointer-events: none;
-}
-
-.section-pattern-path {
-  position: absolute;
-  inset: 0;
-  background-image: url('/brand/pattern-caminho-greenmono-dark.png');
-  background-size: 960px auto;
-  background-repeat: repeat;
-  opacity: 0.22;
-  mix-blend-mode: overlay;
-  pointer-events: none;
-}
-
 /* ── MANIFESTO TYPOGRAPHY (Prancheta 8 scale) ────────────────────── */
 .manifesto-headline {
   font-family: var(--font-serif);

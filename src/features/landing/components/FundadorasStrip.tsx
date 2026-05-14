@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { BookOpen, Files, HeartHandshake, Users } from 'lucide-react'
 import { Reveal } from '@/design'
 
@@ -134,17 +135,12 @@ export function FundadorasStrip() {
             const Icon = ICONS[card.icon]
 
             return (
-              <Reveal key={i} delay={0.1 + i * 0.05}>
-                <div
+              <Reveal key={i} delay={0.1 + i * 0.05} className="h-full min-h-0">
+                <Link
+                  href="/em-construcao"
+                  className="flex h-full min-h-[214px] flex-col gap-[18px] overflow-hidden rounded-[18px] py-[30px] pl-[clamp(22px,2vw,28px)] pr-[clamp(22px,2vw,28px)] text-inherit no-underline outline-none transition-transform duration-[200ms] ease-[ease] hover:z-10 hover:scale-[1.015] focus-visible:ring-2 focus-visible:ring-[var(--color-terracotta)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-cream)]"
                   style={{
                     background: card.bg,
-                    borderRadius: 18,
-                    padding: '30px clamp(22px, 2vw, 28px)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 18,
-                    height: '100%',
-                    minHeight: 214,
                     boxShadow: '0 18px 42px rgba(42, 37, 32, 0.08)',
                   }}
                 >
@@ -157,7 +153,7 @@ export function FundadorasStrip() {
                   >
                     <Icon size={42} strokeWidth={1.3} aria-hidden />
                   </div>
-                  
+
                   <div>
                     <h3
                       style={{
@@ -184,7 +180,7 @@ export function FundadorasStrip() {
                       {card.desc}
                     </p>
                   </div>
-                </div>
+                </Link>
               </Reveal>
             )
           })}

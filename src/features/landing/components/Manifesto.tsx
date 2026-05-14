@@ -26,26 +26,8 @@ export function Manifesto() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          background:
-            'radial-gradient(ellipse 70% 55% at 12% 92%, var(--color-black-16) 0%, transparent 55%)',
         }}
       >
-        {/* Decorative Watermark */}
-        <div
-          aria-hidden
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 0,
-            opacity: 0.15,
-            backgroundImage: "url('/brand/pattern-estrela-greenmono-dark.png')",
-            backgroundSize: '720px auto',
-            backgroundRepeat: 'repeat',
-            mixBlendMode: 'soft-light',
-            pointerEvents: 'none',
-          }}
-        />
-
         <div style={{ position: 'relative', zIndex: 2, maxWidth: 580, marginLeft: 'auto', marginRight: 'auto', width: '100%' }}>
           <Reveal>
             <p
