@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { requireUser } from '@/lib/server'
 import {
   getCategories,
@@ -5,6 +6,7 @@ import {
   listFiles,
   VaultView,
 } from '@/features/vault'
+import VaultLoading from './loading'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,12 +21,14 @@ export default async function VaultPage() {
   ])
 
   return (
-    <VaultView
-      quota={quota}
-      categories={categories}
-      files={activeList.items}
-      trashedFiles={trashedList.items}
-      userEmail={user.email ?? ''}
-    />
+    <Suspense fallback={<VaultLoading />}>
+      <VaultView
+        quota={quota}
+        categories={categories}
+        files={activeList.items}
+        trashedFiles={trashedList.items}
+        userEmail={user.email ?? ''}
+      />
+    </Suspense>
   )
 }
