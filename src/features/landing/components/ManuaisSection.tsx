@@ -198,6 +198,9 @@ export function ManuaisSection() {
               isCompact
                 ? {
                     position: 'relative',
+                    width: '100%',
+                    minWidth: 0,
+                    boxSizing: 'border-box',
                     height: 'clamp(220px, 48vw, 320px)',
                     borderRadius: 24,
                     overflow: 'hidden',
@@ -244,16 +247,18 @@ export function ManuaisSection() {
               top: isCompact ? 'auto' : 28,
               left: isCompact ? 'auto' : 28,
               bottom: isCompact ? 'auto' : 28,
-              width: isCompact ? 'calc(100% - 8px)' : 'clamp(240px, 34%, 360px)',
+              width: isCompact ? '100%' : 'clamp(240px, 34%, 360px)',
+              maxWidth: isCompact ? '100%' : undefined,
+              boxSizing: 'border-box',
               background: manual.cardBg,
-              borderRadius: 24,
+              borderRadius: isCompact ? '0 0 24px 24px' : 24,
               padding: isCompact ? '28px 24px 24px' : 'clamp(24px, 4vh, 48px)',
               display: 'grid',
               gridTemplateRows: '1fr auto',
               rowGap: isCompact ? 20 : 'clamp(14px, 2.4vh, 24px)',
               backdropFilter: 'blur(10px)',
               WebkitBackdropFilter: 'blur(10px)',
-              margin: isCompact ? '-36px auto 0' : 0,
+              margin: isCompact ? '-36px 0 0' : 0,
               boxShadow: isCompact ? '0 22px 50px rgba(42, 37, 32, 0.14)' : 'none',
             }}
           >
