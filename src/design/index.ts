@@ -37,3 +37,9 @@ export type { SectionProps } from './Section'
 
 export { ConfirmDialog } from './ConfirmDialog'
 export type { ConfirmDialogProps } from './ConfirmDialog'
+
+export { Skeleton } from './Skeleton'
+export type { SkeletonProps } from './Skeleton'
+
+export { ErrorBoundary } from './ErrorBoundary'
+export type { ErrorBoundaryProps } from './ErrorBoundary'

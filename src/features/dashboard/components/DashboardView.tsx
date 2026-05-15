@@ -13,6 +13,7 @@ import {
   Lock,
   Shield,
 } from 'lucide-react'
+import { ErrorBoundary } from '@/design'
 import { Checklist } from './Checklist'
 import { LogoutButton } from './LogoutButton'
 import type { ChecklistItem } from '@/features/dashboard/types'
@@ -170,23 +171,24 @@ export function DashboardView({ userEmail, firstName, initialChecklist }: Dashbo
           padding: 'clamp(32px, 5vw, 64px) clamp(20px, 4vw, 48px)',
         }}
       >
-        <section
-          className="dashboard-hero"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(0, 1.05fr) minmax(0, 0.95fr)',
-            gap: 'clamp(24px, 4vw, 40px)',
-            alignItems: 'center',
-            marginBottom: 48,
-            padding: 'clamp(24px, 3.5vw, 40px)',
-            borderRadius: 20,
-            position: 'relative',
-            overflow: 'hidden',
-            background: 'linear-gradient(145deg, rgba(255,255,255,0.88) 0%, var(--color-cream) 100%)',
-            border: '1px solid rgba(45, 61, 45, 0.1)',
-            boxShadow: '0 24px 64px rgba(42, 37, 32, 0.08), 0 0 0 1px rgba(255,255,255,0.5) inset',
-          }}
-        >
+        <ErrorBoundary>
+          <section
+            className="dashboard-hero"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'minmax(0, 1.05fr) minmax(0, 0.95fr)',
+              gap: 'clamp(24px, 4vw, 40px)',
+              alignItems: 'center',
+              marginBottom: 48,
+              padding: 'clamp(24px, 3.5vw, 40px)',
+              borderRadius: 20,
+              position: 'relative',
+              overflow: 'hidden',
+              background: 'linear-gradient(145deg, rgba(255,255,255,0.88) 0%, var(--color-cream) 100%)',
+              border: '1px solid rgba(45, 61, 45, 0.1)',
+              boxShadow: '0 24px 64px rgba(42, 37, 32, 0.08), 0 0 0 1px rgba(255,255,255,0.5) inset',
+            }}
+          >
           <div
             aria-hidden
             style={{
@@ -589,8 +591,9 @@ export function DashboardView({ userEmail, firstName, initialChecklist }: Dashbo
             </div>
           </div>
 
-          <Checklist initialItems={initialChecklist} />
-        </div>
+            <Checklist initialItems={initialChecklist} />
+          </div>
+        </ErrorBoundary>
       </main>
 
       <footer
