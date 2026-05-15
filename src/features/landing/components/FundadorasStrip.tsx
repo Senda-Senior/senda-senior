@@ -113,78 +113,83 @@ export function FundadorasStrip() {
         </div>
 
         {/* Lado Direito: Grid de Cards 2x2 */}
-        <div
-          className="cards-grid"
-          style={{ gap: 18 }}
+        <nav
+          aria-label="Produtos"
+          style={{}}
         >
-          <p
-            style={{
-              gridColumn: '1 / -1',
-              fontFamily: 'var(--font-sans)',
-              fontSize: 12,
-              fontWeight: 700,
-              letterSpacing: '0.14em',
-              textTransform: 'uppercase',
-              color: 'var(--color-ink-sub)',
-              marginBottom: 4,
-            }}
+          <div
+            className="cards-grid"
+            style={{ gap: 18 }}
           >
-            Nossos produtos:
-          </p>
-          {CARDS.map((card, i) => {
-            const Icon = ICONS[card.icon]
+            <p
+              style={{
+                gridColumn: '1 / -1',
+                fontFamily: 'var(--font-sans)',
+                fontSize: 12,
+                fontWeight: 700,
+                letterSpacing: '0.14em',
+                textTransform: 'uppercase',
+                color: 'var(--color-ink-sub)',
+                marginBottom: 4,
+              }}
+            >
+              Nossos produtos:
+            </p>
+            {CARDS.map((card, i) => {
+              const Icon = ICONS[card.icon]
 
-            return (
-              <Reveal key={i} delay={0.1 + i * 0.05} className="h-full min-h-0">
-                <Link
-                  href="/em-construcao"
-                  className="flex h-full min-h-[214px] flex-col gap-[18px] overflow-hidden rounded-[18px] py-[30px] pl-[clamp(22px,2vw,28px)] pr-[clamp(22px,2vw,28px)] text-inherit no-underline outline-none transition-transform duration-[200ms] ease-[ease] hover:z-10 hover:scale-[1.015] focus-visible:ring-2 focus-visible:ring-[var(--color-terracotta)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-cream)]"
-                  style={{
-                    background: card.bg,
-                    boxShadow: '0 18px 42px rgba(42, 37, 32, 0.08)',
-                  }}
-                >
-                  <div
+              return (
+                <Reveal key={i} delay={0.1 + i * 0.05} className="h-full min-h-0">
+                  <Link
+                    href="/em-construcao"
+                    className="flex h-full min-h-[214px] flex-col gap-[18px] overflow-hidden rounded-[18px] py-[30px] pl-[clamp(22px,2vw,28px)] pr-[clamp(22px,2vw,28px)] text-inherit no-underline outline-none transition-transform duration-[200ms] ease-[ease] hover:z-10 hover:scale-[1.015] focus-visible:ring-2 focus-visible:ring-[var(--color-terracotta)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-cream)]"
                     style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      color: 'var(--color-ink)',
+                      background: card.bg,
+                      boxShadow: '0 18px 42px rgba(42, 37, 32, 0.08)',
                     }}
                   >
-                    <Icon size={42} strokeWidth={1.3} aria-hidden />
-                  </div>
-
-                  <div>
-                    <h3
+                    <div
                       style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: 18,
-                        fontWeight: 600,
+                        display: 'flex',
+                        alignItems: 'center',
                         color: 'var(--color-ink)',
-                        lineHeight: 1.25,
-                        letterSpacing: '-0.01em',
-                        marginBottom: 10,
                       }}
                     >
-                      {card.title}
-                    </h3>
-                    <p
-                      style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: 14.95,
-                        lineHeight: 1.5,
-                        color: 'var(--color-ink-sub)',
-                        opacity: 0.9,
-                      }}
-                    >
-                      {card.desc}
-                    </p>
-                  </div>
-                </Link>
-              </Reveal>
-            )
-          })}
-        </div>
+                      <Icon size={42} strokeWidth={1.3} aria-hidden="true" />
+                    </div>
+
+                    <div>
+                      <h3
+                        style={{
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: 18,
+                          fontWeight: 600,
+                          color: 'var(--color-ink)',
+                          lineHeight: 1.25,
+                          letterSpacing: '-0.01em',
+                          marginBottom: 10,
+                        }}
+                      >
+                        {card.title}
+                      </h3>
+                      <p
+                        style={{
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: 14.95,
+                          lineHeight: 1.5,
+                          color: 'var(--color-ink-sub)',
+                          opacity: 0.9,
+                        }}
+                      >
+                        {card.desc}
+                      </p>
+                    </div>
+                  </Link>
+                </Reveal>
+              )
+            })}
+          </div>
+        </nav>
       </div>
     </section>
   )

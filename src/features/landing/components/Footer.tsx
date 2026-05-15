@@ -48,17 +48,17 @@ export function Footer() {
         ))}
 
         <div>
-          <p className="mb-[16px] font-sans text-[16.1px] font-semibold text-[var(--color-ink)]">
+          <label htmlFor="newsletter-email" className="mb-[16px] block font-sans text-[16.1px] font-semibold text-[var(--color-ink)]">
             Inscreva-se no nosso Newsletter
-          </p>
+          </label>
 
-          <div className="mb-5 flex h-9 w-[min(100%,366px)] items-center overflow-hidden rounded-full border border-[rgba(42,37,32,0.14)] bg-[rgba(255,255,255,0.42)] shadow-[inset_0_1px_0_var(--color-white-35)]">
+          <form className="mb-5 flex h-9 w-[min(100%,366px)] items-center overflow-hidden rounded-full border border-[rgba(42,37,32,0.14)] bg-[rgba(255,255,255,0.42)] shadow-[inset_0_1px_0_var(--color-white-35)]">
             <input
               type="email"
               id="newsletter-email"
               name="email"
               placeholder="Seu e-mail"
-              aria-label="Email para newsletter"
+              required
               className="h-full min-w-0 flex-1 border-none bg-transparent px-[14px] font-sans text-[14px] leading-none text-[var(--color-ink)] outline-none"
             />
             <button
@@ -67,7 +67,7 @@ export function Footer() {
             >
               Enviar →
             </button>
-          </div>
+          </form>
 
           <div className="flex gap-2">
             {SOCIALS.map(({ Icon, href, label }) => (
