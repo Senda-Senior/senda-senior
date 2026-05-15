@@ -113,10 +113,7 @@ export function FundadorasStrip() {
         </div>
 
         {/* Lado Direito: Grid de Cards 2x2 */}
-        <nav
-          aria-label="Produtos"
-          style={{}}
-        >
+        <div>
           <div
             className="cards-grid"
             style={{ gap: 18 }}
@@ -189,7 +186,7 @@ export function FundadorasStrip() {
               )
             })}
           </div>
-        </nav>
+        </div>
       </div>
     </section>
   )

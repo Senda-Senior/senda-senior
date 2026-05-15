@@ -52,7 +52,11 @@ export function Footer() {
             Inscreva-se no nosso Newsletter
           </label>
 
-          <form className="mb-5 flex h-9 w-[min(100%,366px)] items-center overflow-hidden rounded-full border border-[rgba(42,37,32,0.14)] bg-[rgba(255,255,255,0.42)] shadow-[inset_0_1px_0_var(--color-white-35)]">
+          <form
+            action="javascript:void(0)"
+            onSubmit={(e) => { e.preventDefault(); alert('Newsletter em desenvolvimento'); }}
+            className="mb-5 flex h-9 w-[min(100%,366px)] items-center overflow-hidden rounded-full border border-[rgba(42,37,32,0.14)] bg-[rgba(255,255,255,0.42)] shadow-[inset_0_1px_0_var(--color-white-35)]"
+          >
             <input
               type="email"
               id="newsletter-email"
