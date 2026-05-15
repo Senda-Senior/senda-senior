@@ -11,7 +11,7 @@ test.describe('Authentication Flow', () => {
     // do consentimento contém "e-mail" e o Playwright associa o checkbox ao mesmo token.
     const emailInput = page.locator('#auth-email');
     const passwordInput = page.locator('#auth-password');
-    const submitButton = page.getByRole('button', { name: /juntar-se a senda/i });
+    const submitButton = page.getByRole('button', { name: /juntar-se à senda/i });
 
     // Verify form elements are present
     await expect(emailInput).toBeVisible();
@@ -21,6 +21,7 @@ test.describe('Authentication Flow', () => {
 
   test('should handle login with valid credentials (mock)', async ({ page }) => {
     await page.goto('/login?next=/dashboard');
+    await expect(page.locator('#auth-email')).toBeVisible({ timeout: 20_000 });
 
     // Fill login form
     await page.locator('#auth-email').fill('test@example.com');
@@ -40,6 +41,7 @@ test.describe('Authentication Flow', () => {
 
   test('should show validation errors for invalid email', async ({ page }) => {
     await page.goto('/login?next=/dashboard');
+    await expect(page.locator('#auth-email')).toBeVisible({ timeout: 20_000 });
 
     // Fill with invalid credentials
     await page.locator('#auth-email').fill('invalid-email');
