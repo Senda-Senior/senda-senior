@@ -8,10 +8,10 @@ import type { NavLink } from './types'
 export type HeaderNavLink = NavLink & { chevron?: true }
 
 export const NAV_LINKS: HeaderNavLink[] = [
-  { label: 'Início',    href: '/' },
+  { label: 'Início',    href: '#hero' },
   { label: 'Sobre',     href: '#sobre' },
   { label: 'Manuais',   href: '#manual' },
-  { label: 'Serviços',  href: '#servicos', chevron: true },
+  { label: 'Serviços',  href: '#sobre' },
   { label: 'Conteúdos', href: '#conteudo' },
   { label: 'Contato',   href: '#contato' },
 ]

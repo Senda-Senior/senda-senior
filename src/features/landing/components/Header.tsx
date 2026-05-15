@@ -6,10 +6,23 @@ import { Menu, X, ArrowRight, ChevronDown, User } from 'lucide-react'
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import { NAV_LINKS } from '@/features/landing/data/header'
 
-/* ─── Color tokens (cream on olive pill) ──────────────────────────────── */
-const C   = 'var(--color-cream)' // cream full
-const CM  = 'var(--color-cream-80)' // cream readable muted
-const PIL = 'var(--color-olive-80)'    // var(--color-olive) @ 80%
+const DESKTOP_NAV_LINK =
+  'flex items-center gap-[3px] whitespace-nowrap text-[clamp(15px,1.15vw,17px)] font-medium tracking-[0.01em] text-[var(--color-cream-80)] no-underline transition-colors duration-200 hover:text-[var(--color-cream)]'
+
+const DESKTOP_SECONDARY_LINK =
+  'flex items-center gap-[5px] whitespace-nowrap text-[clamp(15px,1.15vw,17px)] font-medium text-[var(--color-cream-80)] no-underline transition-colors duration-200 hover:text-[var(--color-cream)]'
+
+const DESKTOP_PRIMARY_LINK =
+  'inline-flex items-center gap-[6px] whitespace-nowrap rounded-full bg-[var(--color-cta-brown)] px-[clamp(16px,1.8vw,22px)] py-[10px] text-[clamp(15px,1.15vw,17px)] font-semibold text-white no-underline shadow-[0_10px_26px_rgba(138,78,46,0.22)] transition-[transform,box-shadow] duration-150 hover:-translate-y-px hover:shadow-[0_14px_30px_rgba(138,78,46,0.3)]'
+
+const MOBILE_MENU_LINK =
+  'text-[25.3px] font-semibold text-[var(--color-ink)] no-underline'
+
+const MOBILE_SECONDARY_LINK =
+  'rounded-[30px] border border-[var(--color-ink-40)] py-[14px] text-center text-[18.4px] font-semibold text-[var(--color-ink)] no-underline'
+
+const MOBILE_PRIMARY_LINK =
+  'flex items-center justify-center gap-2 rounded-[30px] bg-[var(--color-cta-brown)] py-[14px] text-center text-[18.4px] font-semibold text-white no-underline'
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -18,21 +31,18 @@ export function Header() {
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
     const previous = scrollY.getPrevious() ?? 0
+
     if (latest <= 50) {
-      // Sempre mostrar no topo
       setHidden(false)
     } else if (latest > previous && latest > 150) {
-      // Rolando para baixo e já passou do topo -> esconder
       setHidden(true)
     } else if (latest < previous) {
-      // Rolando para cima -> mostrar
       setHidden(false)
     }
   })
 
   return (
     <>
-      {/* ── Floating pill header — no spacer, pill overlays hero photo ── */}
       <motion.header
         variants={{
           visible: { y: 0, opacity: 1 },
@@ -40,150 +50,68 @@ export function Header() {
         }}
         animate={hidden ? 'hidden' : 'visible'}
         transition={{ duration: 0.35, ease: 'easeInOut' }}
-        style={{
-          position: 'fixed',
-          top: 0, left: 0, right: 0,
-          zIndex: 100,
-          padding: '12px clamp(12px, 2vw, 24px)',
-          pointerEvents: hidden ? 'none' : 'auto',
-        }}
+        className="fixed inset-x-0 top-0 z-[100] px-[clamp(4px,0.8vw,12px)] py-[10px]"
+        style={{ pointerEvents: hidden ? 'none' : 'auto' }}
       >
-        {/* ── Pill ──────────────────────────────────────────────────────── */}
-        <div
-          style={{
-            background: PIL,
-            backdropFilter: 'blur(18px)',
-            WebkitBackdropFilter: 'blur(18px)',
-            borderRadius: 100,
-            height: 82,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '0 20px',
-            maxWidth: 1280,
-            margin: '0 auto',
-            gap: 20,
-          }}
-        >
-          {/* Logo: circular icon-only */}
+        <div className="mx-auto flex h-[clamp(68px,6.5vw,82px)] w-[min(1480px,calc(100vw-16px))] items-center justify-between gap-[clamp(10px,1.6vw,20px)] rounded-full border border-[rgba(233,226,210,0.20)] bg-[var(--header-surface)] px-[clamp(16px,1.8vw,28px)] pl-[6px] shadow-[0_18px_40px_rgba(42,37,32,0.22)] backdrop-blur-[18px]">
           <a
             href="#hero"
-            style={{ textDecoration: 'none', flexShrink: 0 }}
+            className="flex shrink-0 items-center leading-none no-underline"
           >
-            <div
-              style={{
-                width: 65, height: 65,
-                borderRadius: '50%',
-                border: '1.5px solid var(--color-cream-25)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}
-            >
-              <NextImage
-                src="/brand/logo-white-only-hd-nobg.png"
-                alt="Senda Sênior"
-                width={65}
-                height={65}
-                priority
-                style={{ width: '100%', height: 'auto', transform: 'scale(1.35)' }}
-              />
-            </div>
+            <NextImage
+              src="/brand/logo-white-only-hd-nobg.png"
+              alt=""
+              width={96}
+              height={96}
+              priority
+              className="h-auto w-[clamp(72px,6vw,86px)] shrink-0"
+            />
+            <NextImage
+              src="/senda-logo-corrido-w.webp"
+              alt="Senda Sênior"
+              width={200}
+              height={52}
+              priority
+              className="-ml-2 h-auto w-[clamp(96px,8vw,130px)] shrink-0"
+            />
           </a>
 
-          {/* Desktop nav */}
-          <nav
-            className="nav-desktop"
-            style={{ display: 'flex', alignItems: 'center', gap: 24, flex: 1, justifyContent: 'center' }}
-          >
+          <nav className="nav-desktop flex min-w-0 flex-1 items-center justify-center gap-[clamp(14px,1.7vw,24px)]">
             {NAV_LINKS.map(({ label, href, chevron }) => (
-            <a
-              key={label}
-              href={href}
-              style={{
-                fontSize: 17.25,
-                fontWeight: 500,
-                color: CM,
-                textDecoration: 'none',
-                letterSpacing: '0.01em',
-                transition: 'color 0.2s',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 3,
-                whiteSpace: 'nowrap',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.color = C }}
-              onMouseLeave={e => { e.currentTarget.style.color = CM }}
-            >
-              {label}
-              {chevron && <ChevronDown size={12} strokeWidth={2} />}
-            </a>
-          ))}
+              <a key={label} href={href} className={DESKTOP_NAV_LINK}>
+                {label}
+                {chevron ? <ChevronDown size={12} strokeWidth={2} /> : null}
+              </a>
+            ))}
           </nav>
 
-          {/* Desktop CTA group */}
-          <div
-            className="nav-desktop"
-            style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}
-          >
-            {/* Login — text + user icon */}
-            <a
-              href="/login"
-              style={{
-                fontSize: 17.25, fontWeight: 500, color: CM,
-                textDecoration: 'none',
-                display: 'flex', alignItems: 'center', gap: 5,
-                transition: 'color 0.2s',
-                whiteSpace: 'nowrap',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.color = C }}
-              onMouseLeave={e => { e.currentTarget.style.color = CM }}
-            >
+          <div className="nav-desktop flex shrink-0 items-center gap-3">
+            <a href="/login" className={DESKTOP_SECONDARY_LINK}>
               <User size={15} strokeWidth={1.8} />
               Login
             </a>
 
-            {/* Área do Cliente — terracotta pill */}
-            <a
-              href="#area-cliente"
-              style={{
-                fontSize: 17.25, fontWeight: 600, color: 'white',
-                background: 'var(--color-terracotta)',
-                padding: '10px 20px',
-                borderRadius: 100,
-                textDecoration: 'none',
-                display: 'flex', alignItems: 'center', gap: 6,
-                transition: 'opacity 0.2s, transform 0.15s',
-                whiteSpace: 'nowrap',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-1px)' }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)' }}
-            >
+            <a href="/login" className={DESKTOP_PRIMARY_LINK}>
               Área do Cliente <ArrowRight size={14} strokeWidth={2} />
             </a>
           </div>
 
-          {/* Mobile burger */}
           <button
-            className="show-mobile"
+            className="show-mobile hidden cursor-pointer border-none bg-transparent p-2 text-[var(--color-cream)]"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Menu"
-            style={{ display: 'none', background: 'none', border: 'none', cursor: 'pointer', color: C, padding: 8 }}
           >
             {menuOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
           </button>
         </div>
       </motion.header>
 
-      {/* ── Mobile overlay menu ─────────────────────────────────────────── */}
-      {menuOpen && (
-        <div
-          className="mobile-menu"
-          style={{ display: 'flex' }}
-          onClick={() => setMenuOpen(false)}
-        >
+      {menuOpen ? (
+        <div className="mobile-menu flex" onClick={() => setMenuOpen(false)}>
           <button
             onClick={() => setMenuOpen(false)}
             aria-label="Fechar menu"
-            style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-ink)' }}
+            className="absolute top-5 right-6 cursor-pointer border-none bg-transparent text-[var(--color-ink)]"
           >
             <X size={26} strokeWidth={1.5} />
           </button>
@@ -193,30 +121,22 @@ export function Header() {
               key={label}
               href={href}
               onClick={() => setMenuOpen(false)}
-              style={{ fontSize: 25.3, fontWeight: 600, color: 'var(--color-ink)', textDecoration: 'none' }}
+              className={MOBILE_MENU_LINK}
             >
               {label}
             </a>
           ))}
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 16, width: '100%', padding: '0 32px' }}>
-            <a
-              href="/login"
-              onClick={() => setMenuOpen(false)}
-              style={{ fontSize: 18.4, fontWeight: 600, color: 'var(--color-ink)', border: '1px solid var(--color-ink-40)', padding: '14px 0', borderRadius: 30, textDecoration: 'none', textAlign: 'center' }}
-            >
+          <div className="mt-4 flex w-full flex-col gap-3 px-8">
+            <a href="/login" onClick={() => setMenuOpen(false)} className={MOBILE_SECONDARY_LINK}>
               Login
             </a>
-            <a
-              href="#area-cliente"
-              onClick={() => setMenuOpen(false)}
-              style={{ fontSize: 18.4, fontWeight: 600, color: 'white', background: 'var(--color-terracotta)', padding: '14px 0', borderRadius: 30, textDecoration: 'none', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
-            >
+            <a href="/login" onClick={() => setMenuOpen(false)} className={MOBILE_PRIMARY_LINK}>
               Área do Cliente <ArrowRight size={18} strokeWidth={2} />
             </a>
           </div>
         </div>
-      )}
+      ) : null}
     </>
   )
 }

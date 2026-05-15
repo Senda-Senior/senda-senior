@@ -37,26 +37,25 @@ export function SplashScreen() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-            className="flex flex-col items-center gap-0"
+            className="flex w-full max-w-[min(100vw,655px)] flex-col items-center justify-center px-4"
           >
-            {/* Símbolo */}
+            {/* Símbolo (−5% vs tamanho anterior) */}
             <NextImage
               src="/white-logo.png"
               alt="Símbolo Senda Sênior"
               width={98}
               height={98}
               priority
-              style={{ width: 'auto', height: 'auto', objectFit: 'contain' }}
+              className="-mb-[clamp(8px,2.4vw,16px)] mx-auto block h-[clamp(85px,21.95vw,120px)] w-auto shrink-0 object-contain"
             />
-            {/* Texto Senda Sênior e subtítulo */}
+            {/* Wordmark +20%; -mt maior anula espaço transparente do asset e aproxima do símbolo */}
             <NextImage
-              src="/senda-logo-text-w.png"
-              alt="Senda Sênior Planejamento & Assessoria"
-              width={182}
-              height={56}
+              src="/senda-logo-text-complete-nobg.webp"
+              alt="Senda Sênior — planejamento e assessoria"
+              width={874}
+              height={312}
               priority
-              className="-mt-3"
-              style={{ width: 'auto', height: 'auto', objectFit: 'contain' }}
+              className="-mt-[clamp(22px,7.5vw,46px)] mx-auto block h-auto w-[clamp(306px,106vw,499px)] max-w-[min(92vw,562px)] object-contain object-center"
             />
           </motion.div>
         </motion.div>

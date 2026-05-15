@@ -72,7 +72,7 @@ export function DashboardView({ userEmail, firstName, initialChecklist }: Dashbo
 
   return (
     <div style={{ minHeight: '100vh', position: 'relative', background: 'var(--color-cream)' }}>
-      {/* Identidade: padrão caminho + luz creme (a foto fica no herói, abaixo) */}
+      {/* Luz suave no fundo creme */}
       <div
         aria-hidden
         style={{
@@ -82,16 +82,6 @@ export function DashboardView({ userEmail, firstName, initialChecklist }: Dashbo
           pointerEvents: 'none',
         }}
       >
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            opacity: 0.1,
-            backgroundImage: "url('/brand/pattern-caminho-greenmono-claro.png')",
-            backgroundSize: '640px auto',
-            backgroundRepeat: 'repeat',
-          }}
-        />
         <div
           style={{
             position: 'absolute',
@@ -197,18 +187,6 @@ export function DashboardView({ userEmail, firstName, initialChecklist }: Dashbo
             boxShadow: '0 24px 64px rgba(42, 37, 32, 0.08), 0 0 0 1px rgba(255,255,255,0.5) inset',
           }}
         >
-          <div
-            aria-hidden
-            style={{
-              position: 'absolute',
-              inset: 0,
-              opacity: 0.07,
-              backgroundImage: "url('/brand/pattern-caminho-greenmono-claro.png')",
-              backgroundSize: '480px auto',
-              backgroundRepeat: 'repeat',
-              pointerEvents: 'none',
-            }}
-          />
           <div
             aria-hidden
             style={{

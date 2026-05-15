@@ -1,334 +1,691 @@
 'use client'
 
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import Image from 'next/image'
+/* eslint-disable @next/next/no-img-element */
 
-import { MANUAIS } from '@/features/landing/data/fases-cuidado'
+import { useRef, useState, useEffect } from 'react'
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
+import { ArrowRight, ChevronDown, ChevronUp } from 'lucide-react'
+import Link from 'next/link'
 
-/* ─── Component ─────────────────────────────────────────────────────── */
+/* ─── Data ──────────────────────────────────────────────────────────── */
 
-export function FasesCuidado() {
-  const [active, setActive] = useState(0)
-  const manual = MANUAIS[active]
+const FASES = [
+  {
+    index: 0,
+    num: '01',
+    fase: 'FASE 1',
+    title: 'Prevent Care',
+    subtitle: 'Seus pais ainda são autônomos.',
+    desc: 'É hora de planejar, não de esperar.',
+    tagline: 'Prevenir é o maior cuidado.',
+    bg: 'var(--color-sage-pale)',
+    bgExpanded: 'var(--color-sage-pale-dark)',
+    numColor: 'var(--color-green)',
+    titleColor: 'var(--color-ink)',
+    accentColor: 'var(--color-green-dark)',
+    checkColor: 'var(--color-green)',
+    // Brand icon: shield-check — prevention/protection — white on dark-green bg
+    iconSrc: '/icons/brand/shield-check.svg',
+    iconFilter: 'none',
+    expandedText: [
+      'Avaliar autonomia e saúde atual dos pais',
+      'Organizar documentos essenciais',
+      'Abrir conversas sobre o futuro',
+      'Avaliar a segurança do ambiente',
+      'Prever gastos futuros',
+    ],
+  },
+  {
+    index: 1,
+    num: '02',
+    fase: 'FASE 2',
+    title: 'Care',
+    subtitle: 'Os primeiros sinais apareceram.',
+    desc: 'É hora de começar a agir, não de improvisar.',
+    tagline: 'Organizar é forma de amor.',
+    bg: 'var(--color-warm-tan)',
+    bgExpanded: '#cfc09a',
+    numColor: 'var(--color-terracotta)',
+    titleColor: 'var(--color-ink)',
+    accentColor: 'var(--color-terracotta)',
+    checkColor: 'var(--color-terracotta)',
+    // Brand icon: heart — care/compassion — white on terracotta bg
+    iconSrc: '/icons/brand/heart.svg',
+    iconFilter: 'none',
+    expandedText: [
+      'Consulta médica ao Geriatra',
+      'Adaptar o ambiente doméstico',
+      'Organizar rotinas',
+      'Dividir responsabilidades familiares',
+      'O papel do cuidador principal',
+      'Gerir profissionais',
+    ],
+  },
+  {
+    index: 2,
+    num: '03',
+    fase: 'FASE 3',
+    title: 'Immediate Care',
+    subtitle: 'Necessidades urgentes.',
+    desc: 'Idosos que requerem supervisão constante.',
+    tagline: 'Na urgência, clareza salva.',
+    bg: 'var(--color-terracotta-light)',
+    bgExpanded: 'var(--color-terracotta-light)',
+    numColor: 'var(--color-cream)',
+    titleColor: 'var(--color-cream)',
+    accentColor: 'var(--color-cream)',
+    checkColor: 'var(--color-cream)',
+    // Brand icon: life-ring — rescue/urgent — dark ink on cream bg
+    iconSrc: '/icons/brand/life-ring.svg',
+    iconFilter: 'none',
+    expandedText: [
+      'Entender e aceitar que o momento é de vigilância 24h',
+      'Organizar rotinas',
+      'Adaptar ambientes',
+      'O papel do cuidador principal e o risco de colapso',
+      'Gestão financeira',
+      'Gestão de equipe',
+      'Decisões difíceis',
+    ],
+  },
+]
 
+/* ─── Expandable Card ──────────────────────────────────────────────── */
+
+function FaseCard({
+  fase,
+  isExpanded,
+  onToggle,
+}: {
+  fase: typeof FASES[0]
+  isExpanded: boolean
+  onToggle: () => void
+}) {
   return (
-    <section
-      id="manuais"
+    <motion.div
+      layout
       style={{
-        background: 'var(--color-cream)',
-        height: '100svh',
-        boxSizing: 'border-box' as const,
-        display: 'flex',
-        flexDirection: 'column',
-        padding: 'clamp(16px, 3vw, 40px) clamp(20px, 5vw, 60px) clamp(12px, 2vw, 28px)',
+        background: isExpanded ? fase.bgExpanded : fase.bg,
+        borderRadius: 20,
         overflow: 'hidden',
+        boxShadow: isExpanded
+          ? '0 32px 80px var(--color-black-18)'
+          : '0 8px 32px var(--color-black-08)',
+        cursor: 'default',
+        width: '100%',
+        transition: 'background 0.4s ease, box-shadow 0.4s ease',
       }}
     >
-      {/* ── Header ── */}
-      <div
-        style={{
-          textAlign: 'center',
-          maxWidth: 640,
-          margin: '0 auto',
-          flexShrink: 0,
-          marginBottom: 'clamp(16px, 2vw, 24px)',
-        }}
-      >
-        <p
+      {/* ── Header (always visible) ── */}
+      <motion.div layout="position" style={{ padding: '36px 36px 0' }}>
+        {/* Brand icon mark — 32×32 container, 18px icon, filter per accentColor darkness */}
+        <div
           style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: 12.65,
-            fontWeight: 700,
-            letterSpacing: '0.18em',
-            textTransform: 'uppercase',
-            color: 'var(--color-terracotta)',
-            marginBottom: 12,
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: 28,
+            flexShrink: 0,
           }}
         >
-          Manuais Práticos
-        </p>
+          <img
+            src={fase.iconSrc}
+            width={36}
+            height={36}
+            alt=""
+            aria-hidden
+            style={{
+              width: 36,
+              height: 36,
+              display: 'block',
+              filter: fase.iconFilter,
+            }}
+          />
+        </div>
 
-        <h2
+        {/* Title */}
+        <p
           style={{
             fontFamily: 'var(--font-serif)',
-            fontSize: 'clamp(28px, 4vw, 52px)',
-            fontWeight: 400,
-            lineHeight: 1.05,
-            letterSpacing: '-0.025em',
-            color: 'var(--color-ink)',
-            marginBottom: 12,
+            fontSize: 'clamp(22px, 2.2vw, 30px)',
+            fontWeight: 500,
+            color: fase.titleColor,
+            letterSpacing: '-0.02em',
+            marginBottom: 4,
           }}
         >
-          Guias para cada<br />
-          etapa do cuidado.
-        </h2>
+          {fase.title}
+        </p>
 
+        {/* Big number */}
+        <p
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontSize: 'clamp(56px, 8vw, 100px)',
+            fontWeight: 400,
+            lineHeight: 1,
+            color: fase.numColor,
+            opacity: 0.2,
+            letterSpacing: '-0.04em',
+            marginBottom: 12,
+            userSelect: 'none',
+          }}
+        >
+          {fase.num}
+        </p>
+
+        {/* Subtitle */}
         <p
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: 'clamp(14.95px, 1.265vw, 17.25px)',
-            lineHeight: 1.6,
-            color: 'var(--color-ink-55)',
-            maxWidth: 480,
-            margin: '0 auto',
+            fontSize: 'clamp(13px, 1.1vw, 14px)',
+            color: fase.titleColor,
+            opacity: 0.75,
+            lineHeight: 1.5,
+            marginBottom: 28,
           }}
         >
-          Materiais claros, organizados e humanos para famílias que precisam
-          tomar decisões com mais preparo.
+          {fase.subtitle}<br />
+          <strong style={{ opacity: 1, fontWeight: 600 }}>{fase.desc}</strong>
         </p>
-      </div>
+      </motion.div>
 
-      {/* ── Tab Selector ── */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: 2,
-          flexShrink: 0,
-          marginBottom: 'clamp(12px, 2vw, 20px)',
-        }}
-      >
-        {MANUAIS.map((m, i) => (
-          <motion.button
-            key={i}
-            onClick={() => setActive(i)}
-            whileHover={active !== i ? { backgroundColor: 'var(--color-gold-warm-14)' } : {}}
-            whileTap={{ scale: 0.97 }}
-            transition={{ duration: 0.18, ease: 'easeOut' }}
-            style={{
-              position: 'relative',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 7,
-              padding: '9px 18px',
-              borderRadius: 100,
-              border: 'none',
-              cursor: 'pointer',
-              fontFamily: 'var(--font-sans)',
-              fontSize: 16.1,
-              fontWeight: active === i ? 600 : 500,
-              background: 'transparent',
-              color: active === i ? 'var(--color-brown-deep)' : 'var(--color-ink-50)',
-              letterSpacing: '-0.01em',
-              transition: 'color 0.22s ease',
-            }}
+      {/* ── Expanded details (animated) ── */}
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            key="details"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
+            style={{ overflow: 'hidden' }}
           >
-            {active === i && (
-              <motion.div
-                layoutId="tab-pill"
+            <div style={{ padding: '0 36px' }}>
+              <div
                 style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'var(--color-gold-warm)',
-                  borderRadius: 100,
-                  zIndex: 0,
-                }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 400,
-                  damping: 32,
-                  mass: 0.9,
+                  width: '100%',
+                  height: 1,
+                  background: fase.titleColor,
+                  opacity: 0.15,
+                  marginBottom: 24,
                 }}
               />
-            )}
-
-            <span
-              style={{
-                position: 'relative',
-                zIndex: 1,
-                width: 17,
-                height: 17,
-                borderRadius: '50%',
-                border: `1.5px solid ${active === i ? 'var(--color-brown-deep)' : 'var(--color-ink-30)'}`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 8,
-                fontWeight: 700,
-                color: active === i ? 'var(--color-brown-deep)' : 'var(--color-ink-40)',
-                flexShrink: 0,
-                lineHeight: 1,
-                transition: 'border-color 0.22s ease, color 0.22s ease',
-              }}
-            >
-              {i + 1}
-            </span>
-
-            <span style={{ position: 'relative', zIndex: 1 }}>
-              {m.tab}
-            </span>
-          </motion.button>
-        ))}
-      </div>
-
-
-      {/* ── Banner — fills remaining vertical space ── */}
-      <div
-        style={{
-          position: 'relative',
-          borderRadius: 20,
-          overflow: 'hidden',
-          maxWidth: 1200,
-          width: '100%',
-          margin: '0 auto',
-          flex: 1,
-          minHeight: 'clamp(280px, 45vh, 420px)',
-          background: '#1a1a1a',
-        }}
-      >
-        {/* Photo layer — crossfade on tab change */}
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={`photo-${active}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
-            style={{ position: 'absolute', inset: 0 }}
-          >
-            <Image
-              src={manual.photo}
-              alt={manual.title.replace('\n', ' ')}
-              fill
-              sizes="(max-width: 768px) 100vw, 1200px"
-              style={{ objectFit: 'cover', objectPosition: 'center right' }}
-              priority
-            />
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Subtle left gradient so card reads cleanly over photo */}
-        <div
-          aria-hidden
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background:
-              'linear-gradient(90deg, var(--color-black-18) 0%, transparent 55%)',
-            pointerEvents: 'none',
-          }}
-        />
-
-        {/* Left overlay card — slides on tab change */}
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={`card-${active}`}
-            initial={{ x: -24, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -16, opacity: 0 }}
-            transition={{ duration: 0.42, ease: [0.25, 0.46, 0.45, 0.94] }}
-            style={{
-              position: 'absolute',
-              top: 28,
-              left: 28,
-              bottom: 28,
-              width: 'clamp(240px, 34%, 360px)',
-              background: manual.cardBg,
-              borderRadius: 20,
-              padding: 'clamp(24px, 4vh, 48px)',
-              display: 'grid',
-              gridTemplateRows: '1fr auto',
-              rowGap: 'clamp(14px, 2.4vh, 24px)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-            }}
-          >
-            <div
-              style={{
-                minHeight: 0,
-              }}
-            >
-              {/* MANUAL label */}
-              <p
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: 11.5,
-                  fontWeight: 700,
-                  letterSpacing: '0.18em',
-                  textTransform: 'uppercase',
-                  color: manual.labelColor,
-                  marginBottom: 14,
-                  alignSelf: 'start',
-                }}
-              >
-                Manual
-              </p>
-
-              {/* Title */}
-              <h3
-                style={{
-                  fontFamily: 'var(--font-serif)',
-                  fontSize: 'clamp(30px, 4.4vh, 46px)',
-                  fontWeight: 400,
-                  fontStyle: 'italic',
-                  lineHeight: 1.03,
-                  color: manual.titleColor,
-                  marginBottom: 'clamp(20px, 3vh, 28px)',
-                  whiteSpace: 'pre-line',
-                  alignSelf: 'start',
-                }}
-              >
-                {manual.title}
-              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {fase.expandedText.map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + i * 0.06, duration: 0.3 }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: 10,
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: fase.accentColor,
+                        fontSize: 18,
+                        lineHeight: 1.3,
+                        flexShrink: 0,
+                        opacity: 0.85,
+                      }}
+                    >
+                      •
+                    </span>
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: 'clamp(14.95px, 1.265vw, 16.1px)',
+                        color: fase.titleColor,
+                        lineHeight: 1.55,
+                        opacity: 0.9,
+                        margin: 0,
+                      }}
+                    >
+                      {item}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
 
               {/* Tagline */}
               <p
                 style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: 'clamp(14.95px, 1.8vh, 18.4px)',
-                  fontWeight: 700,
-                  lineHeight: 1.35,
-                  color: manual.taglineColor,
-                  marginBottom: 12,
-                  alignSelf: 'start',
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: 'clamp(16.1px, 1.265vw, 17.25px)',
+                  fontStyle: 'italic',
+                  color: fase.titleColor,
+                  opacity: 0.65,
+                  marginTop: 24,
+                  paddingBottom: 4,
                 }}
               >
-                {manual.tagline}
-              </p>
-
-              {/* Description */}
-              <p
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: 'clamp(12.65px, 1.035vw, 14.95px)',
-                  lineHeight: 1.6,
-                  color: manual.descColor,
-                  alignSelf: 'start',
-                }}
-              >
-                {manual.desc}
+                &quot;{fase.tagline}&quot;
               </p>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-            {/* CTA */}
-            <a
-              href={manual.link}
-              target="_blank"
-              rel="noopener noreferrer"
+      {/* ── Footer / Toggle ── */}
+      <motion.div layout="position" style={{ padding: '20px 36px 32px' }}>
+        <button
+          onClick={onToggle}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            background: 'transparent',
+            border: 'none',
+            color: fase.accentColor,
+            fontSize: 16.1,
+            fontWeight: 600,
+            fontFamily: 'var(--font-sans)',
+            cursor: 'pointer',
+            opacity: 0.85,
+            letterSpacing: '0.02em',
+            padding: 0,
+            transition: 'opacity 0.2s',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.opacity = '1')}
+          onMouseLeave={e => (e.currentTarget.style.opacity = '0.85')}
+        >
+          {isExpanded ? (
+            <>Fechar detalhes <ChevronUp size={14} strokeWidth={2} /></>
+          ) : (
+            <>Ver detalhes <ChevronDown size={14} strokeWidth={2} /></>
+          )}
+        </button>
+      </motion.div>
+    </motion.div>
+  )
+}
+
+/* ─── Desktop: sticky scroll carousel ──────────────────────────────── */
+
+export function DesktopFasesCuidado() {
+  const trackRef = useRef<HTMLDivElement>(null)
+  const railContainerRef = useRef<HTMLDivElement>(null)
+  const cardRefs = useRef<Array<HTMLDivElement | null>>([])
+  const nudgeFrameRef = useRef<number | null>(null)
+  const nudgeTimeoutRef = useRef<number | null>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
+  const [containerWidth, setContainerWidth] = useState(0)
+  const [expandedNudge, setExpandedNudge] = useState(0)
+
+  // Measure the card viewport width for pixel-accurate rail translation
+  useEffect(() => {
+    const el = railContainerRef.current
+    if (!el) return
+    const ro = new ResizeObserver(([entry]) => {
+      setContainerWidth(entry.contentRect.width)
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
+  const { scrollYProgress } = useScroll({
+    target: trackRef,
+    offset: ['start start', 'end end'],
+  })
+
+  // ── One-step-at-a-time switching ─────────────────────────────────
+  // activeIndexRef mirrors state so the event listener always reads the
+  // freshest value (avoids React closure staleness). Advancing one step
+  // per threshold crossing prevents skipping card 2 on fast scrolls.
+  const activeIndexRef = useRef(0)
+
+  const clearPendingNudgeMeasure = () => {
+    if (nudgeFrameRef.current !== null) {
+      window.cancelAnimationFrame(nudgeFrameRef.current)
+      nudgeFrameRef.current = null
+    }
+    if (nudgeTimeoutRef.current !== null) {
+      window.clearTimeout(nudgeTimeoutRef.current)
+      nudgeTimeoutRef.current = null
+    }
+  }
+
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    const rawNext = v < 0.33 ? 0 : v < 0.67 ? 1 : 2
+    const cur = activeIndexRef.current
+    if (rawNext === cur) return
+
+    const step = rawNext > cur ? cur + 1 : cur - 1
+    const clamped = Math.max(0, Math.min(2, step))
+    if (clamped === cur) return
+
+    activeIndexRef.current = clamped
+    setActiveIndex(clamped)
+    clearPendingNudgeMeasure()
+    setExpandedNudge(0)
+    setExpandedIndex(null)
+  })
+
+  // Rail offset: slide left by one card-width per step
+  const railX = -activeIndex * (containerWidth + 16) // +16 = gap between cards
+
+  const ensureExpandedCardFullyVisible = (index: number) => {
+    const cardEl = cardRefs.current[index]
+    if (!cardEl) return
+
+    const rect = cardEl.getBoundingClientRect()
+    const viewportHeight = window.innerHeight
+    const bottomGap = 20
+
+    // Keep the expanded card fully visible by nudging only the right rail up.
+    // This avoids internal scroll and avoids changing the page/card progression.
+    if (rect.bottom > viewportHeight - bottomGap) {
+      const delta = rect.bottom - (viewportHeight - bottomGap)
+      setExpandedNudge(Math.min(Math.ceil(delta), 260))
+    } else {
+      setExpandedNudge(0)
+    }
+  }
+
+  const scheduleExpandedCardMeasure = (index: number) => {
+    clearPendingNudgeMeasure()
+    nudgeFrameRef.current = window.requestAnimationFrame(() => {
+      nudgeFrameRef.current = null
+      nudgeTimeoutRef.current = window.setTimeout(() => {
+        nudgeTimeoutRef.current = null
+        ensureExpandedCardFullyVisible(index)
+      }, 240)
+    })
+  }
+
+  useEffect(() => {
+    return () => {
+      if (nudgeFrameRef.current !== null) {
+        window.cancelAnimationFrame(nudgeFrameRef.current)
+      }
+      if (nudgeTimeoutRef.current !== null) {
+        window.clearTimeout(nudgeTimeoutRef.current)
+      }
+    }
+  }, [])
+
+  return (
+    <section
+      id="manual"
+      ref={trackRef}
+      style={{ height: '290vh', position: 'relative' }}
+    >
+      {/* ── Sticky viewport ── */}
+      <div
+        style={{
+          position: 'sticky',
+          top: 0,
+          minHeight: '100vh',
+          overflow: 'visible',
+          background: 'var(--color-green-dark)',
+          display: 'flex',
+          alignItems: 'stretch',
+        }}
+      >
+        {/* ── Inner grid ── */}
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 1,
+            width: '100%',
+            maxWidth: 1200,
+            margin: '0 auto',
+            padding: 'clamp(40px, 5vw, 80px) clamp(20px, 4vw, 60px)',
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: 'clamp(40px, 5vw, 80px)',
+            alignItems: 'center',
+          }}
+          className="grid-pillar"
+        >
+          {/* ── Left: Editorial text (static) ── */}
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: 12.65,
+                fontWeight: 700,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: 'var(--color-gold-light)',
+                marginBottom: 24,
+                opacity: 0.85,
+              }}
+            >
+              Metodologia Senda Sênior
+            </p>
+
+            <h2
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: 'clamp(42px, 5.5vw, 72px)',
+                fontWeight: 400,
+                lineHeight: 1.05,
+                letterSpacing: '-0.025em',
+                color: 'var(--color-cream)',
+                marginBottom: 32,
+                textWrap: 'balance',
+              }}
+            >
+              Os 3 momentos<br />
+              do cuidado.
+            </h2>
+
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: 'clamp(16.1px, 1.38vw, 18.4px)',
+                lineHeight: 1.65,
+                color: 'var(--color-cream-75)',
+                maxWidth: 440,
+                marginBottom: 24,
+              }}
+            >
+              Estruturamos o envelhecimento em três estágios para ajudar você a entender o presente e proteger o futuro. Esta classificação não rotula; ela orienta.
+            </p>
+
+            <Link
+              href="#manuais"
+              className="btn-terracotta-hover"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                background: manual.btnBg,
-                color: manual.btnColor,
-                padding: '11px 22px',
-                borderRadius: 100,
-                fontSize: 14.95,
+                gap: 10,
+                background: 'var(--color-terracotta)',
+                color: 'white',
+                padding: '14px 28px',
+                borderRadius: 30,
+                fontSize: 16.1,
                 fontWeight: 600,
                 fontFamily: 'var(--font-sans)',
                 textDecoration: 'none',
-                transition: 'opacity 0.2s, transform 0.2s',
                 alignSelf: 'flex-start',
-                letterSpacing: '0.01em',
+                transition: 'all 0.3s',
               }}
             >
-              Comprar manual
-            </a>
-          </motion.div>
-        </AnimatePresence>
+              Ver manuais <ArrowRight size={16} strokeWidth={2} />
+            </Link>
+
+            {/* Scroll progress dots */}
+            <div style={{ display: 'flex', gap: 8, marginTop: 48 }}>
+              {FASES.map((_, i) => (
+                <motion.div
+                  key={i}
+                  animate={{
+                    width: activeIndex === i ? 28 : 8,
+                    background: activeIndex === i
+                      ? 'var(--color-gold-light)'
+                      : 'var(--color-cream-25)',
+                  }}
+                  transition={{ duration: 0.35, ease: 'easeInOut' }}
+                  style={{ height: 8, borderRadius: 4 }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* ── Right: Physical rail — all 3 cards side-by-side, slides as one unit ── */}
+          <div
+            ref={railContainerRef}
+            style={{
+              position: 'relative',
+              overflowX: 'hidden',
+              overflowY: 'visible',
+              maxHeight: 'none',
+              borderRadius: 24,
+              isolation: 'isolate',
+              transform: expandedNudge ? `translateY(-${expandedNudge}px)` : 'translateY(0)',
+              transition: 'transform 240ms ease',
+            }}
+          >
+            {/*
+              Rail: flex row with 3 full-width cards.
+              containerWidth is measured via ResizeObserver so px math is exact.
+              Spring animates the entire rail left — cards glide together as a
+              physical conveyor belt, no teleportation, no unmounting.
+            */}
+            <motion.div
+              animate={{ x: railX }}
+              transition={{
+                type: 'spring',
+                stiffness: 70,
+                damping: 22,
+                mass: 0.85,
+              }}
+              style={{
+                display: 'flex',
+                gap: 16,
+                // Total rail width: 3 cards + 2 gaps
+                width: containerWidth
+                  ? containerWidth * 3 + 32
+                  : '300%',
+              }}
+            >
+              {FASES.map((fase, i) => (
+                <div
+                  key={i}
+                  ref={el => {
+                    cardRefs.current[i] = el
+                  }}
+                  style={{
+                    flex: `0 0 ${containerWidth || 300}px`,
+                    minWidth: 0,
+                  }}
+                >
+                  <FaseCard
+                    fase={fase}
+                    isExpanded={expandedIndex === i}
+                    onToggle={() => {
+                      setExpandedIndex(prev => {
+                        const next = prev === i ? null : i
+                        if (next !== null) {
+                          scheduleExpandedCardMeasure(i)
+                        } else {
+                          clearPendingNudgeMeasure()
+                          setExpandedNudge(0)
+                        }
+                        return next
+                      })
+                    }}
+                  />
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   )
+}
+
+/* ─── Mobile: stacked cards (no sticky scroll) ─────────────────────── */
+
+function MobileFasesCuidado() {
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
+
+  return (
+    <section
+      id="manual"
+      style={{
+        background: 'var(--color-green-dark)',
+        padding: 'clamp(60px, 10vw, 100px) clamp(20px, 5vw, 40px)',
+      }}
+    >
+      {/* Header */}
+      <div style={{ marginBottom: 40 }}>
+        <p
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: 11,
+            fontWeight: 700,
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: 'var(--color-gold-light)',
+            marginBottom: 16,
+            opacity: 0.85,
+          }}
+        >
+          Metodologia Senda Sênior
+        </p>
+        <h2
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontSize: 'clamp(38px, 10vw, 56px)',
+            fontWeight: 400,
+            lineHeight: 1.05,
+            letterSpacing: '-0.025em',
+            color: 'var(--color-cream)',
+            textWrap: 'balance',
+            marginBottom: 20,
+          }}
+        >
+          Os 3 momentos<br />do cuidado.
+        </h2>
+        <p
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: 17.25,
+            lineHeight: 1.65,
+            color: 'var(--color-cream-70)',
+          }}
+        >
+          Estruturamos o envelhecimento em três estágios para ajudar você a entender o presente e proteger o futuro. Esta classificação não rotula; ela orienta.
+        </p>
+      </div>
+
+      {/* Stacked cards */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        {FASES.map((fase, i) => (
+          <FaseCard
+            key={i}
+            fase={fase}
+            isExpanded={expandedIndex === i}
+            onToggle={() => setExpandedIndex(prev => (prev === i ? null : i))}
+          />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+/* ─── Exported section: picks desktop or mobile ─────────────────────── */
+
+export function ManualSection() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)')
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  if (isMobile) return <MobileFasesCuidado />
+  return <DesktopFasesCuidado />
 }

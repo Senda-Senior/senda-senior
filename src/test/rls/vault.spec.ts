@@ -1,19 +1,23 @@
 /**
  * @vitest-environment node
+ *
+ * Não importar `@/config/env`: a validação zod corre no load do módulo e
+ * quebra o CI sem `.env.test`. Usamos `process.env` e `skipIf` quando faltar Supabase.
  */
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import { createClient, type SupabaseClient, type User } from '@supabase/supabase-js';
 
-// eslint-disable-next-line no-restricted-syntax
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-// eslint-disable-next-line no-restricted-syntax
-const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-// eslint-disable-next-line no-restricted-syntax -- SUPABASE_SERVICE_ROLE_KEY is a server secret not exposed via @/config/env
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+function hasVaultRlsEnv(): boolean {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const svc = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  return Boolean(url && anon && svc);
+}
 
-const hasEnv = Boolean(url && anonKey && serviceKey);
-
-describe.skipIf(!hasEnv)('Vault RLS isolation', () => {
+describe.skipIf(!hasVaultRlsEnv())('Vault RLS isolation', () => {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY as string;
   let admin: SupabaseClient;
   let userA: User;
   let userB: User;

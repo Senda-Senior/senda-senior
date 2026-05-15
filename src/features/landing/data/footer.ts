@@ -1,6 +1,6 @@
 /**
  * Data for `src/features/landing/components/Footer.tsx`.
- * Phase 1 of refactor/landing-coherence — extracted from inline const.
+ * Phase 1 of refactor/landing-coherence - extracted from inline const.
  */
 
 import { createElement, type ComponentType } from 'react'
@@ -39,16 +39,16 @@ export const NAV_COLUMNS: NavColumn[] = [
     title: 'EXPLORE',
     links: [
       { label: 'Sobre nós', href: '#sobre' },
-      { label: 'Manuais', href: '#manuais' },
-      { label: 'Serviços', href: '#servicos' },
-      { label: 'Conteúdo', href: '#conteudo' },
+      { label: 'Manuais', href: '#manual' },
+      { label: 'Serviços', href: '#sobre' },
+      { label: 'Conteúdos', href: '#conteudo' },
     ],
   },
   {
     title: 'CONTATO',
     links: [
       { label: 'E-mail', href: 'mailto:contato@sendasenior.com.br' },
-      { label: 'WhatsApp', href: 'https://wa.me/' }, // TODO: add real number
+      { label: 'WhatsApp', href: 'https://wa.me/' },
       { label: 'Agendar Conversa', href: '#contato' },
       { label: 'Instagram', href: '#' },
     ],
@@ -56,10 +56,10 @@ export const NAV_COLUMNS: NavColumn[] = [
   {
     title: 'LEGAL',
     links: [
-      { label: 'Termos de Serviço', href: '#termos' },
-      { label: 'Política de Privacidade', href: '#privacidade' },
-      { label: 'Política de Cookies', href: '#cookies' },
-      { label: 'Tratamento de Dados (LGPD)', href: '#lgpd' },
+      { label: 'Termos de Serviço', href: '/termos-de-servico' },
+      { label: 'Política de Privacidade', href: '/politica-de-privacidade' },
+      { label: 'Política de Cookies', href: '/legal' },
+      { label: 'Tratamento de Dados (LGPD)', href: '/legal' },
     ],
   },
 ]

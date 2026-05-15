@@ -1,10 +1,17 @@
 'use client'
 
-/* eslint-disable @next/next/no-img-element */
-
+import Link from 'next/link'
+import { BookOpen, Files, HeartHandshake, Users } from 'lucide-react'
 import { Reveal } from '@/design'
 
 import { CARDS } from '@/features/landing/data/fundadoras-strip'
+
+const ICONS = {
+  'book-open': BookOpen,
+  'heart-handshake': HeartHandshake,
+  files: Files,
+  users: Users,
+} as const
 
 export function FundadorasStrip() {
   return (
@@ -18,18 +25,16 @@ export function FundadorasStrip() {
       }}
     >
       <div
-        className="grid-pillar"
+        className="landing-max grid-pillar"
         style={{
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
+          gridTemplateColumns: 'minmax(0, 1.02fr) minmax(0, 0.98fr)',
           gap: 'clamp(48px, 6vw, 80px)',
           alignItems: 'center',
-          maxWidth: 1200,
-          margin: '0 auto',
         }}
       >
         {/* Lado Esquerdo: Texto */}
-        <div style={{ maxWidth: 520 }}>
+        <div style={{ maxWidth: 620 }}>
           <Reveal>
             <p
               style={{
@@ -55,7 +60,7 @@ export function FundadorasStrip() {
                 lineHeight: 1.05,
                 letterSpacing: '-0.02em',
                 color: 'var(--color-ink)',
-                marginBottom: 32,
+                marginBottom: 40,
                 textWrap: 'balance',
               }}
             >
@@ -67,37 +72,50 @@ export function FundadorasStrip() {
 
           <Reveal delay={0.12}>
             <p
+              className="landing-copy-justify"
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: 'clamp(17.25px, 1.495vw, 18.4px)',
-                lineHeight: 1.6,
+                lineHeight: 1.7,
                 color: 'var(--color-ink-sub)',
-                marginBottom: 24,
+                marginBottom: 36,
+                maxWidth: 600,
               }}
             >
-              A Senda Sênior é uma empresa de planejamento e assessoria para o envelhecimento familiar. Fundada por Luciana e Julianne — duas mulheres que viveram pessoalmente os desafios de cuidar de mães idosas — oferecemos orientação estruturada para famílias em qualquer fase do cuidado.
+              A Senda Sênior nasceu da vivência real de mulheres que acompanharam de perto o envelhecimento de suas mães. Essa experiência se transformou em método, manuais e consultoria para famílias que querem se preparar, não improvisar.
             </p>
           </Reveal>
 
           <Reveal delay={0.18}>
-            <p
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: 'clamp(17.25px, 1.495vw, 18.4px)',
-                fontWeight: 600,
-                lineHeight: 1.5,
-                color: 'var(--color-ink)',
-              }}
-            >
-              Somos a bússola que orienta o caminho.
-            </p>
+            <div>
+              <div
+                style={{
+                  width: 36,
+                  height: 2,
+                  background: 'var(--color-terracotta)',
+                  borderRadius: 1,
+                  marginBottom: 14,
+                }}
+              />
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 'clamp(17.25px, 1.495vw, 18.4px)',
+                  fontWeight: 600,
+                  lineHeight: 1.5,
+                  color: 'var(--color-ink)',
+                }}
+              >
+                Somos a bússola que orienta o caminho.
+              </p>
+            </div>
           </Reveal>
         </div>
 
         {/* Lado Direito: Grid de Cards 2x2 */}
         <div
           className="cards-grid"
-          style={{ gap: 16 }}
+          style={{ gap: 18 }}
         >
           <p
             style={{
@@ -113,35 +131,29 @@ export function FundadorasStrip() {
           >
             Nossos produtos:
           </p>
-          {CARDS.map((card, i) => (
-              <Reveal key={i} delay={0.1 + i * 0.05}>
-                <div
+          {CARDS.map((card, i) => {
+            const Icon = ICONS[card.icon]
+
+            return (
+              <Reveal key={i} delay={0.1 + i * 0.05} className="h-full min-h-0">
+                <Link
+                  href="/em-construcao"
+                  className="flex h-full min-h-[214px] flex-col gap-[18px] overflow-hidden rounded-[18px] py-[30px] pl-[clamp(22px,2vw,28px)] pr-[clamp(22px,2vw,28px)] text-inherit no-underline outline-none transition-transform duration-[200ms] ease-[ease] hover:z-10 hover:scale-[1.015] focus-visible:ring-2 focus-visible:ring-[var(--color-terracotta)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-cream)]"
                   style={{
                     background: card.bg,
-                    borderRadius: 16,
-                    padding: '32px 24px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 16,
-                    height: '100%',
+                    boxShadow: '0 18px 42px rgba(42, 37, 32, 0.08)',
                   }}
                 >
                   <div
                     style={{
-                      width: 48,
-                      height: 48,
-                      borderRadius: 12,
-                      background: 'var(--color-white-40)',
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      marginBottom: 8,
+                      color: 'var(--color-ink)',
                     }}
                   >
-                    {/* Brand lineart SVG — 24px display, viewBox 18×18, stroke-width 1 */}
-                    <img src={card.icon} width={24} height={24} alt="" aria-hidden />
+                    <Icon size={42} strokeWidth={1.3} aria-hidden />
                   </div>
-                  
+
                   <div>
                     <h3
                       style={{
@@ -160,7 +172,7 @@ export function FundadorasStrip() {
                       style={{
                         fontFamily: 'var(--font-sans)',
                         fontSize: 14.95,
-                        lineHeight: 1.45,
+                        lineHeight: 1.5,
                         color: 'var(--color-ink-sub)',
                         opacity: 0.9,
                       }}
@@ -168,9 +180,10 @@ export function FundadorasStrip() {
                       {card.desc}
                     </p>
                   </div>
-                </div>
+                </Link>
               </Reveal>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
