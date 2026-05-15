@@ -53,6 +53,13 @@ const eslintConfig = defineConfig([
     },
   },
   {
+    // RLS integration: não importar @/config/env (zod throw no load no CI sem .env.test).
+    files: ['src/test/rls/**/*.ts'],
+    rules: {
+      'no-restricted-syntax': 'off',
+    },
+  },
+  {
     files: ['scripts/**/*.mjs'],
     rules: {
       'no-console': 'off',

@@ -2,6 +2,8 @@
 
 /* eslint-disable @next/next/no-img-element */
 
+import Link from 'next/link'
+
 import { ARTIGOS } from '@/features/landing/data/conteudo'
 
 /* ─── Component ─────────────────────────────────────────────────────── */
@@ -38,7 +40,6 @@ export function Conteudo() {
           <h2
             style={{
               fontFamily: 'var(--font-serif)',
-              fontStyle: 'italic',
               fontSize: 'clamp(28px, 3.5vw, 44px)',
               fontWeight: 400,
               lineHeight: 1.15,
@@ -55,15 +56,11 @@ export function Conteudo() {
         {/* ── 3-column grid ── */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-[clamp(16px,2vw,24px)]">
           {ARTIGOS.map((a, i) => (
-            <div
+            <Link
               key={i}
-              style={{
-                background: a.bg,
-                borderRadius: 12,
-                display: 'flex',
-                flexDirection: 'column',
-                overflow: 'hidden',
-              }}
+              href="/em-construcao"
+              className="flex flex-col overflow-hidden rounded-[12px] text-inherit no-underline outline-none transition-transform duration-[200ms] ease-[ease] hover:z-10 hover:scale-[1.015] focus-visible:ring-2 focus-visible:ring-[var(--color-cream)]/35 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-sage-dark)]"
+              style={{ background: a.bg }}
             >
               {/* Image (Top Half) */}
               <div style={{ height: 220, width: '100%', overflow: 'hidden', position: 'relative' }}>
@@ -133,13 +130,14 @@ export function Conteudo() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
         {/* ── Bottom Button ── */}
         <div style={{ textAlign: 'center', marginTop: 32 }}>
-          <button
+          <Link
+            href="/em-construcao"
             style={{
               background: 'var(--color-sage-muted)',
               color: 'var(--color-forest-dark)',
@@ -153,10 +151,11 @@ export function Conteudo() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: 6,
+              textDecoration: 'none',
             }}
           >
             Ver mais &rarr;
-          </button>
+          </Link>
         </div>
 
       </div>

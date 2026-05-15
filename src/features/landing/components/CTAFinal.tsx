@@ -31,7 +31,6 @@ export function CTAFinal() {
           <h2
             style={{
               fontFamily: 'var(--font-serif)',
-              fontStyle: 'italic',
               fontSize: 'clamp(38px, 5.5vw, 64px)',
               fontWeight: 400,
               lineHeight: 1.1,

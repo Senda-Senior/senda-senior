@@ -31,6 +31,43 @@ import {
 } from './mappers'
 
 import type { SystemCategorySlug } from './categories'
+import type { VaultErrorCode } from './errors'
+
+type DbLikeError = {
+  code?: string
+  message?: string
+  details?: string
+  hint?: string
+}
+
+function logDbError(scope: string, error: DbLikeError | null | undefined) {
+  console.error(scope, {
+    code: error?.code ?? null,
+    message: error?.message ?? null,
+    details: error?.details ?? null,
+    hint: error?.hint ?? null,
+  })
+}
+
+function mapUploadWriteError(
+  error: DbLikeError | null | undefined,
+): VaultErrorCode {
+  const message = error?.message?.toLowerCase() ?? ''
+  const details = error?.details?.toLowerCase() ?? ''
+
+  if (
+    error?.code === 'P0001'
+    && (message.includes('vault_quota_exceeded') || details.includes('vault_quota_exceeded'))
+  ) {
+    return 'quota'
+  }
+
+  if (error?.code === '23505') {
+    return 'duplicate'
+  }
+
+  return 'internal'
+}
 
 // ─── prepareUpload ──────────────────────────────────────────────────
 
@@ -102,8 +139,8 @@ export async function prepareUpload(
   })
 
   if (insertFileError) {
-    console.error('[vault.prepareUpload] insert file failed:', insertFileError)
-    return fail('internal')
+    logDbError('[vault.prepareUpload] insert file failed', insertFileError)
+    return fail(mapUploadWriteError(insertFileError))
   }
 
   const { data: insertedBlob, error: blobError } = await supabase
@@ -121,9 +158,9 @@ export async function prepareUpload(
     .single()
 
   if (blobError || !insertedBlob) {
-    console.error('[vault.prepareUpload] insert blob failed:', blobError)
+    logDbError('[vault.prepareUpload] insert blob failed', blobError)
     await supabase.from('vault_files').delete().eq('id', fileId)
-    return fail('internal')
+    return fail(mapUploadWriteError(blobError))
   }
 
   const { error: linkError } = await supabase
@@ -133,10 +170,10 @@ export async function prepareUpload(
     .eq('user_id', user.id)
 
   if (linkError) {
-    console.error('[vault.prepareUpload] link blob failed:', linkError)
+    logDbError('[vault.prepareUpload] link blob failed', linkError)
     await supabase.from('vault_file_blobs').delete().eq('id', insertedBlob.id)
     await supabase.from('vault_files').delete().eq('id', fileId)
-    return fail('internal')
+    return fail(mapUploadWriteError(linkError))
   }
 
   const signed = await createSignedUploadUrl(supabase, storagePath)
@@ -234,7 +271,7 @@ export async function confirmUpload(
     .eq('id', fileId)
 
   if (updateError) {
-    console.error('[vault.confirmUpload] update failed:', updateError)
+    logDbError('[vault.confirmUpload] update failed', updateError)
     return fail('internal')
   }
 

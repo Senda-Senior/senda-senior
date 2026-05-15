@@ -62,16 +62,6 @@ export function VaultView({ quota, categories, files, trashedFiles, userEmail }:
           style={{
             position: 'absolute',
             inset: 0,
-            opacity: 0.1,
-            backgroundImage: "url('/brand/pattern-caminho-greenmono-claro.png')",
-            backgroundSize: '640px auto',
-            backgroundRepeat: 'repeat',
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
             background:
               'radial-gradient(ellipse 100% 80% at 0% 0%, rgba(245,240,232,0.95) 0%, transparent 55%), radial-gradient(ellipse 80% 60% at 100% 100%, rgba(234,227,212,0.5) 0%, transparent 50%)',
           }}
@@ -190,18 +180,6 @@ export function VaultView({ quota, categories, files, trashedFiles, userEmail }:
             boxShadow: '0 24px 64px rgba(42, 37, 32, 0.08), 0 0 0 1px rgba(255,255,255,0.5) inset',
           }}
         >
-          <div
-            aria-hidden
-            style={{
-              position: 'absolute',
-              inset: 0,
-              opacity: 0.07,
-              backgroundImage: "url('/brand/pattern-caminho-greenmono-claro.png')",
-              backgroundSize: '480px auto',
-              backgroundRepeat: 'repeat',
-              pointerEvents: 'none',
-            }}
-          />
           <div
             aria-hidden
             style={{

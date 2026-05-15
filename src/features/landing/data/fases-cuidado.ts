@@ -1,5 +1,5 @@
 /**
- * Data for `src/features/landing/components/FasesCuidado.tsx`.
+ * Data for `src/features/landing/components/ManuaisSection.tsx`.
  *
  * NOTE on inline color literals (#3a5c3a, #5c3a18, rgba(198,212,188,0.97), etc):
  * Each phase card has a unique palette by design — these colors ARE data,
