@@ -59,7 +59,7 @@ export async function toggleChecklistItem(
 export async function signOutAction() {
   await assertSameOrigin()
   const supabase = await createServerClient()
-  const { error } = await supabase.auth.signOut()
+  const { error } = await supabase.auth.signOut({ scope: 'global' })
   if (error) {
     throw new Error('Não foi possível encerrar a sessão agora.')
   }

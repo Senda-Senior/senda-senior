@@ -2,7 +2,6 @@ export const PROTECTED_PREFIXES = [
   '/dashboard',
   '/update-password',
   '/vault',
-  '/financial',
   '/health',
   '/profile',
   '/settings',
@@ -18,7 +17,6 @@ export const AUTH_PREFIXES = ['/login'] as const
 export const STRICT_CSP_PREFIXES = [
   '/dashboard',
   '/vault',
-  '/financial',
   '/health',
   '/profile',
   '/settings',

@@ -295,7 +295,7 @@ export default function Login() {
         })
 
         if (signInError) {
-          setError(signInError.message)
+          setError('Email ou senha incorretos.')
           return
         }
 
@@ -312,7 +312,7 @@ export default function Login() {
         )
 
         if (resetError) {
-          setError(resetError.message)
+          setError('Não foi possível enviar o link agora. Tente novamente.')
           return
         }
 
@@ -334,7 +334,7 @@ export default function Login() {
       })
 
       if (signUpError) {
-        setError(signUpError.message)
+        setError('Não foi possível criar a conta agora. Tente novamente.')
         return
       }
 
