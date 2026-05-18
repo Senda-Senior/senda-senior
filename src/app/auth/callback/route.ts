@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/config/env'
+import { IS_PROD } from '@/lib/server/proxy/headers'
 
 /**
  * Troca o `code` devolvido pelos links de email (confirmação, magic link,
@@ -8,7 +9,7 @@ import { env } from '@/config/env'
  * do Supabase nunca assina a sessão no browser/servidor.
  */
 function safeNextParam(next: string | null, fallback: string): string {
-  if (!next || !next.startsWith('/') || next.startsWith('//')) {
+  if (!next || !next.startsWith('/') || next.startsWith('//') || next.includes('\\')) {
     return fallback
   }
   return next
@@ -19,7 +20,6 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code')
   const next = safeNextParam(searchParams.get('next'), '/dashboard')
   const err = searchParams.get('error')
-  const errDescription = searchParams.get('error_description')
 
   const redirectToLoginWithError = (message: string) => {
     const to = new URL('/login', origin)
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
   }
 
   if (err) {
-    return redirectToLoginWithError(errDescription ?? err)
+    return redirectToLoginWithError('auth_error')
   }
 
   if (!code) {
@@ -53,9 +53,10 @@ export async function GET(request: NextRequest) {
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, {
               ...options,
-              path: '/',
-              sameSite: 'lax',
-              secure: process.env.NODE_ENV === 'production',
+              httpOnly: options?.httpOnly ?? true,
+              path: options?.path ?? '/',
+              sameSite: options?.sameSite ?? 'lax',
+              secure: options?.secure ?? IS_PROD,
             }),
           )
         },
@@ -65,7 +66,7 @@ export async function GET(request: NextRequest) {
 
   const { error } = await supabase.auth.exchangeCodeForSession(code)
   if (error) {
-    return redirectToLoginWithError(error.message)
+    return redirectToLoginWithError('session_exchange_failed')
   }
 
   return response

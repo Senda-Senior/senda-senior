@@ -42,6 +42,7 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
         id={inputId}
         aria-invalid={error ? true : undefined}
         aria-describedby={describedBy}
+        aria-required={rest.required ? true : undefined}
         className={cn(
           'w-full rounded-[10px] border-[1.5px] border-cream-mid bg-cream',
           'px-4 py-[14px] font-sans text-[15px] text-ink outline-none',

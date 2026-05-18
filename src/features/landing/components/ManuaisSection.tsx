@@ -105,7 +105,11 @@ export function ManuaisSection() {
         {MANUAIS.map((m, i) => (
           <motion.button
             key={i}
+            id={`manual-tab-${i}`}
             onClick={() => setActive(i)}
+            role="tab"
+            aria-selected={active === i}
+            aria-controls={`manual-panel-${i}`}
             whileHover={active !== i ? { backgroundColor: 'rgba(212, 170, 106, 0.14)' } : {}}
             whileTap={{ scale: 0.97 }}
             transition={{ duration: 0.18, ease: 'easeOut' }}
@@ -238,6 +242,9 @@ export function ManuaisSection() {
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
             key={`card-${active}`}
+            role="tabpanel"
+            id={`manual-panel-${active}`}
+            aria-labelledby={`manual-tab-${active}`}
             initial={{ x: -24, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -16, opacity: 0 }}

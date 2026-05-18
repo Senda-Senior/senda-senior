@@ -19,24 +19,17 @@ test.describe('Authentication Flow', () => {
     await expect(submitButton).toBeVisible();
   });
 
-  test('should handle login with valid credentials (mock)', async ({ page }) => {
+  test('should show an auth error when credentials hit the fake Supabase backend', async ({ page }) => {
     await page.goto('/login?next=/dashboard');
     await expect(page.locator('#auth-email')).toBeVisible({ timeout: 20_000 });
 
-    // Fill login form
     await page.locator('#auth-email').fill('test@example.com');
     await page.locator('#auth-password').fill('securepassword123');
 
-    // Submit form
     await page.getByRole('button', { name: /entrar na senda/i }).click();
 
-    // Should redirect to dashboard or show success. We wait for the URL to change.
-    // Note: this will fail if the test environment doesn't have Supabase configured,
-    // so we just check if it tries to navigate or shows an error.
-    await expect(page).toHaveURL(/.*\/dashboard|.*\//, { timeout: 10000 }).catch(() => {
-      // If Supabase is not running, it will show an error message instead
-      expect(page.locator('.bg-\\[\\#fff3f1\\]')).toBeVisible();
-    });
+    await expect(page).toHaveURL(/\/login(?:\?|$)/, { timeout: 10000 });
+    await expect(page.locator('.bg-\\[\\#fff3f1\\]')).toBeVisible();
   });
 
   test('should show validation errors for invalid email', async ({ page }) => {
