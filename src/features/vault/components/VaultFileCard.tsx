@@ -117,6 +117,8 @@ export function VaultFileCard({ file, categories }: Props) {
             <button
               onClick={() => setMenuOpen((o) => !o)}
               aria-label="Mais opções"
+              aria-expanded={menuOpen}
+              aria-haspopup="menu"
               style={{
                 background: 'transparent',
                 border: 'none',
@@ -265,6 +267,7 @@ function MenuItem({
   return (
     <button
       onClick={onClick}
+      role="menuitem"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{

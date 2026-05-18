@@ -16,6 +16,7 @@ import {
   resetPasswordRequestSchema,
   signInSchema,
   signUpSchema,
+  STRONG_PASSWORD_MIN_LENGTH,
 } from '@/features/auth'
 import { createClient as createBrowserClient } from '@/lib/supabase/client'
 
@@ -28,7 +29,7 @@ function safePostAuthPath(): string {
     typeof window === 'undefined' ? '' : window.location.search,
   )
   const next = params.get('next')
-  if (next && next.startsWith('/') && !next.startsWith('//')) {
+  if (next && next.startsWith('/') && !next.startsWith('//') && !next.includes('\\')) {
     return next
   }
   return '/dashboard'
@@ -444,11 +445,15 @@ export default function Login() {
                     label="Senha"
                     type="password"
                     autoComplete={isRegister ? 'new-password' : 'current-password'}
-                    placeholder="Senha (mín. 6 caracteres)"
+                    placeholder={
+                      isRegister
+                        ? `Senha (mín. ${STRONG_PASSWORD_MIN_LENGTH} caracteres)`
+                        : 'Sua senha'
+                    }
                     value={password}
                     onChange={handlePasswordChange}
                     error={fieldErrors.password}
-                    minLength={6}
+                    minLength={isRegister ? STRONG_PASSWORD_MIN_LENGTH : undefined}
                   />
                 ) : null}
 

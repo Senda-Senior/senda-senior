@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import type { VaultErrorCode } from './errors'
 
 /**
  * Validação de input + blocklists.
@@ -18,26 +19,85 @@ export const VAULT_LIMITS = {
   pendingTimeoutMinutes: 60,
 } as const
 
+export const ALLOWED_UPLOAD_TYPES: Record<string, readonly string[]> = {
+  pdf: ['application/pdf'],
+  jpg: ['image/jpeg'],
+  jpeg: ['image/jpeg'],
+  png: ['image/png'],
+  gif: ['image/gif'],
+  webp: ['image/webp'],
+  heic: ['image/heic', 'image/heif'],
+  heif: ['image/heif', 'image/heic'],
+  doc: ['application/msword'],
+  docx: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+  xls: ['application/vnd.ms-excel'],
+  xlsx: ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
+  ppt: ['application/vnd.ms-powerpoint'],
+  pptx: ['application/vnd.openxmlformats-officedocument.presentationml.presentation'],
+  txt: ['text/plain'],
+  csv: ['text/csv'],
+  rtf: ['application/rtf'],
+  zip: ['application/zip', 'application/x-zip-compressed'],
+} as const
+
+export const ALLOWED_EXTENSIONS = new Set(Object.keys(ALLOWED_UPLOAD_TYPES))
+
+export const ALLOWED_MIMES = new Set(
+  Object.values(ALLOWED_UPLOAD_TYPES).flatMap((mimes) => mimes),
+)
+
+const ALLOWED_MIMES_TUPLE = [...ALLOWED_MIMES] as [string, ...string[]]
+
+// Compatibilidade com imports legados do barrel público.
 export const BLOCKED_EXTENSIONS = new Set([
-  'exe', 'bat', 'cmd', 'sh', 'ps1', 'scr', 'msi', 'dll',
-  'com', 'vbs', 'vbe', 'wsf', 'wsh', 'hta', 'jar', 'app',
-  'dmg', 'iso', 'reg', 'inf', 'lnk', 'so',
+  'exe', 'bat', 'cmd', 'com', 'msi', 'dll', 'scr', 'jar',
+  'sh', 'bash', 'zsh', 'ps1', 'psm1',
+  'vbs', 'vbe', 'wsf', 'wsh', 'hta', 'reg', 'lnk',
 ])
 
 export const BLOCKED_MIMES = new Set([
   'application/x-msdownload',
   'application/x-msdos-program',
   'application/x-executable',
+  'application/java-archive',
   'application/x-sh',
   'application/x-bsh',
+  'text/x-shellscript',
+  'application/x-powershell',
+  'application/vnd.microsoft.portable-executable',
 ])
 
 export function isBlockedExtension(ext: string): boolean {
-  return BLOCKED_EXTENSIONS.has(ext.toLowerCase().replace(/^\./, ''))
+  return !ALLOWED_EXTENSIONS.has(ext.toLowerCase().replace(/^\./, ''))
 }
 
 export function isBlockedMime(mime: string): boolean {
-  return BLOCKED_MIMES.has(mime.toLowerCase().trim())
+  return !ALLOWED_MIMES.has(mime.toLowerCase().trim())
+}
+
+export function isMimeAllowedForExtension(ext: string, mime: string): boolean {
+  const normalizedExt = ext.toLowerCase().replace(/^\./, '')
+  const normalizedMime = mime.toLowerCase().trim()
+  const allowedMimes = ALLOWED_UPLOAD_TYPES[
+    normalizedExt as keyof typeof ALLOWED_UPLOAD_TYPES
+  ]
+
+  if (!allowedMimes) return false
+
+  return allowedMimes.includes(normalizedMime)
+}
+
+export function validateUploadType(
+  filename: string,
+  mime: string,
+): VaultErrorCode | null {
+  const ext = extractExtension(filename)
+
+  if (isBlockedExtension(ext)) return 'blocked_ext'
+  if (isBlockedMime(mime)) return 'blocked_mime'
+  if (!isMimeAllowedForExtension(ext, mime)) return 'mime_mismatch'
+
+  return null
 }
 
 /** extrai extensão (sem ponto, lowercase). retorna '' se não houver. */
@@ -56,7 +116,7 @@ export const sha256Schema = z
 export const prepareUploadSchema = z.object({
   name: z.string().min(1).max(VAULT_LIMITS.maxDisplayNameLength),
   size: z.number().int().positive().max(VAULT_LIMITS.maxFileSizeBytes),
-  mime: z.string().min(1).max(255),
+  mime: z.enum(ALLOWED_MIMES_TUPLE),
   sha256: sha256Schema,
 })
 

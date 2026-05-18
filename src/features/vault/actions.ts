@@ -7,10 +7,9 @@ import { fail, success, type ActionResult } from './errors'
 import {
   extractExtension,
   fileIdSchema,
-  isBlockedExtension,
-  isBlockedMime,
   prepareUploadSchema,
   updateMetadataSchema,
+  validateUploadType,
   type PrepareUploadInput,
   type UpdateMetadataInput,
 } from './validation'
@@ -40,12 +39,12 @@ type DbLikeError = {
   hint?: string
 }
 
+type SupabaseServerClient = Awaited<ReturnType<typeof createServerClient>>
+
 function logDbError(scope: string, error: DbLikeError | null | undefined) {
   console.error(scope, {
     code: error?.code ?? null,
     message: error?.message ?? null,
-    details: error?.details ?? null,
-    hint: error?.hint ?? null,
   })
 }
 
@@ -69,6 +68,43 @@ function mapUploadWriteError(
   return 'internal'
 }
 
+async function syncClassifierOverridesForUser(
+  supabase: SupabaseServerClient,
+  userId: string,
+): Promise<{ ok: true; count: number } | { ok: false }> {
+  const { data, error } = await supabase
+    .from('vault_classifier_overrides')
+    .select('pattern, category_slug, weight, created_at')
+    .eq('user_id', userId)
+    .order('match_count', { ascending: false })
+    .limit(100)
+
+  const { setUserOverrides } = await import('./classifier')
+
+  if (error) {
+    console.error('[vault.syncClassifierOverridesForUser]', {
+      userId,
+      code: error.code ?? null,
+      message: error.message ?? null,
+    })
+    setUserOverrides(userId, [])
+    return { ok: false }
+  }
+
+  setUserOverrides(
+    userId,
+    (data ?? []).map((row) => ({
+      userId,
+      pattern: row.pattern,
+      category: row.category_slug as SystemCategorySlug,
+      weight: row.weight,
+      createdAt: row.created_at,
+    })),
+  )
+
+  return { ok: true, count: data?.length ?? 0 }
+}
+
 // ─── prepareUpload ──────────────────────────────────────────────────
 
 export async function prepareUpload(
@@ -87,9 +123,9 @@ export async function prepareUpload(
 
   const { name, size, mime, sha256 } = parsed.data
   const ext = extractExtension(name)
+  const uploadTypeError = validateUploadType(name, mime)
 
-  if (isBlockedExtension(ext)) return fail('blocked_ext')
-  if (isBlockedMime(mime)) return fail('blocked_mime')
+  if (uploadTypeError) return fail(uploadTypeError)
 
   const user = await requireUser()
   const supabase = await createServerClient()
@@ -248,10 +284,13 @@ export async function confirmUpload(
     return fail('size_mismatch')
   }
 
+  await syncClassifierOverridesForUser(supabase, user.id)
+
   const classification = classify({
     name: f.original_name,
     mime: blob.mime_type,
     size: Number(blob.size_bytes),
+    userId: user.id,
   })
 
   const okSlug = await isValidSystemCategorySlug(classification.categorySlug)
@@ -301,6 +340,8 @@ export async function confirmUpload(
 export async function getDownloadUrl(
   fileId: string,
 ): Promise<ActionResult<{ url: string; expiresAt: string }>> {
+  await assertSameOrigin()
+
   const parsed = fileIdSchema.safeParse({ fileId })
   if (!parsed.success) return fail('invalid')
 
@@ -377,7 +418,11 @@ export async function updateMetadata(
       // Use original_name to extract meaningful pattern for future classification
       const pattern = extractOverridePattern(currentFile.original_name)
       if (pattern) {
-        const override = createOverride(pattern, patch.categorySlug as SystemCategorySlug)
+        const override = createOverride(
+          user.id,
+          pattern,
+          patch.categorySlug as SystemCategorySlug,
+        )
         // Persist to DB for cross-session learning
         await supabase.from('vault_classifier_overrides').upsert({
           user_id: user.id,
@@ -485,25 +530,10 @@ export async function restore(fileId: string): Promise<ActionResult<null>> {
 export async function loadUserOverrides(): Promise<ActionResult<{ count: number }>> {
   const user = await requireUser()
   const supabase = await createServerClient()
-  const { data, error } = await supabase
-    .from('vault_classifier_overrides')
-    .select('pattern, category_slug, weight, created_at')
-    .eq('user_id', user.id)
-    .order('match_count', { ascending: false })
-    .limit(100)
-  if (error) {
-    console.error('[vault.loadUserOverrides]', error)
-    return fail('internal')
-  }
-  if (data && data.length > 0) {
-    const { setUserOverrides } = await import('./classifier')
-    setUserOverrides(data.map((r) => ({
-      pattern: r.pattern,
-      category: r.category_slug as SystemCategorySlug,
-      weight: r.weight,
-      createdAt: r.created_at,
-    })))
-  }
-  return success({ count: data?.length ?? 0 })
+  const synced = await syncClassifierOverridesForUser(supabase, user.id)
+
+  if (!synced.ok) return fail('internal')
+
+  return success({ count: synced.count })
 }
 

@@ -4,7 +4,7 @@
 
 import { useRef, useState, useEffect } from 'react'
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
-import { ArrowRight, ChevronDown, ChevronUp } from 'lucide-react'
+import { ArrowRight, ChevronDown, ChevronUp, ArrowDown } from 'lucide-react'
 import Link from 'next/link'
 
 /* ─── Data ──────────────────────────────────────────────────────────── */
@@ -597,6 +597,33 @@ export function DesktopFasesCuidado() {
             </motion.div>
           </div>
         </div>
+
+        {/* Scroll Indicator for Desktop Sticky Carousel */}
+        <motion.div
+          animate={{ opacity: activeIndex < 2 ? 1 : 0, pointerEvents: activeIndex < 2 ? 'auto' : 'none' }}
+          transition={{ duration: 0.3 }}
+          className="hidden md:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-[10px] z-50"
+          aria-hidden="true"
+        >
+          <span 
+            style={{ 
+              color: 'var(--color-cream)',
+              opacity: 0.6,
+              fontSize: '10px',
+              fontWeight: 500,
+              textTransform: 'uppercase',
+              letterSpacing: '0.2em'
+            }}
+          >
+            Role para avançar
+          </span>
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ArrowDown size={20} strokeWidth={1.2} style={{ color: 'var(--color-cream)', opacity: 0.6 }} />
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )

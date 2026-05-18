@@ -49,6 +49,7 @@ export interface ClassifierInput {
   mime: string
   size: number
   content?: string // texto extraído (ocr) — opcional, futuro
+  userId?: string
 }
 
 export interface ClassifierSignal {
@@ -71,6 +72,7 @@ export interface FileNameClassification {
 }
 
 export interface UserOverride {
+  userId?: string
   pattern: string // normalized pattern that triggered match
   category: SystemCategorySlug
   weight: number // positive = reinforce, negative = suppress
@@ -94,18 +96,41 @@ function normalize(s: string): string {
  * Lazy-loaded user overrides cache.
  * Call `clearOverrideCache()` to reset (useful for testing).
  */
-let _cachedOverrides: UserOverride[] | null = null
+const DEFAULT_OVERRIDE_CACHE_KEY = '__default__'
+const _cachedOverridesByUser = new Map<string, UserOverride[]>()
 
-export function setUserOverrides(overrides: UserOverride[]): void {
-  _cachedOverrides = overrides
+function getOverrideCacheKey(userId?: string): string {
+  return userId?.trim() || DEFAULT_OVERRIDE_CACHE_KEY
 }
 
-export function clearOverrideCache(): void {
-  _cachedOverrides = null
+export function setUserOverrides(userId: string, overrides: UserOverride[]): void
+export function setUserOverrides(overrides: UserOverride[]): void
+export function setUserOverrides(
+  userIdOrOverrides: string | UserOverride[],
+  maybeOverrides?: UserOverride[],
+): void {
+  if (typeof userIdOrOverrides === 'string') {
+    _cachedOverridesByUser.set(
+      getOverrideCacheKey(userIdOrOverrides),
+      maybeOverrides ?? [],
+    )
+    return
+  }
+
+  _cachedOverridesByUser.set(DEFAULT_OVERRIDE_CACHE_KEY, userIdOrOverrides)
 }
 
-export function getUserOverrides(): UserOverride[] {
-  return _cachedOverrides ?? []
+export function clearOverrideCache(userId?: string): void {
+  if (userId) {
+    _cachedOverridesByUser.delete(getOverrideCacheKey(userId))
+    return
+  }
+
+  _cachedOverridesByUser.clear()
+}
+
+export function getUserOverrides(userId?: string): UserOverride[] {
+  return _cachedOverridesByUser.get(getOverrideCacheKey(userId)) ?? []
 }
 
 // ─── fuzzy matching (levenshtein) ───────────────────────────────────
@@ -334,9 +359,9 @@ function scanMime(mime: string): ClassifierSignal[] {
   return out
 }
 
-function scanUserOverrides(text: string): ClassifierSignal[] {
+function scanUserOverrides(text: string, userId?: string): ClassifierSignal[] {
   const out: ClassifierSignal[] = []
-  const overrides = getUserOverrides()
+  const overrides = getUserOverrides(userId)
 
   for (const override of overrides) {
     const normText = normalize(text)
@@ -371,7 +396,7 @@ export function classify(input: ClassifierInput): ClassifierOutput {
   signals.push(...scanText(baseName, 'filename_dict'))
   signals.push(...scanExtension(ext))
   signals.push(...scanMime(input.mime))
-  signals.push(...scanUserOverrides(baseName))
+  signals.push(...scanUserOverrides(baseName, input.userId))
 
   if (input.content && input.content.length > 0) {
     signals.push(...scanText(input.content, 'content_regex'))
@@ -381,11 +406,15 @@ export function classify(input: ClassifierInput): ClassifierOutput {
   return aggregate(signals)
 }
 
-export function classifyFileName(filename: string): FileNameClassification {
+export function classifyFileName(
+  filename: string,
+  userId?: string,
+): FileNameClassification {
   const result = classify({
     name: filename,
     mime: '',
     size: 0,
+    userId,
   })
 
   return {
@@ -431,21 +460,44 @@ function aggregate(signals: ClassifierSignal[]): ClassifierOutput {
  * Retorna o override criado para persistência no banco.
  */
 export function createOverride(
+  userId: string,
   matchedPattern: string,
   category: SystemCategorySlug,
+): UserOverride
+export function createOverride(
+  matchedPattern: string,
+  category: SystemCategorySlug,
+): UserOverride
+export function createOverride(
+  userIdOrPattern: string,
+  matchedPatternOrCategory: string | SystemCategorySlug,
+  maybeCategory?: SystemCategorySlug,
 ): UserOverride {
+  const hasExplicitUserId = maybeCategory !== undefined
+  const userId = hasExplicitUserId ? userIdOrPattern : undefined
+  const matchedPattern = hasExplicitUserId
+    ? (matchedPatternOrCategory as string)
+    : userIdOrPattern
+  const category = hasExplicitUserId
+    ? maybeCategory
+    : (matchedPatternOrCategory as SystemCategorySlug)
   const override: UserOverride = {
+    userId,
     pattern: normalize(matchedPattern),
-    category,
+    category: category as SystemCategorySlug,
     weight: CLASSIFIER_WEIGHTS.user_override,
     createdAt: new Date().toISOString(),
   }
 
   // Append to cache (in production, this would also persist to DB)
-  const existing = getUserOverrides()
+  const existing = getUserOverrides(userId)
   const updated = existing.filter((o) => o.pattern !== override.pattern)
   updated.push(override)
-  setUserOverrides(updated)
+  if (userId) {
+    setUserOverrides(userId, updated)
+  } else {
+    setUserOverrides(updated)
+  }
 
   return override
 }

@@ -38,7 +38,7 @@ export async function createSignedDownloadUrl(
 ): Promise<{ url: string; expiresAt: string } | { error: string }> {
   const { data, error } = await supabase.storage
     .from(BUCKET)
-    .createSignedUrl(path, VAULT_LIMITS.signedDownloadTtlSeconds)
+    .createSignedUrl(path, VAULT_LIMITS.signedDownloadTtlSeconds, { download: true })
 
   if (error || !data) return { error: error?.message ?? 'unknown' }
 

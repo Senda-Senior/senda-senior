@@ -16,8 +16,42 @@ export const emailSchema = z
 
 export const passwordSchema = z
   .string()
-  .min(6, 'A senha precisa de no mínimo 6 caracteres.')
+  .min(1, 'Informe sua senha.')
   .max(128, 'Senha muito longa.')
+
+export const STRONG_PASSWORD_MIN_LENGTH = 12
+
+export const strongPasswordHints = [
+  `Pelo menos ${STRONG_PASSWORD_MIN_LENGTH} caracteres.`,
+  'Ao menos uma letra maiúscula.',
+  'Ao menos uma letra minúscula.',
+  'Ao menos um número.',
+  'Ao menos um símbolo.',
+  'Sem espaços em branco.',
+] as const
+
+export const strongPasswordSchema = z
+  .string()
+  .min(
+    STRONG_PASSWORD_MIN_LENGTH,
+    `A senha precisa de no mínimo ${STRONG_PASSWORD_MIN_LENGTH} caracteres.`,
+  )
+  .max(128, 'Senha muito longa.')
+  .refine((value) => /[A-Z]/.test(value), {
+    message: 'Use pelo menos uma letra maiúscula.',
+  })
+  .refine((value) => /[a-z]/.test(value), {
+    message: 'Use pelo menos uma letra minúscula.',
+  })
+  .refine((value) => /[0-9]/.test(value), {
+    message: 'Use pelo menos um número.',
+  })
+  .refine((value) => /[^A-Za-z0-9\s]/.test(value), {
+    message: 'Use pelo menos um símbolo.',
+  })
+  .refine((value) => !/\s/.test(value), {
+    message: 'A senha não pode conter espaços.',
+  })
 
 export const signInSchema = z.object({
   email: emailSchema,
@@ -27,7 +61,7 @@ export type SignInInput = z.infer<typeof signInSchema>
 
 export const signUpSchema = z.object({
   email: emailSchema,
-  password: passwordSchema,
+  password: strongPasswordSchema,
 })
 export type SignUpInput = z.infer<typeof signUpSchema>
 
@@ -38,7 +72,7 @@ export type ResetPasswordRequestInput = z.infer<typeof resetPasswordRequestSchem
 
 export const updatePasswordSchema = z
   .object({
-    password: passwordSchema,
+    password: strongPasswordSchema,
     confirm: z.string().min(1, 'Confirme a nova senha.'),
   })
   .refine((data) => data.password === data.confirm, {

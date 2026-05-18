@@ -50,40 +50,42 @@ describe('Vault Classifier', () => {
 
   test('respects user overrides', () => {
     // Set a user override
-    setUserOverrides([
+    setUserOverrides('test-user', [
       {
-        user_id: 'test-user',
+        userId: 'test-user',
         pattern: 'custom_term',
         category: 'juridico',
         weight: 10,
+        createdAt: new Date().toISOString(),
       },
     ]);
 
-    const result = classifyFileName('custom_term_document.pdf');
+    const result = classifyFileName('custom_term_document.pdf', 'test-user');
     expect(result.category).toBe('juridico');
     expect(result.confidence).toBeGreaterThan(0.8); // High confidence due to override
   });
 
   test('clear override cache works', () => {
     // Set override
-    setUserOverrides([
+    setUserOverrides('test-user', [
       {
-        user_id: 'test-user',
+        userId: 'test-user',
         pattern: 'test',
         category: 'juridico',
         weight: 10,
+        createdAt: new Date().toISOString(),
       },
     ]);
 
     // Verify it works
-    let result = classifyFileName('test_file.pdf');
+    let result = classifyFileName('test_file.pdf', 'test-user');
     expect(result.category).toBe('juridico');
 
     // Clear cache
-    clearOverrideCache();
+    clearOverrideCache('test-user');
 
     // Should fall back to normal classification
-    result = classifyFileName('test_file.pdf');
+    result = classifyFileName('test_file.pdf', 'test-user');
     expect(result.category).toBe('outros'); // No longer matches override
   });
 });

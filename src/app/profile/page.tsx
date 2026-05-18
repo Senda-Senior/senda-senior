@@ -24,7 +24,6 @@ export default async function ProfilePage() {
           
           <div className="space-y-4">
             <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>ID do Usuário:</strong> {user.id}</p>
             {/* Additional profile fields will be added here */}
           </div>
           

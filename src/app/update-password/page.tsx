@@ -6,6 +6,10 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { CheckCircle, KeyRound, Lock, ShieldCheck } from 'lucide-react'
 import { createClient as createBrowserClient } from '@/lib/supabase/client'
 import { AuthBrandPanel, AuthFormPanel } from '@/features/auth'
+import {
+  STRONG_PASSWORD_MIN_LENGTH,
+  updatePasswordSchema,
+} from '@/features/auth/schemas'
 import { Button, Field } from '@/design'
 
 export default function UpdatePassword() {
@@ -16,6 +20,34 @@ export default function UpdatePassword() {
   const [success, setSuccess] = useState(false)
   const redirectTimeoutRef = useRef<number | null>(null)
   const supabase = useMemo(() => createBrowserClient(), [])
+  const passwordChecks = [
+    {
+      label: `Pelo menos ${STRONG_PASSWORD_MIN_LENGTH} caracteres`,
+      passed: password.length >= STRONG_PASSWORD_MIN_LENGTH,
+    },
+    {
+      label: 'Uma letra maiúscula',
+      passed: /[A-Z]/.test(password),
+    },
+    {
+      label: 'Uma letra minúscula',
+      passed: /[a-z]/.test(password),
+    },
+    {
+      label: 'Um número',
+      passed: /[0-9]/.test(password),
+    },
+    {
+      label: 'Um símbolo',
+      passed: /[^A-Za-z0-9\s]/.test(password),
+    },
+    {
+      label: 'Sem espaços',
+      passed: !/\s/.test(password) && password.length > 0,
+    },
+  ]
+  const showPasswordChecklist = password.length > 0 || confirm.length > 0
+  const passwordsMatch = confirm.length > 0 && password === confirm
 
   useEffect(() => {
     return () => {
@@ -29,8 +61,9 @@ export default function UpdatePassword() {
     e.preventDefault()
     setError('')
 
-    if (password !== confirm) {
-      setError('As senhas não coincidem.')
+    const parsed = updatePasswordSchema.safeParse({ password, confirm })
+    if (!parsed.success) {
+      setError(parsed.error.issues[0]?.message ?? 'Dados inválidos.')
       return
     }
 
@@ -41,7 +74,7 @@ export default function UpdatePassword() {
     })
 
     if (updateError) {
-      setError(updateError.message)
+      setError('Não foi possível atualizar a senha. Tente novamente.')
       setLoading(false)
     } else {
       setSuccess(true)
@@ -74,8 +107,8 @@ export default function UpdatePassword() {
           é prioridade.
         </h2>
         <p className="max-w-[340px] text-base leading-[1.7] text-white/70">
-          Use uma senha forte e única. Recomendamos combinar letras maiúsculas,
-          minúsculas, números e símbolos.
+          Use uma senha forte e única com pelo menos {STRONG_PASSWORD_MIN_LENGTH}
+          {' '}caracteres, combinando letras, números e símbolos.
         </p>
 
         <div className="mt-12 flex flex-col gap-4">
@@ -128,7 +161,8 @@ export default function UpdatePassword() {
               Nova senha
             </h1>
             <p className="mb-10 text-base font-medium leading-[1.6] text-terracotta-light">
-              Escolha uma senha segura para sua conta.
+              Escolha uma senha forte com {STRONG_PASSWORD_MIN_LENGTH}+ caracteres,
+              letras maiúsculas e minúsculas, número e símbolo.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -137,12 +171,12 @@ export default function UpdatePassword() {
                 name="new-password"
                 type="password"
                 autoComplete="new-password"
-                placeholder="Mínimo 6 caracteres"
+                placeholder={`Mínimo ${STRONG_PASSWORD_MIN_LENGTH} caracteres`}
                 label="Nova senha"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                minLength={6}
+                minLength={STRONG_PASSWORD_MIN_LENGTH}
               />
 
               <Field
@@ -155,9 +189,30 @@ export default function UpdatePassword() {
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 required
-                minLength={6}
+                minLength={STRONG_PASSWORD_MIN_LENGTH}
                 className="mb-2"
               />
+
+              {showPasswordChecklist && (
+                <div className="rounded-[10px] border border-terracotta-light/20 bg-cream/70 px-4 py-3">
+                  <p className="mb-2 text-[14px] font-semibold text-ink">
+                    Sua senha precisa ter:
+                  </p>
+                  <ul className="space-y-1 text-[14px] leading-[1.5] text-terracotta-light">
+                    {passwordChecks.map((item) => (
+                      <li
+                        key={item.label}
+                        className={item.passed ? 'text-green-dark' : 'text-terracotta-light'}
+                      >
+                        {item.passed ? 'OK' : '•'} {item.label}
+                      </li>
+                    ))}
+                    <li className={passwordsMatch ? 'text-green-dark' : 'text-terracotta-light'}>
+                      {passwordsMatch ? 'OK' : '•'} As duas senhas precisam coincidir
+                    </li>
+                  </ul>
+                </div>
+              )}
 
               {error && (
                 <div className="rounded-[10px] border border-[#FECACA] bg-[#FEF2F2] px-4 py-3 text-[15px] leading-[1.5] text-[#B91C1C]">

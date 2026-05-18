@@ -2,6 +2,27 @@ import 'server-only'
 import { headers } from 'next/headers'
 import { serverEnv } from '@/config/env.server'
 
+function parseOrigin(value: string): string | null {
+  try {
+    return new URL(value).origin
+  } catch {
+    return null
+  }
+}
+
+function isLocalHost(host: string): boolean {
+  return (
+    host.startsWith('localhost') ||
+    host.startsWith('127.0.0.1') ||
+    host.startsWith('[::1]')
+  )
+}
+
+function originFromHost(host: string): string {
+  const proto = isLocalHost(host) ? 'http' : 'https'
+  return `${proto}://${host}`
+}
+
 /**
  * Lança um erro se a requisição vier de uma origem diferente do app.
  *
@@ -20,23 +41,26 @@ export async function assertSameOrigin(): Promise<void> {
   if (!origin) return
 
   const host = h.get('host')
-  const siteUrl = serverEnv.NEXT_PUBLIC_SITE_URL
+  const siteOrigin = serverEnv.NEXT_PUBLIC_SITE_URL
+    ? parseOrigin(serverEnv.NEXT_PUBLIC_SITE_URL)
+    : null
 
   // Constrói a(s) origem(ns) esperada(s)
   const allowedOrigins = new Set<string>()
 
-  if (siteUrl) {
-    try {
-      allowedOrigins.add(new URL(siteUrl).origin)
-    } catch {
-      // siteUrl malformada — ignora, cai no host
-    }
+  if (siteOrigin) {
+    allowedOrigins.add(siteOrigin)
   }
 
-  if (host) {
-    const isLocal = host.startsWith('localhost') || host.startsWith('127.0.0.1')
-    const proto = isLocal ? 'http' : 'https'
-    allowedOrigins.add(`${proto}://${host}`)
+  const canFallbackToHost =
+    !siteOrigin || process.env.NODE_ENV !== 'production'
+
+  if (host && canFallbackToHost) {
+    const hostOrigin = originFromHost(host)
+
+    if (!siteOrigin || hostOrigin === siteOrigin || isLocalHost(host)) {
+      allowedOrigins.add(hostOrigin)
+    }
   }
 
   if (allowedOrigins.size === 0) {

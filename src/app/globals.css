@@ -339,6 +339,16 @@ body.reader-locked {
   border: 0;
 }
 
+.sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+}
+
 /* ── MANIFESTO TYPOGRAPHY (Prancheta 8 scale) ────────────────────── */
 .manifesto-headline {
   font-family: var(--font-serif);
