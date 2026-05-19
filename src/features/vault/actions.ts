@@ -441,7 +441,7 @@ export async function updateMetadata(
   if (Object.keys(update).length > 0) {
     const { error } = await supabase
       .from('vault_files')
-      .update(update)
+      .update(update as any)
       .eq('user_id', user.id)
       .eq('id', fileId)
     if (error) return fail('internal')

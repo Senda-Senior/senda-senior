@@ -54,7 +54,8 @@ export function AppPageContainer({
   )
 }
 
-export interface AppPageHeaderProps extends HTMLAttributes<HTMLDivElement> {
+export interface AppPageHeaderProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   title: ReactNode
   description?: ReactNode
 }
@@ -79,7 +80,8 @@ export function AppPageHeader({
   )
 }
 
-export interface AppPageCardProps extends HTMLAttributes<HTMLDivElement> {
+export interface AppPageCardProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   title?: ReactNode
   description?: ReactNode
   actions?: ReactNode

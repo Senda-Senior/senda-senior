@@ -246,7 +246,7 @@ export function FundadorasStrip() {
         return current
       }
 
-      return activeProduct.subcategories[0]?.id ?? null
+      return activeProduct.subcategories?.[0]?.id ?? null
     })
   }, [activeProduct])
 
