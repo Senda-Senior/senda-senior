@@ -96,7 +96,7 @@ export function AppPageCard({
   return (
     <section
       className={cn(
-        'rounded-[20px] border border-terracotta-light bg-white/80 px-8 py-10 shadow-[0_12px_40px_rgba(42,37,32,0.04)]',
+        'rounded-[20px] border border-terracotta-light bg-white/80 px-8 py-10',
         className,
       )}
       {...rest}

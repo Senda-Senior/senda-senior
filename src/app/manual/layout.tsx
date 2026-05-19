@@ -12,13 +12,7 @@ export default function ManualLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <ReaderBodyLock />
-      <div
-        style={{
-          background: 'var(--color-cream)',
-          minHeight: '100vh',
-          display: 'flex',
-        }}
-      >
+      <div className="flex min-h-screen bg-[var(--color-cream)]">
         {children}
       </div>
     </>
