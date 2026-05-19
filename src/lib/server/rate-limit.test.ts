@@ -29,7 +29,7 @@ describe('rate-limit', () => {
     mockServerEnv('true')
 
     await expect(import('./rate-limit')).rejects.toThrow(
-      'E2E_DISABLE_RATE_LIMIT must not be set in production',
+      'E2E_DISABLE_RATE_LIMIT is only allowed in development or test environments',
     )
   })
 
