@@ -24,6 +24,7 @@ const stagger = {
 
 function FounderCard({ name, role, bio, credentials, reverse }: Founder) {
   const photo = FOUNDER_PHOTOS[name]
+  const bioParagraphs = bio.split('\n\n')
   return (
     <motion.div
       variants={fadeUp}
@@ -58,19 +59,32 @@ function FounderCard({ name, role, bio, credentials, reverse }: Founder) {
           gap: 4,
         }}
       >
-        <p
+        <div
           style={{
-            fontFamily: 'var(--font-sans)',
-            // Large bold bio text — matches reference
-            fontSize: 'clamp(19.55px, 2.185vw, 25.3px)',
-            fontWeight: 700,
-            lineHeight: 1.45,
-            color: 'var(--color-ink)',
             marginBottom: 20,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 14,
           }}
         >
-          {bio}
-        </p>
+          {bioParagraphs.map((paragraph) => (
+            <p
+              key={paragraph}
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: 'clamp(15.5px, 1.3vw, 18.4px)',
+                fontWeight: 700,
+                lineHeight: 1.4,
+                textAlign: 'justify',
+                textJustify: 'inter-word',
+                color: 'var(--color-ink)',
+                margin: 0,
+              }}
+            >
+              {paragraph}
+            </p>
+          ))}
+        </div>
         <p
           style={{
             fontFamily: 'var(--font-sans)',

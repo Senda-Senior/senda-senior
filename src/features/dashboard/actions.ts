@@ -1,6 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 import { z } from 'zod'
 import { createClient as createServerClient } from '@/lib/supabase/server'
 import { assertSameOrigin, requireUser } from '@/lib/server'
@@ -48,7 +49,7 @@ export async function toggleChecklistItem(
     )
 
   if (error) {
-    return { ok: false, error: error.message }
+    return { ok: false, error: 'Não foi possível salvar. Tente novamente.' }
   }
 
   revalidatePath('/dashboard')
@@ -56,9 +57,12 @@ export async function toggleChecklistItem(
 }
 
 export async function signOutAction() {
+  await assertSameOrigin()
   const supabase = await createServerClient()
-  await supabase.auth.signOut()
-  
-  import('next/navigation').then((mod) => mod.redirect('/login'))
+  const { error } = await supabase.auth.signOut({ scope: 'global' })
+  if (error) {
+    throw new Error('Não foi possível encerrar a sessão agora.')
+  }
+  redirect('/')
 }
 

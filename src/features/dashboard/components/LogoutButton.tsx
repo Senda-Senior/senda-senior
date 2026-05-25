@@ -22,6 +22,7 @@ export function LogoutButton() {
       id="dashboard-logout"
       onClick={handleLogout}
       disabled={isPending}
+      aria-disabled={isPending ? true : undefined}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{

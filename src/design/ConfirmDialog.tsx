@@ -49,12 +49,16 @@ export function ConfirmDialog({
 
   const danger = variant === 'danger'
 
+  const titleId = `dialog-title-${danger ? 'danger' : 'default'}`
+
   return (
     <dialog
       ref={ref}
       onClick={(e) => {
         if (e.target === ref.current) onClose()
       }}
+      aria-labelledby={titleId}
+      aria-modal="true"
       className="w-[90vw] max-w-[440px] rounded-[14px] border-0 p-0 shadow-[0_12px_40px_rgba(0,0,0,0.18)]"
     >
       <div className="rounded-[14px] bg-white p-[28px]">
@@ -77,6 +81,7 @@ export function ConfirmDialog({
           )}
           <div style={{ flex: 1 }}>
             <h2
+              id={titleId}
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontSize: 19,
@@ -105,6 +110,7 @@ export function ConfirmDialog({
           <button
             onClick={onClose}
             disabled={loading}
+            aria-disabled={loading ? true : undefined}
             style={{
               padding: '9px 18px',
               borderRadius: 8,
@@ -122,6 +128,7 @@ export function ConfirmDialog({
           <button
             onClick={onConfirm}
             disabled={loading}
+            aria-disabled={loading ? true : undefined}
             style={{
               padding: '9px 18px',
               borderRadius: 8,

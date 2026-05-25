@@ -59,8 +59,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         antes do React hidratar. Esse warning não reflete bug nosso.
       */}
       <body suppressHydrationWarning>
+        <a href="#main-content" className="sr-only">
+          Pular para conteúdo principal
+        </a>
         <WhatsAppFloat />
-        {children}
+        <main id="main-content">
+          {children}
+        </main>
       </body>
     </html>
   )

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mobile — Parceiros</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F3EDE4;
+    --surface: #FAF7F2;
+    --card: #C8956C;
+    --card-2: #B8835A;
+    --card-light: #E8D5B5;
+    --text: #2C1E14;
+    --text-2: #5C4A3A;
+    --text-3: #8B7355;
+    --border: rgba(200,149,108,0.15);
+    --shadow-1: 0 1px 3px rgba(44,30,20,0.04);
+    --shadow-2: 0 8px 24px rgba(44,30,20,0.08);
+    --shadow-3: 0 16px 48px rgba(44,30,20,0.12);
+    --radius: 24px;
+    --radius-sm: 18px;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-font-smoothing: antialiased; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    max-width: 430px;
+    margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
+    padding-bottom: 100px; /* space for sticky CTA */
+  }
+
+  /* Grain */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 9999;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 128px;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+
+  /* ===== HEADER ===== */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(180deg, var(--bg) 70%, rgba(243,237,228,0.9) 100%);
+    backdrop-filter: blur(20px) saturate(1.3);
+    -webkit-backdrop-filter: blur(20px) saturate(1.3);
+    padding: 16px 20px 12px;
+  }
+
+  .back-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-3);
+    padding: 4px 0;
+    cursor: pointer;
+  }
+  .back-btn svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2.2; fill: none; }
+
+  .page-title {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  /* ===== PRODUCT SWITCHER ===== */
+  .switcher-wrap {
+    position: relative;
+    margin: 0 -20px;
+    padding: 0 20px;
+  }
+
+  .switcher {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 4px 0 12px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .switcher-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(232,213,181,0.5);
+    border-radius: 100px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: all 0.35s var(--ease-out-expo);
+    white-space: nowrap;
+    flex-shrink: 0;
+    scroll-snap-align: center;
+  }
+
+  .switcher-item.active {
+    background: linear-gradient(135deg, var(--card), var(--card-2));
+    border-color: rgba(255,255,255,0.2);
+    box-shadow: 0 4px 16px rgba(200,149,108,0.3);
+    transform: scale(1.04);
+  }
+
+  .switcher-item.active svg { stroke: #fff; }
+  .switcher-item.active .switcher-label { color: #fff; font-weight: 600; }
+
+  .switcher-item svg {
+    width: 18px; height: 18px;
+    stroke: var(--text-2);
+    stroke-width: 1.7;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.3s ease;
+  }
+
+  .switcher-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-2);
+    transition: color 0.3s ease;
+  }
+
+  /* ===== SPECIALTIES ===== */
+  .spec-wrap {
+    position: relative;
+    margin: 0 0 16px;
+    padding: 0 20px;
+  }
+
+  .spec-wrap::before, .spec-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 30px;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .spec-wrap::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--bg), transparent);
+  }
+  .spec-wrap::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--bg), transparent);
+  }
+
+  .spec-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 0 10px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
+  }
+
+  .spec-tab {
+    padding: 10px 18px;
+    border-radius: 100px;
+    border: 1.5px solid transparent;
+    background: rgba(232,213,181,0.35);
+    color: var(--text-3);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.35s var(--ease-out-expo);
+    white-space: nowrap;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .spec-tab.active {
+    background: var(--card);
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(200,149,108,0.3);
+    transform: translateY(-1px);
+  }
+
+  .spec-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -6px; left: 50%;
+    transform: translateX(-50%);
+    width: 4px; height: 4px;
+    background: var(--card);
+    border-radius: 50%;
+  }
+
+  /* ===== CONTENT ===== */
+  .content-sheet {
+    background: var(--surface);
+    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 28px 24px 40px;
+    box-shadow: var(--shadow-3);
+    position: relative;
+    min-height: calc(100vh - 280px);
+  }
+
+  .content-sheet::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--card), var(--card-light), var(--card));
+    background-size: 200% 100%;
+    border-radius: var(--radius) var(--radius) 0 0;
+    animation: shimmer 3s linear infinite;
+  }
+
+  .role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--card);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+    padding: 7px 14px;
+    background: rgba(200,149,108,0.08);
+    border-radius: 100px;
+    border: 1px solid var(--border);
+  }
+
+  .role-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--card);
+    border-radius: 50%;
+    animation: pulse 2s ease infinite;
+  }
+
+  .pro-name {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    line-height: 1.15;
+  }
+
+  .pro-desc {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text-2);
+    margin-bottom: 14px;
+  }
+
+  .highlight {
+    font-weight: 600;
+    color: var(--text);
+    background: linear-gradient(180deg, transparent 65%, rgba(200,149,108,0.2) 65%);
+    padding: 0 2px;
+  }
+
+  /* ===== PHOTO ===== */
+  .photo-section {
+    margin: 20px 0 8px;
+  }
+
+  .photo-frame {
+    width: 100%;
+    aspect-ratio: 16/10;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--card-light) 0%, var(--card) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: var(--shadow-2);
+  }
+
+  .photo-frame::before {
+    content: '';
+    position: absolute;
+    inset: 16px;
+    border: 2px dashed rgba(255,255,255,0.25);
+    border-radius: calc(var(--radius-sm) - 10px);
+    animation: slowRotate 28s linear infinite;
+  }
+
+  .photo-inner {
+    width: 56px; height: 56px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255,255,255,0.35);
+    box-shadow: 0 8px 24px rgba(44,30,20,0.08);
+  }
+
+  .photo-inner svg {
+    width: 26px; height: 26px;
+    stroke: #fff; stroke-width: 1.4; fill: none;
+  }
+
+  .photo-caption {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--text-3);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ===== STICKY CTA ===== */
+  .cta-sticky {
+    position: fixed;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    width: 100%;
+    max-width: 430px;
+    padding: 16px 20px 28px;
+    background: linear-gradient(0deg, var(--bg) 60%, rgba(243,237,228,0.8) 100%);
+    backdrop-filter: blur(16px) saturate(1.2);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    border-top: 1px solid var(--border);
+  }
+
+  .cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--card) 0%, var(--card-2) 100%);
+    color: #fff;
+    border: none;
+    border-radius: 100px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    box-shadow: 0 8px 24px rgba(200,149,108,0.35);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.3s ease;
+    will-change: transform;
+  }
+
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--cx,50%) var(--cy,50%), rgba(255,255,255,0.2), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .cta-btn:hover::before { opacity: 1; }
+  .cta-btn:active { transform: scale(0.97); }
+
+  .cta-btn svg {
+    width: 18px; height: 18px;
+    stroke: currentColor; stroke-width: 2.5; fill: none;
+    transition: transform 0.3s var(--ease-out-expo);
+  }
+  .cta-btn:hover svg { transform: translateX(3px); }
+
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transform: scale(0);
+    animation: rippleOut 0.6s ease-out forwards;
+    pointer-events: none;
+  }
+
+  /* ===== KEYFRAMES ===== */
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  @keyframes slowRotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes pulse { 0%,100% { opacity:1; transform: scale(1); } 50% { opacity:0.5; transform: scale(0.8); } }
+  @keyframes rippleOut { to { transform: scale(4); opacity:0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+
+  @media (min-width: 431px) {
+    body {
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      box-shadow: 0 0 80px rgba(44,30,20,0.06);
+    }
+  }
+</style>
+<base target="_blank">
+</head>
+<body>
+
+<div class="header">
+  <div class="back-row">
+    <button class="back-btn">
+      <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Produtos
+    </button>
+  </div>
+  <h1 class="page-title">OS PARCEIROS</h1>
+
+  <div class="switcher-wrap">
+    <div class="switcher hide-scrollbar" id="productSwitcher">
+      <div class="switcher-item" data-p="0">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="switcher-label">Manuais</span>
+      </div>
+      <div class="switcher-item" data-p="1">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="switcher-label">Assessoria</span>
+      </div>
+      <div class="switcher-item" data-p="2">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span class="switcher-label">Repositório</span>
+      </div>
+      <div class="switcher-item active" data-p="3">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span class="switcher-label">Parceiros</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="spec-wrap">
+  <div class="spec-scroll hide-scrollbar" id="specScroll">
+    <button class="spec-tab active">Quiropraxia</button>
+    <button class="spec-tab">Ortopedia</button>
+    <button class="spec-tab">Cardiologia</button>
+    <button class="spec-tab">Oftalmologia</button>
+    <button class="spec-tab">Fisioterapia</button>
+    <button class="spec-tab">Geriatria</button>
+    <button class="spec-tab">Nutrição</button>
+    <button class="spec-tab">Psicologia</button>
+    <button class="spec-tab">Enfermagem</button>
+    <button class="spec-tab">Terapia Ocup.</button>
+    <button class="spec-tab">Dermatologia</button>
+    <button class="spec-tab">Neurologia</button>
+    <button class="spec-tab">Endocrinologia</button>
+    <button class="spec-tab">Pneumologia</button>
+  </div>
+</div>
+
+<div class="content-sheet" id="contentSheet">
+  <div class="role-badge">Especialista em Quiropraxia</div>
+  <h2 class="pro-name">Doutor Psispsipis</h2>
+  <p class="pro-desc">Especialista em quiropraxia por mais de 15 anos. Possui longa experiência na área de <span class="highlight">cuidado com idosos</span>, com foco em mobilidade, alívio de dores crônicas e qualidade de vida.</p>
+  <p class="pro-desc">Atua em parceria com nossa rede de apoio, oferecendo atendimento humanizado e personalizado.</p>
+
+  <div class="photo-section">
+    <div class="photo-frame">
+      <div class="photo-inner">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+    </div>
+    <div class="photo-caption">Foto do profissional</div>
+  </div>
+</div>
+
+<div class="cta-sticky">
+  <button class="cta-btn" id="ctaBtn">
+    ACESSE A NOSSA REDE
+    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </button>
+</div>
+
+<script>
+/* ===== UTILS ===== */
+const ease = {
+  outExpo: t => t===1?1:1-Math.pow(2,-10*t),
+  spring: t => { const c4=(2*Math.PI)/3; return t===0?0:t===1?1:Math.pow(2,-10*t)*Math.sin((t*10-0.75)*c4)+1; }
+};
+
+function animate({from, to, duration=500, easing=ease.outExpo, onUpdate, onComplete}){
+  const start = performance.now();
+  const diff = to - from;
+  (function loop(now){
+    const t = Math.min((now - start) / duration, 1);
+    onUpdate(from + diff * easing(t));
+    if(t < 1) requestAnimationFrame(loop);
+    else onComplete?.();
+  })(start);
+}
+
+/* ===== PRODUCT SWITCHER ===== */
+const switcherItems = [...document.querySelectorAll('.switcher-item')];
+switcherItems.forEach(item => {
+  item.addEventListener('click', () => {
+    switcherItems.forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    const sheet = document.getElementById('contentSheet');
+    animate({
+      from: 0, to: 1, duration: 400, easing: ease.spring,
+      onUpdate(v) { sheet.style.transform = `translateY(${(1-v)*-4}px)`; },
+      onComplete() { sheet.style.transform = ''; }
+    });
+  });
+});
+
+/* ===== SPECIALTIES ===== */
+const specTabs = [...document.querySelectorAll('.spec-tab')];
+const specScroll = document.getElementById('specScroll');
+
+specTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    specTabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const scrollLeft = tab.offsetLeft - specScroll.clientWidth/2 + tab.clientWidth/2;
+    specScroll.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+  });
+});
+
+/* ===== CTA ===== */
+const ctaBtn = document.getElementById('ctaBtn');
+let ctaRect = null;
+
+ctaBtn.addEventListener('touchstart', () => { ctaBtn.style.transform = 'scale(0.97)'; }, {passive:true});
+ctaBtn.addEventListener('touchend', () => { ctaBtn.style.transform = ''; }, {passive:true});
+
+ctaBtn.addEventListener('mousemove', e => {
+  if(!ctaRect) ctaRect = ctaBtn.getBoundingClientRect();
+  const x = e.clientX - ctaRect.left - ctaRect.width/2;
+  const y = e.clientY - ctaRect.top - ctaRect.height/2;
+  ctaBtn.style.transform = `translate(${x*0.1}px, ${y*0.1}px)`;
+  ctaBtn.style.setProperty('--cx', ((e.clientX - ctaRect.left)/ctaRect.width*100)+'%');
+  ctaBtn.style.setProperty('--cy', ((e.clientY - ctaRect.top)/ctaRect.height*100)+'%');
+});
+
+ctaBtn.addEventListener('mouseleave', () => { ctaBtn.style.transform = ''; ctaRect = null; });
+
+ctaBtn.addEventListener('click', function(e){
+  const r = document.createElement('span');
+  r.className = 'ripple';
+  const rect = this.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  r.style.width = r.style.height = size + 'px';
+  r.style.left = (e.clientX - rect.left - size/2) + 'px';
+  r.style.top = (e.clientY - rect.top - size/2) + 'px';
+  this.appendChild(r);
+  setTimeout(() => r.remove(), 600);
+});
+
+/* ===== SCROLL HEADER SHADOW ===== */
+let lastScroll = 0;
+const header = document.querySelector('.header');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if(y > 10 && lastScroll <= 10) {
+    header.style.boxShadow = '0 4px 20px rgba(44,30,20,0.06)';
+  } else if(y <= 10 && lastScroll > 10) {
+    header.style.boxShadow = 'none';
+  }
+  lastScroll = y;
+}, {passive:true});
+</script>
+</body>
+</html>

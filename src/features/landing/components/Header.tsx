@@ -76,38 +76,39 @@ export function Header() {
             />
           </a>
 
-          <nav className="nav-desktop flex min-w-0 flex-1 items-center justify-center gap-[clamp(14px,1.7vw,24px)]">
+          <nav className="nav-desktop flex min-w-0 flex-1 items-center justify-center gap-[clamp(14px,1.7vw,24px)]" aria-label="Menu principal">
             {NAV_LINKS.map(({ label, href, chevron }) => (
               <a key={label} href={href} className={DESKTOP_NAV_LINK}>
                 {label}
-                {chevron ? <ChevronDown size={12} strokeWidth={2} /> : null}
+                {chevron ? <ChevronDown size={12} strokeWidth={2} aria-hidden="true" /> : null}
               </a>
             ))}
           </nav>
 
           <div className="nav-desktop flex shrink-0 items-center gap-3">
             <a href="/login" className={DESKTOP_SECONDARY_LINK}>
-              <User size={15} strokeWidth={1.8} />
+              <User size={15} strokeWidth={1.8} aria-hidden="true" />
               Login
             </a>
 
             <a href="/login" className={DESKTOP_PRIMARY_LINK}>
-              Área do Cliente <ArrowRight size={14} strokeWidth={2} />
+              Área do Cliente <ArrowRight size={14} strokeWidth={2} aria-hidden="true" />
             </a>
           </div>
 
           <button
             className="show-mobile hidden cursor-pointer border-none bg-transparent p-2 text-[var(--color-cream)]"
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Menu"
+            aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={menuOpen}
           >
-            {menuOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
+            {menuOpen ? <X size={24} strokeWidth={1.5} aria-hidden="true" /> : <Menu size={24} strokeWidth={1.5} aria-hidden="true" />}
           </button>
         </div>
       </motion.header>
 
       {menuOpen ? (
-        <div className="mobile-menu flex" onClick={() => setMenuOpen(false)}>
+        <div className="mobile-menu flex" role="navigation" aria-label="Menu mobile" onClick={() => setMenuOpen(false)}>
           <button
             onClick={() => setMenuOpen(false)}
             aria-label="Fechar menu"
@@ -116,25 +117,27 @@ export function Header() {
             <X size={26} strokeWidth={1.5} />
           </button>
 
-          {NAV_LINKS.map(({ label, href }) => (
-            <a
-              key={label}
-              href={href}
-              onClick={() => setMenuOpen(false)}
-              className={MOBILE_MENU_LINK}
-            >
-              {label}
-            </a>
-          ))}
+          <nav>
+            {NAV_LINKS.map(({ label, href }) => (
+              <a
+                key={label}
+                href={href}
+                onClick={() => setMenuOpen(false)}
+                className={MOBILE_MENU_LINK}
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
 
-          <div className="mt-4 flex w-full flex-col gap-3 px-8">
-            <a href="/login" onClick={() => setMenuOpen(false)} className={MOBILE_SECONDARY_LINK}>
-              Login
-            </a>
-            <a href="/login" onClick={() => setMenuOpen(false)} className={MOBILE_PRIMARY_LINK}>
-              Área do Cliente <ArrowRight size={18} strokeWidth={2} />
-            </a>
-          </div>
+            <div className="mt-4 flex w-full flex-col gap-3 px-8">
+              <a href="/login" onClick={() => setMenuOpen(false)} className={MOBILE_SECONDARY_LINK}>
+                Login
+              </a>
+              <a href="/login" onClick={() => setMenuOpen(false)} className={MOBILE_PRIMARY_LINK}>
+                Área do Cliente <ArrowRight size={18} strokeWidth={2} aria-hidden="true" />
+              </a>
+            </div>
         </div>
       ) : null}
     </>

@@ -1,6 +1,6 @@
 # Tailwind v4 Refactor Plan
 
-Migrate landing/page components from inline `style={{}}` + legacy CSS classes
+Migrate landing components from inline `style={{}}` + legacy CSS classes
 in `globals.css` to Tailwind v4 utilities — without destroying the visual
 design or mobile responsiveness, as happened in the prior attempt that
 forced a hard reset to `5a2beda`.
@@ -38,6 +38,14 @@ This plan prevents all of that.
 ---
 
 ## 2. Pre-conditions (one-time setup)
+
+### 2.1 Scope (current strategy)
+
+- Immediate scope: landing migration in **slices** (component-by-component), always
+  bringing the mobile overrides for that slice along in the same pass.
+- Not immediate: `/dashboard` and `/login` refactors (leave for a later track).
+- Manual: remains a separate track, but `DigitalReader` is now **in active scope**
+  and may progress in parallel with the landing work when handled conservatively.
 
 ```sh
 # Always work in a feature branch
@@ -192,6 +200,11 @@ qualquer propriedade que conflita com Tailwind no mesmo elemento.
 
 Para CADA componente, executar este loop completo. Não pular passos.
 
+Regra do fatiamento (landing): se o componente tem overrides mobile no
+`globals.css`, ele só conta como "convertido" quando as regras mobile equivalentes
+já existirem no JSX via Tailwind (não deixar desktop em Tailwind e mobile preso no
+CSS legado).
+
 ```sh
 # 1. Snapshot before (commit baseline se mudou)
 npm run test:e2e -- --grep "<NomeDoComponente>"
@@ -218,7 +231,7 @@ git checkout -- src/features/landing/components/<Comp>.tsx
 
 # 6. Mobile real (DevTools 360px) — abrir e verificar visualmente
 npm run dev
-# checar /, /login, /dashboard se o componente está em alguma dessas
+# checar / e demais rotas que realmente renderizam o componente (ex: /manual)
 
 # 7. Commit isolado
 git add src/features/landing/components/<Comp>.tsx tests/__screenshots__
@@ -351,7 +364,11 @@ Footer status:
 
 ---
 
-## 7. globals.css cleanup (último passo, não primeiro)
+## 7. globals.css as compatibility layer (último passo, não primeiro)
+
+Durante a migração, `globals.css` é um *compatibility layer*: ele continua
+carregando as classes legadas e overrides mobile até que cada fatia tenha a
+substituição completa em Tailwind.
 
 Regra: **nunca remover regra do `globals.css` no mesmo commit que adiciona
 Tailwind no componente.** São dois commits sempre.
@@ -366,7 +383,7 @@ git commit -m "refactor(hero): convert to tailwind utilities"
 grep -rn "hero-mockup-split" src/
 # Se voltar vazio:
 
-# Commit N+1: remover classe e media queries do globals.css
+# Commit N+1 (opcional por fatia): remover classe e media queries do globals.css
 git commit -m "chore(css): remove unused .hero-mockup-* legacy classes"
 ```
 
@@ -379,8 +396,8 @@ deletar:
 - A regra dentro de `@media (max-width: 768px)`
 - A regra dentro de `@media (max-width: 480px)` se houver
 
-O bloco `@media` vai encolhendo. Quando ficar vazio, deletar o próprio
-bloco.
+O bloco `@media` vai encolhendo conforme as fatias saem do legado. Quando ficar
+vazio (fim do projeto), deletar o próprio bloco.
 
 ---
 
@@ -491,14 +508,19 @@ Phase 3 — layout (alto)
   src/features/landing/components/Footer.tsx (stabilized: internal atoms only;
   structural wrappers intentionally preserved)
 
-Phase 4 — pages (depende de phases anteriores estarem completas)
-  src/app/dashboard/page.tsx
-  src/app/vault/page.tsx
-  src/app/login/page.tsx
+Phase 4 — manual (depois da landing estabilizar)
   src/app/manual/page.tsx
   src/app/update-password/page.tsx
 
-Phase 5 — limpeza globals.css
+Phase 5 — manual: DigitalReader (trilha separada, em execução)
+  (DigitalReader: manter conservador, validar paridade visual a cada passo)
+
+Phase 6 — pages (fora do escopo imediato)
+  src/app/vault/page.tsx
+  src/app/dashboard/page.tsx
+  src/app/login/page.tsx
+
+Phase 7 — limpeza globals.css (remover compatibility layer)
   remover classes legadas
   remover @media block
 ```
