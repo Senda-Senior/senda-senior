@@ -72,6 +72,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       ref={ref}
       type={type}
       className={cn(base, variants[variant], sizes[size], className)}
+      aria-disabled={rest.disabled ? true : undefined}
       {...rest}
     >
       {leadingIcon}

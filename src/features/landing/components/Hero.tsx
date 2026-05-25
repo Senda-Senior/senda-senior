@@ -4,12 +4,13 @@ import NextImage from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { Reveal } from '@/design'
+import { ScrollIndicator } from './ScrollIndicator'
 
 const HERO_PRIMARY_CTA =
   'btn-terracotta-hover inline-flex items-center gap-[10px] rounded-[30px] bg-[var(--color-cta-primary)] px-8 py-4 text-[18.4px] font-semibold text-white no-underline shadow-[var(--shadow-terracotta-button)] transition-all duration-300'
 
 const HERO_SECONDARY_CTA =
-  'inline-flex items-center rounded-[30px] border border-[var(--color-olive-30)] bg-transparent px-8 py-[15px] text-[18.4px] font-semibold text-[var(--color-ink)] no-underline transition-colors duration-300 hover:border-[var(--color-olive)] hover:bg-[var(--color-olive-30)]'
+  'btn-terracotta-hover inline-flex items-center rounded-[30px] bg-[var(--color-cta-primary)] px-8 py-[15px] text-[18.4px] font-semibold text-white no-underline transition-all duration-300'
 
 export function Hero() {
   return (
@@ -98,7 +99,7 @@ export function Hero() {
               >
                 <Link href="#manual" className={HERO_PRIMARY_CTA}>
                   Conhecer os 3 momentos
-                  <ArrowRight size={18} strokeWidth={2} />
+                  <ArrowRight size={18} strokeWidth={2} aria-hidden="true" />
                 </Link>
 
                 <Link href="#sobre" className={HERO_SECONDARY_CTA}>
@@ -109,6 +110,7 @@ export function Hero() {
           </div>
         </div>
       </div>
+      <ScrollIndicator />
     </section>
   )
 }

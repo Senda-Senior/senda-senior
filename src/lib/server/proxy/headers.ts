@@ -3,16 +3,39 @@ import { NextResponse, type NextRequest } from 'next/server'
 export const IS_PROD = process.env.NODE_ENV === 'production'
 export type CSPMode = 'public-static' | 'strict-nonce'
 
+function firstHeaderValue(value: string | null): string | null {
+  if (!value) return null
+  const candidate = value.split(',')[0]?.trim()
+  return candidate || null
+}
+
+function getTrustedIpHeader(request: NextRequest): string | null {
+  // eslint-disable-next-line no-restricted-syntax -- provider flags are injected by the hosting platform, not app env.
+  if (process.env.VERCEL === '1') {
+    return firstHeaderValue(request.headers.get('x-vercel-forwarded-for'))
+  }
+
+  // eslint-disable-next-line no-restricted-syntax -- provider flags are injected by the hosting platform, not app env.
+  if (process.env.CF_PAGES === '1') {
+    return firstHeaderValue(request.headers.get('cf-connecting-ip'))
+  }
+
+  const customHeader = process.env.TRUSTED_PROXY_HEADER
+  if (customHeader) {
+    return firstHeaderValue(request.headers.get(customHeader))
+  }
+
+  return null
+}
+
 export function extractIp(request: NextRequest): string {
-  return (
-    request.headers.get('x-real-ip') ||
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    'unknown'
-  )
+  return getTrustedIpHeader(request) ?? 'unknown'
 }
 
 export function generateNonce(): string {
-  return Buffer.from(crypto.randomUUID()).toString('base64')
+  const bytes = new Uint8Array(16)
+  crypto.getRandomValues(bytes)
+  return Buffer.from(bytes).toString('base64')
 }
 
 function buildSharedCSPDirectives(): string[] {
@@ -27,6 +50,7 @@ function buildSharedCSPDirectives(): string[] {
     "form-action 'self'",
     "object-src 'none'",
     'upgrade-insecure-requests',
+    ...(IS_PROD ? ["report-uri /api/csp-report"] : []),
   ]
 }
 
@@ -35,14 +59,14 @@ export function buildCSP(nonce: string, mode: CSPMode): string {
 
   if (mode === 'public-static') {
     const scriptSrc = IS_PROD
-      ? "'self' 'unsafe-inline' https:"
+      ? "'self' 'unsafe-inline'"
       : "'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel-scripts.com"
 
     return ["script-src " + scriptSrc, ...shared].join('; ')
   }
 
   const scriptSrc = IS_PROD
-    ? `'self' 'nonce-${nonce}' 'strict-dynamic' https:`
+    ? `'self' 'nonce-${nonce}' 'strict-dynamic'`
     : `'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel-scripts.com`
 
   return [`script-src ${scriptSrc}`, ...shared].join('; ')

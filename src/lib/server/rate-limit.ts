@@ -29,6 +29,12 @@ const BUCKETS: Record<RateLimitBucket, { max: number; window: `${number} s` }> =
   upload: { max: 30, window: '60 s' },
 }
 
+const RATE_LIMIT_DISABLED_FOR_E2E = serverEnv.E2E_DISABLE_RATE_LIMIT === 'true'
+
+if (RATE_LIMIT_DISABLED_FOR_E2E && !['development', 'test'].includes(process.env.NODE_ENV ?? '')) {
+  throw new Error('E2E_DISABLE_RATE_LIMIT is only allowed in development or test environments')
+}
+
 // ─── modo distribuído (se env estiver presente) ─────────────────────
 
 const redis =
@@ -95,7 +101,7 @@ export async function checkRateLimit(
   identifier: string,
   bucket: RateLimitBucket = 'global',
 ): Promise<RateLimitResult> {
-  if (serverEnv.E2E_DISABLE_RATE_LIMIT === 'true') {
+  if (RATE_LIMIT_DISABLED_FOR_E2E) {
     return {
       success: true,
       remaining: BUCKETS[bucket].max,
@@ -105,9 +111,13 @@ export async function checkRateLimit(
   }
 
   if (distributedLimiters) {
-    const limiter = distributedLimiters[bucket]
-    const { success, remaining, reset } = await limiter.limit(identifier)
-    return { success, remaining, reset, mode: 'distributed' }
+    try {
+      const limiter = distributedLimiters[bucket]
+      const { success, remaining, reset } = await limiter.limit(identifier)
+      return { success, remaining, reset, mode: 'distributed' }
+    } catch (err) {
+      console.error('[rate-limit] Redis error, falling back to in-memory', err)
+    }
   }
   return { ...checkInMemory(identifier, bucket), mode: 'memory' }
 }
