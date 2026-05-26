@@ -4,59 +4,19 @@ export const dynamic = 'force-dynamic'
 
 export default function NotFoundPage() {
   return (
-    <main
-      style={{
-        minHeight: '100dvh',
-        display: 'grid',
-        placeItems: 'center',
-        padding: '24px',
-        background: 'var(--color-cream)',
-        color: 'var(--color-ink)',
-      }}
-    >
-      <div style={{ textAlign: 'center', maxWidth: 560 }}>
-        <p className="label-premium" style={{ marginBottom: 12 }}>
-          Página não encontrada
-        </p>
-        <h1
-          style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: 'clamp(34px, 5vw, 56px)',
-            fontWeight: 500,
-            lineHeight: 1.1,
-            marginBottom: 14,
-          }}
-        >
+    <main className="grid min-h-[100dvh] place-items-center bg-cream p-6 text-ink">
+      <div className="w-full max-w-[560px] text-center">
+        <p className="label-premium mb-3">Página não encontrada</p>
+        <h1 className="mb-[14px] font-serif text-[clamp(34px,5vw,56px)] font-medium leading-[1.1]">
           Este caminho não existe.
         </h1>
-        <p
-          style={{
-            fontSize: 18,
-            lineHeight: 1.6,
-            color: 'var(--color-ink-sub)',
-            marginBottom: 28,
-          }}
-        >
+        <p className="mb-7 text-[18px] leading-[1.6] text-ink-sub">
           Volte para a página inicial para continuar sua navegação.
         </p>
+
         <Link
           href="/"
-          className="btn-terracotta-hover"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 10,
-            background: 'var(--color-terracotta)',
-            color: 'white',
-            padding: '14px 24px',
-            borderRadius: 8,
-            fontSize: 15,
-            fontWeight: 700,
-            textDecoration: 'none',
-            transition: 'all 0.3s',
-            boxShadow: '0 4px 20px rgba(181,114,74,0.25)',
-          }}
+          className="btn-terracotta-hover inline-flex items-center justify-center gap-[10px] rounded-[8px] bg-terracotta px-6 py-[14px] text-[15px] font-bold text-white transition-all duration-300"
         >
           Ir para a Home
         </Link>

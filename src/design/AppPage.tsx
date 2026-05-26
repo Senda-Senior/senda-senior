@@ -54,7 +54,8 @@ export function AppPageContainer({
   )
 }
 
-export interface AppPageHeaderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+export interface AppPageHeaderProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   title: ReactNode
   description?: ReactNode
 }
@@ -79,7 +80,8 @@ export function AppPageHeader({
   )
 }
 
-export interface AppPageCardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+export interface AppPageCardProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
   title?: ReactNode
   description?: ReactNode
   actions?: ReactNode
@@ -96,7 +98,7 @@ export function AppPageCard({
   return (
     <section
       className={cn(
-        'rounded-[20px] border border-terracotta-light bg-white/80 px-8 py-10 shadow-[0_12px_40px_rgba(42,37,32,0.04)]',
+        'rounded-[20px] border border-terracotta-light bg-white/80 px-8 py-10',
         className,
       )}
       {...rest}

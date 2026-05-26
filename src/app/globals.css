@@ -9,12 +9,9 @@
 
 @theme {
   /* Verdes (Primary / Brand) */
-  --color-green-ghost: #ebf0e8;
   --color-green-muted: #ebf0e8;
-  --color-green-pale: #c8d4c0;
   --color-green-light: #8aab8a;
   --color-green: #4a5e4a;
-  --color-green-08: rgba(74, 94, 74, 0.08);
   --color-green-40: rgba(74, 94, 74, 0.40);
   --color-green-dark: #3f422c;
 
@@ -33,7 +30,6 @@
   --color-olive-30: rgba(89, 95, 67, 0.30);
   --color-olive-65: rgba(89, 95, 67, 0.65);
   --color-olive-72: rgba(89, 95, 67, 0.72);
-  --color-olive-80: rgba(89, 95, 67, 0.80);
 
   /* Cremes (Background) */
   --color-cream: #e9e2d2;
@@ -43,9 +39,7 @@
   --color-cream-60: rgba(233, 226, 210, 0.60);
   --color-cream-80: rgba(233, 226, 210, 0.80);
   --color-cream-85: rgba(233, 226, 210, 0.85);
-  --color-cream-88: rgba(233, 226, 210, 0.88);
   --color-cream-55: rgba(233, 226, 210, 0.55);
-  --color-cream-68: rgba(233, 226, 210, 0.68);
   --color-cream-70: rgba(233, 226, 210, 0.70);
   --color-cream-75: rgba(233, 226, 210, 0.75);
 
@@ -58,7 +52,6 @@
   --color-terracotta-pale: #f0e0d0;
   --color-terracotta-light: #c48d54;
   --color-terracotta: #b5724a;
-  --color-terracotta-04: rgba(181, 114, 74, 0.04);
   --color-terracotta-dark: #8a4e2e;
   --color-cta-primary: #a6613a;
   --color-cta-brown: #8a4e2e;
@@ -69,7 +62,6 @@
   --color-gold-beige: #e5cfa1;
   --color-golden-beige: #ead7b0;
   --color-gold-warm: #c48d54;
-  --color-gold-warm-14: rgba(197, 141, 84, 0.14);
 
   /* Brown rich (Conteudo card accent) */
   --color-brown-rich: #6b3a18;
@@ -81,16 +73,10 @@
   --color-ink: #2a2520;
   --color-ink-sub: #4a4540;
   --color-ink-muted: #7a7268;
-  --color-ink-sand: #a8997e;
-  --color-ink-05: rgba(42, 37, 32, 0.05);
-  --color-ink-07: rgba(42, 37, 32, 0.07);
-  --color-ink-08: rgba(42, 37, 32, 0.08);
   --color-ink-40: rgba(42, 37, 32, 0.40);
   --color-ink-45: rgba(42, 37, 32, 0.45);
   --color-ink-55: rgba(42, 37, 32, 0.55);
   --color-ink-58: rgba(42, 37, 32, 0.58);
-  --color-ink-12: rgba(42, 37, 32, 0.12);
-  --color-ink-14: rgba(42, 37, 32, 0.14);
   --color-ink-16: rgba(42, 37, 32, 0.16);
   --color-ink-35: rgba(42, 37, 32, 0.35);
   --color-ink-38: rgba(42, 37, 32, 0.38);
@@ -104,19 +90,9 @@
   --color-whatsapp: #25d366;
 
   /* White / Black overlays (usados em backdrops + masks) */
-  --color-white-04: rgba(255, 255, 255, 0.04);
-  --color-white-07: rgba(255, 255, 255, 0.07);
-  --color-white-08: rgba(255, 255, 255, 0.08);
   --color-white-35: rgba(255, 255, 255, 0.35);
-  --color-white-38: rgba(255, 255, 255, 0.38);
-  --color-white-40: rgba(255, 255, 255, 0.40);
-  --color-white-50: rgba(255, 255, 255, 0.50);
-  --color-white-70: rgba(255, 255, 255, 0.70);
-  --color-white-78: rgba(255, 255, 255, 0.78);
-  --color-white-88: rgba(255, 255, 255, 0.88);
   --color-white-90: rgba(255, 255, 255, 0.90);
   --color-black-08: rgba(0, 0, 0, 0.08);
-  --color-black-16: rgba(0, 0, 0, 0.16);
   --color-black-18: rgba(0, 0, 0, 0.18);
   --color-black-20: rgba(0, 0, 0, 0.20);
   --color-black-26: rgba(0, 0, 0, 0.26);
@@ -127,11 +103,8 @@
   --font-sans: var(--sans);
 
   /* Radii */
-  --radius-xs: 6px;
   --radius-sm: 8px;
-  --radius-md: 12px;
   --radius-lg: 16px;
-  --radius-xl: 24px;
 
   /* Easings */
   --ease-senda: cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -143,12 +116,6 @@
 }
 
 /* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â
-/* ════════════════════════════════════════════════════════════════════════════════ 
-   ALIASES — Variáveis CSS legadas mantidas durante a transição.
-   Remover quando TODOS os componentes estiverem migrados para
-   utilitários Tailwind ou usarem as novas `--color-*`.
-   ════════════════════════════════════════════════════════════════════════════════ */
-
 /* Framer Motion + Lenis: html element must be non-static for useScroll to measure correctly */
 html {
   position: relative;
@@ -158,35 +125,7 @@ html {
   /* Fraunces is upright-only — block browser italic synthesis */
   font-synthesis-style: none;
 
-
-  /* Header / footer: verdes com leve mistura ao creme — menos massa “tinta única” */
   --header-surface: rgba(89, 95, 67, 0.70);
-  --footer-surface: color-mix(in srgb, var(--color-green-dark) 86%, var(--color-cream) 14%);
-
-  --green-ghost: var(--color-green-ghost);
-  --green-muted: var(--color-green-muted);
-  --green-pale: var(--color-green-pale);
-  --green-light: var(--color-green-light);
-  --green: var(--color-green);
-  --green-dark: var(--color-green-dark);
-
-  --cream: var(--color-cream);
-  --cream-mid: var(--color-cream-mid);
-  --cream-dark: var(--color-cream-dark);
-  --warm-white: var(--color-cream);
-
-  --terracotta-pale: var(--color-terracotta-pale);
-  --terracotta-light: var(--color-terracotta-light);
-  --terracotta: var(--color-terracotta);
-  --terracotta-dark: var(--color-terracotta-dark);
-  --brown: var(--color-terracotta);
-  --brown-light: var(--color-terracotta-light);
-
-  --text: var(--color-ink);
-  --text-sub: var(--color-ink-sub);
-  --text-muted: var(--color-ink-muted);
-  --text-sand: var(--color-ink-sand);
-  --dark: var(--color-ink);
 }
 
 /* Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â

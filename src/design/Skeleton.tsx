@@ -1,9 +1,23 @@
-'use client'
-
 import type { HTMLAttributes } from 'react'
 import { cn } from './cn'
 
-type Variant = 'line' | 'block' | 'circle'
+/**
+ * ─── Skeleton ──────────────────────────────────────────────────────────
+ *
+ * Carregador sóbrio com animação pulse para placeholders de conteúdo.
+ *
+ * Variantes:
+ *   line   → linha única (altura reduzida)
+ *   block  → bloco (altura completa)
+ * ───────────────────────────────────────────────────────────────────
+ */
+
+type Variant = 'line' | 'block'
+
+const variants: Record<Variant, string> = {
+  line: 'h-4 rounded-full',
+  block: 'h-24 rounded-[var(--radius-lg)]',
+}
 
 export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
   variant?: Variant
@@ -17,14 +31,10 @@ export function Skeleton({
   return (
     <div
       className={cn(
-        'animate-pulse bg-black/10',
-        variant === 'block' && 'rounded h-12 w-full',
-        variant === 'line' && 'rounded h-4 w-full',
-        variant === 'circle' && 'rounded-full',
+        'animate-pulse bg-gray-200',
+        variants[variant],
         className,
       )}
-      aria-busy="true"
-      aria-label="Carregando..."
       {...rest}
     />
   )

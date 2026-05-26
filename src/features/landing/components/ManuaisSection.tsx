@@ -9,30 +9,50 @@ import { MANUAIS } from '@/features/landing/data/fases-cuidado'
 export function ManuaisSection() {
   const [active, setActive] = useState(0)
   const [isCompact, setIsCompact] = useState(false)
+  const [isNotebook, setIsNotebook] = useState(false)
   const manual = MANUAIS[active]
 
   useEffect(() => {
-    const media = window.matchMedia('(max-width: 980px)')
-    const sync = () => setIsCompact(media.matches)
+    const compact = window.matchMedia('(max-width: 980px)')
+    // Short-height notebook-ish windows (e.g. 1366x768 class devices, or resized browsers)
+    // get hit by the desktop layout but don't have the vertical room for the `100svh` + absolute
+    // top/bottom pinned card. This adds a height-aware escape hatch without changing
+    // desktop-large or mobile behavior.
+    const notebook = window.matchMedia(
+      '(min-width: 769px) and (max-width: 1200px) and (max-height: 760px)',
+    )
+    const sync = () => {
+      setIsCompact(compact.matches)
+      setIsNotebook(notebook.matches)
+    }
 
     sync()
-    media.addEventListener('change', sync)
-    return () => media.removeEventListener('change', sync)
+    compact.addEventListener('change', sync)
+    notebook.addEventListener('change', sync)
+    return () => {
+      compact.removeEventListener('change', sync)
+      notebook.removeEventListener('change', sync)
+    }
   }, [])
+
+  const isNotebookDesktop = isNotebook && !isCompact
 
   return (
     <section
       id="manuais"
       style={{
         background: 'var(--color-cream)',
-        height: isCompact ? 'auto' : '100svh',
+        height: isCompact || isNotebookDesktop ? 'auto' : '100svh',
         boxSizing: 'border-box' as const,
         display: 'flex',
         flexDirection: 'column',
-        padding: isCompact
-          ? 'clamp(56px, 9vw, 72px) clamp(18px, 5vw, 28px) clamp(64px, 10vw, 84px)'
-          : 'clamp(16px, 3vw, 40px) clamp(20px, 5vw, 60px) clamp(12px, 2vw, 28px)',
-        overflow: isCompact ? 'visible' : 'hidden',
+        padding:
+          isCompact && isNotebook
+            ? 'clamp(44px, 6vw, 60px) clamp(18px, 5vw, 28px) clamp(44px, 6vw, 64px)'
+            : isCompact
+              ? 'clamp(56px, 9vw, 72px) clamp(18px, 5vw, 28px) clamp(64px, 10vw, 84px)'
+              : 'clamp(16px, 3vw, 40px) clamp(20px, 5vw, 60px) clamp(12px, 2vw, 28px)',
+        overflow: isCompact || isNotebookDesktop ? 'visible' : 'hidden',
       }}
     >
       <div
@@ -186,9 +206,14 @@ export function ManuaisSection() {
           maxWidth: 1200,
           width: '100%',
           margin: '0 auto',
-          flex: isCompact ? 'unset' : 1,
-          minHeight: isCompact ? 'auto' : 'clamp(280px, 45vh, 420px)',
+          flex: isCompact || isNotebookDesktop ? 'unset' : 1,
+          minHeight: isCompact
+            ? 'auto'
+            : isNotebookDesktop
+              ? 'clamp(320px, 40vw, 420px)'
+              : 'clamp(280px, 45vh, 420px)',
           background: isCompact ? 'transparent' : '#1a1a1a',
+          display: isNotebookDesktop ? 'grid' : 'block',
         }}
       >
         <AnimatePresence mode="wait" initial={false}>
@@ -205,11 +230,18 @@ export function ManuaisSection() {
                     width: '100%',
                     minWidth: 0,
                     boxSizing: 'border-box',
-                    height: 'clamp(220px, 48vw, 320px)',
+                    height: isNotebook ? 'clamp(180px, 34vh, 260px)' : 'clamp(220px, 48vw, 320px)',
                     borderRadius: 24,
                     overflow: 'hidden',
                   }
-                : { position: 'absolute', inset: 0 }
+                : isNotebookDesktop
+                  ? {
+                      position: 'relative',
+                      gridArea: '1 / 1',
+                      minWidth: 0,
+                      minHeight: 0,
+                    }
+                  : { position: 'absolute', inset: 0 }
             }
           >
             <Image
@@ -230,8 +262,10 @@ export function ManuaisSection() {
           <div
             aria-hidden
             style={{
-              position: 'absolute',
-              inset: 0,
+              position: isNotebookDesktop ? 'relative' : 'absolute',
+              inset: isNotebookDesktop ? undefined : 0,
+              gridArea: isNotebookDesktop ? '1 / 1' : undefined,
+              zIndex: isNotebookDesktop ? 1 : undefined,
               background:
                 'linear-gradient(90deg, var(--color-black-18) 0%, transparent 55%)',
               pointerEvents: 'none',
@@ -250,22 +284,32 @@ export function ManuaisSection() {
             exit={{ x: -16, opacity: 0 }}
             transition={{ duration: 0.42, ease: [0.25, 0.46, 0.45, 0.94] }}
             style={{
-              position: isCompact ? 'relative' : 'absolute',
-              top: isCompact ? 'auto' : 28,
-              left: isCompact ? 'auto' : 28,
-              bottom: isCompact ? 'auto' : 28,
+              position: isCompact ? 'relative' : isNotebookDesktop ? 'relative' : 'absolute',
+              top: isCompact || isNotebookDesktop ? 'auto' : 28,
+              left: isCompact || isNotebookDesktop ? 'auto' : 28,
+              bottom: isCompact || isNotebookDesktop ? 'auto' : 28,
+              gridArea: isNotebookDesktop ? '1 / 1' : undefined,
+              zIndex: isNotebookDesktop ? 2 : undefined,
+              justifySelf: isNotebookDesktop ? 'start' : undefined,
+              alignSelf: isNotebookDesktop ? 'start' : undefined,
               width: isCompact ? '100%' : 'clamp(240px, 34%, 360px)',
               maxWidth: isCompact ? '100%' : undefined,
               boxSizing: 'border-box',
               background: manual.cardBg,
               borderRadius: isCompact ? '0 0 24px 24px' : 24,
-              padding: isCompact ? '28px 24px 24px' : 'clamp(24px, 4vh, 48px)',
+              padding: isCompact
+                ? isNotebook
+                  ? '22px 22px 22px'
+                  : '28px 24px 24px'
+                : isNotebookDesktop
+                  ? 'clamp(20px, 2vw, 32px)'
+                  : 'clamp(24px, 4vh, 48px)',
               display: 'grid',
               gridTemplateRows: '1fr auto',
-              rowGap: isCompact ? 20 : 'clamp(14px, 2.4vh, 24px)',
+              rowGap: isCompact ? (isNotebook ? 16 : 20) : isNotebookDesktop ? 'clamp(14px, 1.4vw, 20px)' : 'clamp(14px, 2.4vh, 24px)',
               backdropFilter: 'blur(10px)',
               WebkitBackdropFilter: 'blur(10px)',
-              margin: isCompact ? '-36px 0 0' : 0,
+              margin: isCompact ? (isNotebook ? '-28px 0 0' : '-36px 0 0') : isNotebookDesktop ? '24px 0 24px 24px' : 0,
               boxShadow: isCompact ? '0 22px 50px rgba(42, 37, 32, 0.14)' : 'none',
             }}
           >
@@ -287,11 +331,15 @@ export function ManuaisSection() {
               <h3
                 style={{
                   fontFamily: 'var(--font-serif)',
-                  fontSize: isCompact ? 'clamp(34px, 10vw, 44px)' : 'clamp(30px, 4.4vh, 46px)',
+                  fontSize: isCompact
+                    ? 'clamp(34px, 10vw, 44px)'
+                    : isNotebookDesktop
+                      ? 'clamp(30px, 2.4vw, 40px)'
+                      : 'clamp(30px, 4.4vh, 46px)',
                   fontWeight: 400,
                   lineHeight: 1.03,
                   color: manual.titleColor,
-                  marginBottom: 'clamp(20px, 3vh, 28px)',
+                  marginBottom: isNotebookDesktop ? 'clamp(18px, 1.6vw, 24px)' : 'clamp(20px, 3vh, 28px)',
                   whiteSpace: 'pre-line',
                 }}
               >
@@ -301,7 +349,11 @@ export function ManuaisSection() {
               <p
                 style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: isCompact ? 'clamp(17px, 4.5vw, 19px)' : 'clamp(14.95px, 1.8vh, 18.4px)',
+                  fontSize: isCompact
+                    ? 'clamp(17px, 4.5vw, 19px)'
+                    : isNotebookDesktop
+                      ? 'clamp(15px, 1.25vw, 17px)'
+                      : 'clamp(14.95px, 1.8vh, 18.4px)',
                   fontWeight: 700,
                   lineHeight: 1.35,
                   color: manual.taglineColor,
