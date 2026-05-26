@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { useLenis } from 'lenis/react'
 import NextImage from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, BookOpen, ChevronDown, Files, HeartHandshake, Users } from 'lucide-react'
@@ -51,9 +52,9 @@ function ExpandedParceiros({ onClose, isMobile }: { onClose: () => void, isMobil
       {/* Top Header */}
       {!isMobile && (
         <div className="flex justify-between items-start w-full mb-8">
-          <button 
+          <button
             onClick={onClose}
-            className="flex items-center gap-2 bg-[var(--color-cream)] hover:bg-[#E5DFD3] transition-colors text-[var(--color-ink-sub)] px-5 py-2.5 rounded-full font-sans text-sm font-semibold"
+            className="flex items-center gap-2 border-2 border-[var(--color-terracotta)] text-[var(--color-terracotta)] hover:bg-[var(--color-terracotta)] hover:text-white transition-colors px-5 py-2.5 rounded-full font-sans text-sm font-bold"
           >
             <ArrowLeft size={16} strokeWidth={2.5} />
             Voltar aos produtos
@@ -142,6 +143,7 @@ function ExpandedParceiros({ onClose, isMobile }: { onClose: () => void, isMobil
             src="/brand/photos/doutor_roberto.png"
             alt="Dr. Roberto Mendes"
             fill
+            sizes="(max-width: 768px) 100vw, 340px"
             className="object-cover object-[center_20%]"
           />
         </div>
@@ -152,9 +154,10 @@ function ExpandedParceiros({ onClose, isMobile }: { onClose: () => void, isMobil
 
 export function FundadorasStrip() {
   const [activeCard, setActiveCard] = useState<string | null>(null)
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState<boolean | null>(null)
   const reduceMotion = useReducedMotion() ?? false
   const overlayRef = useRef<HTMLDivElement>(null)
+  const lenis = useLenis()
 
   useEffect(() => {
     const checkIsMobile = () => setIsMobile(window.innerWidth < 768)
@@ -177,6 +180,15 @@ export function FundadorasStrip() {
       return () => window.clearTimeout(timeout)
     }
   }, [activeCard, isMobile, reduceMotion])
+
+  useEffect(() => {
+    if (isMobile === false && activeCard) {
+      lenis?.stop()
+    } else {
+      lenis?.start()
+    }
+    return () => { lenis?.start() }
+  }, [activeCard, isMobile, lenis])
 
   useEffect(() => {
     if (isMobile || !activeCard) return
@@ -310,7 +322,7 @@ export function FundadorasStrip() {
         <div className="w-full relative">
 
           {/* Grid 2x2 — apenas no desktop. No mobile é sempre o accordion abaixo. */}
-          {!isMobile && (
+          {isMobile === false && (
             <div className="cards-grid" style={{ gap: 18 }}>
               <p
                 style={{
@@ -332,7 +344,6 @@ export function FundadorasStrip() {
                 return (
                   <motion.button
                     key={card.icon}
-                    layoutId={`product-card-${card.icon}`}
                     onClick={() => setActiveCard(card.icon)}
                     className="flex h-full min-h-[214px] w-full flex-col gap-[18px] overflow-hidden rounded-[18px] py-[30px] pl-[clamp(22px,2vw,28px)] pr-[clamp(22px,2vw,28px)] text-left outline-none hover:z-10 hover:scale-[1.015] focus-visible:ring-2 focus-visible:ring-[var(--color-terracotta)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-cream)]"
                     style={{
@@ -383,7 +394,7 @@ export function FundadorasStrip() {
           )}
 
           {/* Accordion mobile — sempre visível no mobile, expandido ao clicar */}
-          {isMobile && (
+          {isMobile === true && (
             <div id="deck-container" className="flex flex-col w-full relative scroll-mt-24">
               <div className="flex-1 flex flex-col overflow-visible relative">
                 {CARDS.map((card, i) => {
@@ -487,7 +498,7 @@ export function FundadorasStrip() {
 
       {/* Overlay com Fundo Desfocado para o Modo Expandido (Apenas Desktop) */}
       <AnimatePresence>
-        {!isMobile && activeCard && (
+        {isMobile === false && activeCard && (
           <motion.div
             ref={overlayRef}
             role="dialog"
@@ -497,9 +508,10 @@ export function FundadorasStrip() {
             animate={{ opacity: 1, pointerEvents: 'auto' }}
             exit={{ opacity: 0, pointerEvents: 'none' }}
             className="fixed inset-0 z-[100] bg-[rgba(242,239,233,0.7)] backdrop-blur-md flex flex-col items-center justify-center p-12 overflow-hidden"
+            onClick={() => setActiveCard(null)}
           >
             {/* Desktop View (Sidebar + Content) */}
-            <div className="flex landing-max gap-8 h-full min-h-0 w-full items-stretch relative max-w-7xl mx-auto">
+            <div className="flex landing-max gap-8 h-full min-h-0 w-full items-stretch relative max-w-7xl mx-auto" onClick={(e) => e.stopPropagation()}>
               {/* Sidebar (Left) */}
               <div className="flex flex-col gap-4 w-[280px] shrink-0 pt-16">
                 {CARDS.map((card) => {
@@ -509,7 +521,6 @@ export function FundadorasStrip() {
                   return (
                     <motion.button
                       key={card.icon}
-                      layoutId={`product-card-${card.icon}`}
                       onClick={() => setActiveCard(card.icon)}
                       className="flex flex-col items-center justify-center gap-3 overflow-hidden rounded-[20px] py-8 px-4 text-center outline-none hover:scale-[1.02]"
                       style={{
@@ -554,9 +565,9 @@ export function FundadorasStrip() {
                     exit={{ opacity: 0 }}
                     className="flex flex-col items-center justify-center h-full text-[var(--color-ink-sub)] relative"
                   >
-                    <button 
+                    <button
                       onClick={() => setActiveCard(null)}
-                      className="absolute top-4 left-4 flex items-center gap-2 bg-[var(--color-gold-beige)] hover:bg-[#E5DFD3] transition-colors text-[var(--color-ink-sub)] px-5 py-2.5 rounded-full font-sans text-sm font-semibold"
+                      className="absolute top-4 left-4 flex items-center gap-2 border-2 border-[var(--color-terracotta)] text-[var(--color-terracotta)] hover:bg-[var(--color-terracotta)] hover:text-white transition-colors px-5 py-2.5 rounded-full font-sans text-sm font-bold"
                     >
                       <ArrowLeft size={16} strokeWidth={2.5} />
                       Voltar aos produtos
