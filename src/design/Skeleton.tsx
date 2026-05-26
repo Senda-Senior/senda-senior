@@ -9,14 +9,16 @@ import { cn } from './cn'
  * Variantes:
  *   line   → linha única (altura reduzida)
  *   block  → bloco (altura completa)
+ *   circle → círculo (use className para definir h/w)
  * ───────────────────────────────────────────────────────────────────
  */
 
-type Variant = 'line' | 'block'
+type Variant = 'line' | 'block' | 'circle'
 
 const variants: Record<Variant, string> = {
   line: 'h-4 rounded-full',
   block: 'h-24 rounded-[var(--radius-lg)]',
+  circle: 'rounded-full',
 }
 
 export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
