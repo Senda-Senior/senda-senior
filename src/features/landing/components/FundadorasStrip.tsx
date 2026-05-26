@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import NextImage from 'next/image'
+import Link from 'next/link'
 import { ArrowLeft, ArrowRight, BookOpen, ChevronDown, Files, HeartHandshake, Users } from 'lucide-react'
 import { Reveal } from '@/design'
 
@@ -14,6 +15,15 @@ const ICONS = {
   files: Files,
   users: Users,
 } as const
+
+const SENDA_EASE = [0.25, 0.46, 0.45, 0.94] as const
+const MOBILE_CARD_TRANSITION = {
+  type: 'spring',
+  stiffness: 260,
+  damping: 32,
+  mass: 0.9,
+} as const
+const MOBILE_CARD_RADIUS = 'var(--radius-lg)'
 
 function ExpandedParceiros({ onClose, isMobile }: { onClose: () => void, isMobile?: boolean }) {
   const specialties = [
@@ -48,7 +58,7 @@ function ExpandedParceiros({ onClose, isMobile }: { onClose: () => void, isMobil
             <ArrowLeft size={16} strokeWidth={2.5} />
             Voltar aos produtos
           </button>
-          <h2 className="font-serif text-3xl font-bold uppercase tracking-wide text-[var(--color-ink)]">
+          <h2 className="font-serif text-3xl font-bold tracking-wide text-[var(--color-ink)]">
             Os Parceiros
           </h2>
         </div>
@@ -120,9 +130,9 @@ function ExpandedParceiros({ onClose, isMobile }: { onClose: () => void, isMobil
             humanizado e personalizado para cada paciente.
           </p>
           <div>
-            <button className="bg-[var(--color-terracotta)] text-white px-8 py-3.5 rounded-full font-bold text-[13px] tracking-widest uppercase hover:bg-[var(--color-terracotta-hover)] transition-colors flex items-center gap-3">
+            <Link href="/login" className="inline-flex items-center gap-3 bg-[var(--color-terracotta)] text-white px-8 py-3.5 rounded-full font-bold text-[13px] tracking-widest uppercase hover:opacity-90 transition-opacity">
               Acesse a nossa rede <ArrowRight size={16} strokeWidth={2.5} />
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -143,6 +153,8 @@ function ExpandedParceiros({ onClose, isMobile }: { onClose: () => void, isMobil
 export function FundadorasStrip() {
   const [activeCard, setActiveCard] = useState<string | null>(null)
   const [isMobile, setIsMobile] = useState(false)
+  const reduceMotion = useReducedMotion() ?? false
+  const overlayRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const checkIsMobile = () => setIsMobile(window.innerWidth < 768)
@@ -153,14 +165,45 @@ export function FundadorasStrip() {
 
   // Resolve o salto de rolagem: rola suavemente para o deck quando um card é ativado no mobile
   useEffect(() => {
-    if (isMobile && activeCard) {
-      setTimeout(() => {
+    if (isMobile && activeCard && !reduceMotion) {
+      const timeout = window.setTimeout(() => {
         const el = document.getElementById(`accordion-card-${activeCard}`)
         if (el) {
           const y = el.getBoundingClientRect().top + window.scrollY - 100 // 100px de respiro pro header
           window.scrollTo({ top: y, behavior: 'smooth' })
         }
-      }, 150) // Espera a animação do Framer Motion começar a abrir o espaço
+      }, 280) // Depois da abertura inicial, evita brigar com o layout spring.
+
+      return () => window.clearTimeout(timeout)
+    }
+  }, [activeCard, isMobile, reduceMotion])
+
+  useEffect(() => {
+    if (isMobile || !activeCard) return
+    const overlay = overlayRef.current
+    if (!overlay) return
+    const previousFocus = document.activeElement as HTMLElement
+    const focusable = Array.from(
+      overlay.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+    )
+    focusable[0]?.focus()
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { setActiveCard(null); return }
+      if (e.key !== 'Tab') return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last?.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first?.focus()
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      previousFocus?.focus()
     }
   }, [activeCard, isMobile])
 
@@ -291,14 +334,13 @@ export function FundadorasStrip() {
                     key={card.icon}
                     layoutId={`product-card-${card.icon}`}
                     onClick={() => setActiveCard(card.icon)}
-                    className="flex h-full min-h-[214px] w-full flex-col gap-[18px] overflow-hidden rounded-[18px] py-[30px] pl-[clamp(22px,2vw,28px)] pr-[clamp(22px,2vw,28px)] text-left outline-none transition-transform duration-[200ms] ease-[ease] hover:z-10 hover:scale-[1.015] focus-visible:ring-2 focus-visible:ring-[var(--color-terracotta)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-cream)]"
+                    className="flex h-full min-h-[214px] w-full flex-col gap-[18px] overflow-hidden rounded-[18px] py-[30px] pl-[clamp(22px,2vw,28px)] pr-[clamp(22px,2vw,28px)] text-left outline-none hover:z-10 hover:scale-[1.015] focus-visible:ring-2 focus-visible:ring-[var(--color-terracotta)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-cream)]"
                     style={{
                       background: card.bg,
                       boxShadow: '0 18px 42px rgba(42, 37, 32, 0.08)',
                     }}
                   >
                     <motion.div
-                      layoutId={`product-icon-container-${card.icon}`}
                       style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -308,9 +350,8 @@ export function FundadorasStrip() {
                       <Icon size={42} strokeWidth={1.3} aria-hidden />
                     </motion.div>
 
-                    <motion.div layoutId={`product-text-container-${card.icon}`}>
+                    <motion.div>
                       <motion.h3
-                        layoutId={`product-title-${card.icon}`}
                         style={{
                           fontFamily: 'var(--font-sans)',
                           fontSize: 18,
@@ -324,7 +365,6 @@ export function FundadorasStrip() {
                         {card.title}
                       </motion.h3>
                       <motion.p
-                        layoutId={`product-desc-${card.icon}`}
                         style={{
                           fontFamily: 'var(--font-sans)',
                           fontSize: 14.95,
@@ -354,61 +394,77 @@ export function FundadorasStrip() {
                     <motion.div
                       id={`accordion-card-${card.icon}`}
                       key={card.icon}
-                      layoutId={`product-card-${card.icon}`}
-                      layout
+                      layout="position"
+                      role={!isActive ? 'button' : undefined}
+                      tabIndex={!isActive ? 0 : undefined}
+                      aria-expanded={isActive}
+                      aria-label={card.title}
                       onClick={() => {
                           if (!isActive) setActiveCard(card.icon)
                       }}
-                      className={`w-full flex flex-col overflow-hidden shrink-0 border border-[rgba(42,37,32,0.04)] transition-colors duration-300 ${!isActive ? 'cursor-pointer hover:opacity-90' : ''}`}
+                      onKeyDown={(e) => {
+                        if (!isActive && (e.key === 'Enter' || e.key === ' ')) {
+                          e.preventDefault()
+                          setActiveCard(card.icon)
+                        }
+                      }}
+                      className={`w-full flex flex-col overflow-hidden shrink-0 border border-[rgba(42,37,32,0.04)] will-change-transform transition-[background-color,border-color,box-shadow,opacity] duration-300 ease-out ${!isActive ? 'cursor-pointer hover:opacity-90' : ''}`}
                       style={{
                         background: isActive ? 'white' : card.bg,
-                        borderRadius: '24px',
-                        marginTop: i === 0 ? '0' : isActive ? '8px' : '-16px',
-                        marginBottom: isActive ? '8px' : '0',
-                        zIndex: i,
+                        borderRadius: MOBILE_CARD_RADIUS,
+                        marginTop: i === 0 ? '0' : '-14px',
+                        marginBottom: isActive ? '16px' : '0',
+                        zIndex: isActive ? CARDS.length + 1 : CARDS.length - i,
                         boxShadow: '0 -4px 16px rgba(0,0,0,0.06)'
                       }}
-                      transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
+                      transition={reduceMotion ? { duration: 0 } : MOBILE_CARD_TRANSITION}
                     >
                         {/* Card Header (Visible in deck) */}
-                        <div 
-                          className="flex items-center justify-between px-6 h-[72px] shrink-0"
-                          style={{
-                            background: isActive ? 'var(--color-terracotta)' : 'transparent',
-                            borderRadius: isActive ? '24px 24px 0 0' : '0',
-                          }}
+                        <motion.div
+                          className="flex h-[72px] shrink-0 items-center justify-between px-6"
+                          animate={{ backgroundColor: isActive ? 'var(--color-terracotta)' : 'rgba(0, 0, 0, 0)' }}
+                          transition={reduceMotion ? { duration: 0 } : { duration: 0.24, ease: SENDA_EASE }}
                         >
                           <div className="flex items-center gap-4">
-                            <motion.div layoutId={`product-icon-container-${card.icon}`}>
-                              <Icon size={24} color={isActive ? 'white' : 'var(--color-ink)'} strokeWidth={2} />
+                            <motion.div
+                              animate={{ color: isActive ? '#fff' : 'var(--color-ink)' }}
+                              transition={reduceMotion ? { duration: 0 } : { duration: 0.22, ease: SENDA_EASE }}
+                            >
+                              <Icon size={24} strokeWidth={2} />
                             </motion.div>
                             <motion.h3 
-                              layoutId={`product-title-${card.icon}`}
                               className="font-sans text-[16px] font-bold"
-                              style={{ color: isActive ? 'white' : 'var(--color-ink)', margin: 0 }}
+                              animate={{ color: isActive ? '#fff' : 'var(--color-ink)' }}
+                              transition={reduceMotion ? { duration: 0 } : { duration: 0.22, ease: SENDA_EASE }}
+                              style={{ margin: 0 }}
                             >
                               {card.title}
                             </motion.h3>
                           </div>
                           {isActive && (
-                            <button 
-                              onClick={(e) => { e.stopPropagation(); setActiveCard(null) }} 
+                            <button
+                              onClick={(e) => { e.stopPropagation(); setActiveCard(null) }}
+                              aria-label="Fechar"
                               className="text-white hover:bg-[rgba(255,255,255,0.2)] p-2 rounded-full transition-colors"
                             >
                               <ArrowLeft size={20} strokeWidth={2.5} />
                             </button>
                           )}
-                        </div>
+                        </motion.div>
 
                         {/* Active Content */}
                         <AnimatePresence>
                           {isActive && (
                             <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.2 }}
-                              className="p-5 pb-8 flex flex-col"
+                              initial={reduceMotion ? false : { height: 0, opacity: 0, y: -8 }}
+                              animate={{ height: 'auto', opacity: 1, y: 0 }}
+                              exit={reduceMotion ? { opacity: 0 } : { height: 0, opacity: 0, y: -6 }}
+                              transition={
+                                reduceMotion
+                                  ? { duration: 0 }
+                                  : { height: { duration: 0.32, ease: SENDA_EASE }, opacity: { duration: 0.24, ease: SENDA_EASE }, y: { duration: 0.28, ease: SENDA_EASE } }
+                              }
+                              className="flex flex-col overflow-hidden px-5 pb-8 pt-5"
                             >
                               {activeCard === 'users' ? (
                                 <ExpandedParceiros onClose={() => setActiveCard(null)} isMobile />
@@ -433,6 +489,10 @@ export function FundadorasStrip() {
       <AnimatePresence>
         {!isMobile && activeCard && (
           <motion.div
+            ref={overlayRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Detalhes do produto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, pointerEvents: 'auto' }}
             exit={{ opacity: 0, pointerEvents: 'none' }}
@@ -451,14 +511,13 @@ export function FundadorasStrip() {
                       key={card.icon}
                       layoutId={`product-card-${card.icon}`}
                       onClick={() => setActiveCard(card.icon)}
-                      className="flex flex-col items-center justify-center gap-3 overflow-hidden rounded-[20px] py-8 px-4 text-center outline-none transition-transform duration-[200ms] hover:scale-[1.02]"
+                      className="flex flex-col items-center justify-center gap-3 overflow-hidden rounded-[20px] py-8 px-4 text-center outline-none hover:scale-[1.02]"
                       style={{
                         background: isActive ? 'var(--color-terracotta)' : card.bg,
                         boxShadow: isActive ? '0 12px 32px rgba(42, 37, 32, 0.12)' : 'none',
                       }}
                     >
                       <motion.div
-                        layoutId={`product-icon-container-${card.icon}`}
                         style={{
                           color: isActive ? 'white' : 'var(--color-ink)',
                         }}
@@ -466,9 +525,8 @@ export function FundadorasStrip() {
                         <Icon size={32} strokeWidth={1.5} aria-hidden />
                       </motion.div>
 
-                      <motion.div layoutId={`product-text-container-${card.icon}`}>
+                      <motion.div>
                         <motion.h3
-                          layoutId={`product-title-${card.icon}`}
                           style={{
                             fontFamily: 'var(--font-sans)',
                             fontSize: 15,
@@ -479,13 +537,6 @@ export function FundadorasStrip() {
                         >
                           {card.title}
                         </motion.h3>
-                        {/* Hide description in sidebar */}
-                        <motion.p
-                          layoutId={`product-desc-${card.icon}`}
-                          style={{ display: 'none' }}
-                        >
-                          {card.desc}
-                        </motion.p>
                       </motion.div>
                     </motion.button>
                   )
@@ -521,4 +572,3 @@ export function FundadorasStrip() {
     </section>
   )
 }
-
