@@ -795,6 +795,7 @@ body.reader-locked {
   /* ── Consultoria: 42/58 grid → single column ── */
   #consultoria {
     height: auto !important;
+    min-height: 100vh;
     min-height: 100svh;
     padding: 48px 24px !important;
     align-items: flex-start !important;
@@ -808,6 +809,7 @@ body.reader-locked {
   /* ── Conteúdo: 3-col → 1 col ── */
   #conteudo {
     height: auto !important;
+    min-height: 100vh;
     min-height: 100svh;
     padding: 48px 20px !important;
     justify-content: flex-start !important;

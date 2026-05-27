@@ -22,8 +22,8 @@ export default function Home() {
       <CustomCursor />
       <Header />
       <main className="relative bg-[var(--color-cream)]">
-        {/* 1. Hero — sticky bottom para deixar rolar um pouco mais e mostrar se for longa */}
-        <div id="hero" className="sticky bottom-0 z-0 w-full min-h-screen flex flex-col justify-start">
+        {/* 1. Hero — sticky bottom apenas no desktop; no mobile o deck effect não existe */}
+        <div id="hero" className="md:sticky md:bottom-0 md:z-0 w-full min-h-screen flex flex-col justify-start">
           <Hero />
         </div>
 
