@@ -441,6 +441,7 @@ export async function updateMetadata(
   if (Object.keys(update).length > 0) {
     const { error } = await supabase
       .from('vault_files')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase update type is opaque for partial patch objects
       .update(update as any)
       .eq('user_id', user.id)
       .eq('id', fileId)

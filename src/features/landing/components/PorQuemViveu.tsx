@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import NextImage from 'next/image'
+import { useEffect, useState } from 'react'
 
 import { FOUNDERS, FOUNDER_PHOTOS, type Founder } from '@/features/landing/data/por-quem-viveu'
 
@@ -38,12 +39,16 @@ function FounderCard({ name, role, bio, credentials, reverse }: Founder) {
       }}
     >
       {!reverse && (
-        <div className="founder-photo-col" style={{ position: 'relative', minHeight: 240 }}>
+        <div
+          className="founder-photo-col"
+          style={{ position: 'relative', minHeight: 240, background: 'var(--color-gold-beige)' }}
+        >
           <NextImage
             src={photo}
             alt={name}
             fill
             sizes="(max-width: 768px) 100vw, 45vw"
+            className="founder-photo-img"
             style={{ objectFit: 'cover', objectPosition: 'center top' }}
           />
         </div>
@@ -146,12 +151,16 @@ function FounderCard({ name, role, bio, credentials, reverse }: Founder) {
       </div>
 
       {reverse && (
-        <div className="founder-photo-col" style={{ position: 'relative', minHeight: 240 }}>
+        <div
+          className="founder-photo-col"
+          style={{ position: 'relative', minHeight: 240, background: 'var(--color-gold-beige)' }}
+        >
           <NextImage
             src={photo}
             alt={name}
             fill
             sizes="(max-width: 768px) 100vw, 45vw"
+            className="founder-photo-img"
             style={{ objectFit: 'cover', objectPosition: 'center top' }}
           />
         </div>
@@ -163,6 +172,13 @@ function FounderCard({ name, role, bio, credentials, reverse }: Founder) {
 /* ─── Component ─────────────────────────────────────────────────────── */
 
 export function PorQuemViveu() {
+  const [canAnimateInView, setCanAnimateInView] = useState(false)
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setCanAnimateInView('IntersectionObserver' in window)
+  }, [])
+
   return (
     <section
       id="por-quem-viveu"
@@ -178,9 +194,10 @@ export function PorQuemViveu() {
         {/* ── Header — fade+rise stagger ── */}
         <motion.div
           variants={stagger}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-8%' }}
+          initial={canAnimateInView ? 'hidden' : false}
+          animate={canAnimateInView ? undefined : 'show'}
+          whileInView={canAnimateInView ? 'show' : undefined}
+          viewport={canAnimateInView ? { once: true, margin: '-8%' } : undefined}
           style={{
             marginBottom: 'clamp(32px, 4vw, 48px)',
             display: 'flex',
@@ -239,9 +256,10 @@ export function PorQuemViveu() {
         {/* ── Founder cards ── */}
         <motion.div
           variants={stagger}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: '-5%' }}
+          initial={canAnimateInView ? 'hidden' : false}
+          animate={canAnimateInView ? undefined : 'show'}
+          whileInView={canAnimateInView ? 'show' : undefined}
+          viewport={canAnimateInView ? { once: true, margin: '-5%' } : undefined}
           style={{ display: 'flex', flexDirection: 'column', gap: 20 }}
         >
           {FOUNDERS.map((f) => (

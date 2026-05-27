@@ -61,8 +61,24 @@ export function Reveal({
 }: RevealProps) {
   const reduce = useReducedMotion() ?? false
   const ref = useRef<HTMLDivElement>(null)
+  const [canAnimate, setCanAnimate] = useState(false)
   // 'mount' starts visible immediately. 'inview' waits for scroll to fire.
   const [inView, setInView] = useState(variant === 'mount')
+
+  useEffect(() => {
+    const supportsEnhancedMotion =
+      'requestAnimationFrame' in window &&
+      'getComputedStyle' in window &&
+      (!window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+
+    if (supportsEnhancedMotion) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setCanAnimate(true)
+      if (variant !== 'mount' && !inView && ref.current && isInViewport(ref.current)) {
+        setInView(true)
+      }
+    }
+  }, [variant, inView])
 
   // Initial visibility check on mount: handles above-the-fold inview elements
   // (Hero etc). Without this, they'd wait for first scroll event before animating.
@@ -72,7 +88,6 @@ export function Reveal({
   useEffect(() => {
     if (variant === 'mount' || inView || !ref.current) return
     if (isInViewport(ref.current)) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setInView(true)
     }
   }, [variant, inView])
@@ -86,7 +101,7 @@ export function Reveal({
     if (isInViewport(ref.current)) setInView(true)
   })
 
-  if (reduce) {
+  if (reduce || !canAnimate) {
     return <div className={className}>{children}</div>
   }
 
@@ -94,7 +109,7 @@ export function Reveal({
     <motion.div
       ref={ref}
       className={className}
-      initial={{ opacity: 0, y: distance }}
+      initial={false}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: distance }}
       transition={{ duration: 0.8, delay, ease: SENDA_EASE }}
     >

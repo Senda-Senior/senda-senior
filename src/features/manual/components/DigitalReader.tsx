@@ -33,10 +33,8 @@ export function DigitalReader({ initialChapterSlug }: DigitalReaderProps) {
       return () => mql.removeEventListener('change', sync)
     }
 
-    // Safari fallback
-    // eslint-disable-next-line deprecation/deprecation
+    // Safari fallback — addListener/removeListener are deprecated but required for Safari < 14
     mql.addListener(sync)
-    // eslint-disable-next-line deprecation/deprecation
     return () => mql.removeListener(sync)
   }, [])
 

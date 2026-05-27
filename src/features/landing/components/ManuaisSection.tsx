@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 
 import { MANUAIS } from '@/features/landing/data/fases-cuidado'
+import { listenMediaQuery } from '@/lib/utils/mediaQuery'
 
 export function ManuaisSection() {
   const [active, setActive] = useState(0)
@@ -27,11 +28,11 @@ export function ManuaisSection() {
     }
 
     sync()
-    compact.addEventListener('change', sync)
-    notebook.addEventListener('change', sync)
+    const cleanupCompact = listenMediaQuery(compact, sync)
+    const cleanupNotebook = listenMediaQuery(notebook, sync)
     return () => {
-      compact.removeEventListener('change', sync)
-      notebook.removeEventListener('change', sync)
+      cleanupCompact()
+      cleanupNotebook()
     }
   }, [])
 

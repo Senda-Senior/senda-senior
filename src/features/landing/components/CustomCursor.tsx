@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
+import { listenMediaQuery } from '@/lib/utils/mediaQuery'
 
 export function CustomCursor() {
   const [enabled, setEnabled] = useState(false)
@@ -23,12 +24,12 @@ export function CustomCursor() {
     }
 
     updateEnabled()
-    reduceMotionQuery.addEventListener('change', updateEnabled)
-    pointerQuery.addEventListener('change', updateEnabled)
+    const cleanupReduceMotion = listenMediaQuery(reduceMotionQuery, updateEnabled)
+    const cleanupPointer = listenMediaQuery(pointerQuery, updateEnabled)
 
     return () => {
-      reduceMotionQuery.removeEventListener('change', updateEnabled)
-      pointerQuery.removeEventListener('change', updateEnabled)
+      cleanupReduceMotion()
+      cleanupPointer()
     }
   }, [])
 

@@ -2,6 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 import { SERVICOS } from '@/features/landing/data/consultoria'
@@ -48,16 +49,29 @@ function ServiceIcon({ src }: { src: string }) {
 /* ─── Component ─────────────────────────────────────────────────────── */
 
 export function Consultoria() {
+  const [isLandscapeMobile, setIsLandscapeMobile] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia(
+      '(orientation: landscape) and (max-height: 500px)',
+    )
+    setIsLandscapeMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsLandscapeMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
   return (
     <section
       id="consultoria"
       style={{
         background: 'var(--color-warm-beige)',
-        height: '100svh',
+        height: isLandscapeMobile ? 'auto' : '100svh',
         display: 'flex',
         alignItems: 'center',
-        // only horizontal padding — no vertical so align-items:center has full 100svh
-        padding: '0 clamp(24px, 5vw, 80px)',
+        padding: isLandscapeMobile
+          ? 'clamp(60px, 8vw, 100px) clamp(24px, 5vw, 80px)'
+          : '0 clamp(24px, 5vw, 80px)',
         overflow: 'hidden',
       }}
     >

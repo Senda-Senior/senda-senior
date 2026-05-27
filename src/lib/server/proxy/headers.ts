@@ -20,6 +20,7 @@ function getTrustedIpHeader(request: NextRequest): string | null {
     return firstHeaderValue(request.headers.get('cf-connecting-ip'))
   }
 
+  // eslint-disable-next-line no-restricted-syntax -- custom trusted proxy header, injected by hosting platform
   const customHeader = process.env.TRUSTED_PROXY_HEADER
   if (customHeader) {
     return firstHeaderValue(request.headers.get(customHeader))

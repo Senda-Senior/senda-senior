@@ -117,7 +117,7 @@ export function Header() {
             <X size={26} strokeWidth={1.5} />
           </button>
 
-          <nav>
+          <nav className="flex flex-col items-center gap-8">
             {NAV_LINKS.map(({ label, href }) => (
               <a
                 key={label}

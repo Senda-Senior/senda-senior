@@ -641,10 +641,9 @@ body.reader-locked {
     gap: 32px;
   }
 
-  .mobile-menu a {
+  .mobile-menu nav a {
     font-size: 23px !important;
     font-weight: 600;
-    color: var(--color-ink);
     text-decoration: none;
   }
 
@@ -833,8 +832,14 @@ body.reader-locked {
   /* Photo always appears above text on mobile regardless of desktop reverse order */
   .founder-photo-col {
     order: -1;
-    min-height: 72vw !important;
-    max-height: 360px !important;
+    height: clamp(300px, 92vw, 440px) !important;
+    min-height: 0 !important;
+    max-height: none !important;
+  }
+
+  .founder-photo-img {
+    object-fit: contain !important;
+    object-position: center bottom !important;
   }
 
   /* ── ManualSection inner padding ── */
@@ -879,10 +884,9 @@ body.reader-locked {
     gap: 32px;
   }
 
-  .mobile-menu a {
+  .mobile-menu nav a {
     font-size: 23px !important;
     font-weight: 600;
-    color: var(--color-ink);
     text-decoration: none;
   }
 

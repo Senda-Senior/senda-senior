@@ -194,7 +194,11 @@ export default function Login() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
-  const [mode, setMode] = useState<AuthMode>('login')
+  const [mode, setMode] = useState<AuthMode>(() => {
+    if (typeof window === 'undefined') return 'login'
+    const p = new URLSearchParams(window.location.search).get('mode')
+    return p === 'register' || p === 'reset' ? p : 'login'
+  })
   const modeResetTimeoutRef = useRef<number | null>(null)
   const supabase = useMemo(() => createBrowserClient(), [])
 
@@ -250,13 +254,6 @@ export default function Login() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const errorParam = params.get('error')
-    const modeParam = params.get('mode')
-
-    if (modeParam === 'register' || modeParam === 'reset') {
-      setMode(modeParam)
-    } else {
-      setMode('login')
-    }
 
     if (errorParam) {
       setError(decodeURIComponent(errorParam).replaceAll('+', ' '))

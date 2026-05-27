@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  transpilePackages: ['framer-motion', 'motion-dom', 'lenis'],
 
   // Remove o header que revela a stack
   poweredByHeader: false,

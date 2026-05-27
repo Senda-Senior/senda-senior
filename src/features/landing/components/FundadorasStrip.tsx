@@ -334,10 +334,13 @@ export function FundadorasStrip() {
   const lenis = useLenis()
 
   useEffect(() => {
-    const checkIsMobile = () => setIsMobile(window.innerWidth < 768)
-    checkIsMobile()
-    window.addEventListener('resize', checkIsMobile)
-    return () => window.removeEventListener('resize', checkIsMobile)
+    const mq = window.matchMedia(
+      '(max-width: 768px), (orientation: landscape) and (max-height: 500px)',
+    )
+    setIsMobile(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
   }, [])
 
   // Resolve o salto de rolagem: rola suavemente para o deck quando um card é ativado no mobile

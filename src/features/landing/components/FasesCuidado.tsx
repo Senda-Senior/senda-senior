@@ -6,6 +6,7 @@ import { useRef, useState, useEffect } from 'react'
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
 import { ArrowRight, ChevronDown, ChevronUp, ArrowDown } from 'lucide-react'
 import Link from 'next/link'
+import { listenMediaQuery } from '@/lib/utils/mediaQuery'
 
 /* ─── Data ──────────────────────────────────────────────────────────── */
 
@@ -320,6 +321,13 @@ export function DesktopFasesCuidado() {
   useEffect(() => {
     const el = railContainerRef.current
     if (!el) return
+    if (typeof window.ResizeObserver === 'undefined') {
+      const measure = () => setContainerWidth(el.getBoundingClientRect().width)
+      measure()
+      window.addEventListener('resize', measure)
+      return () => window.removeEventListener('resize', measure)
+    }
+
     const ro = new ResizeObserver(([entry]) => {
       setContainerWidth(entry.contentRect.width)
     })
@@ -705,12 +713,13 @@ export function ManualSection() {
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    const mq = window.matchMedia('(max-width: 768px)')
+    const mq = window.matchMedia(
+      '(max-width: 768px), (orientation: landscape) and (max-height: 500px)',
+    )
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsMobile(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
+    const handler = (e: MediaQueryListEvent | MediaQueryList) => setIsMobile(e.matches)
+    return listenMediaQuery(mq, handler)
   }, [])
 
   if (isMobile) return <MobileFasesCuidado />

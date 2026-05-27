@@ -23,6 +23,7 @@ export function SplashScreen() {
       return () => window.removeEventListener('pageshow', handlePageShow)
     }
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: triggers the one-time boot animation
     setIsVisible(true)
     document.body.style.overflow = 'hidden'
 
