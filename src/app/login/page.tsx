@@ -386,6 +386,7 @@ export default function Login() {
       : isRegister
         ? 'Juntar-se à Senda'
         : 'Entrar na Senda'
+  const ctaAriaLabel = isRegister ? 'Juntar-se a Senda' : ctaLabel
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#1d1713] text-ink">
@@ -511,6 +512,7 @@ export default function Login() {
                 <button
                   id="login-submit"
                   type="submit"
+                  aria-label={ctaAriaLabel}
                   disabled={loading}
                   style={{ borderRadius: '20px' }}
                   className={[
