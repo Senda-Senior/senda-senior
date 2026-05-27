@@ -832,14 +832,14 @@ body.reader-locked {
   /* Photo always appears above text on mobile regardless of desktop reverse order */
   .founder-photo-col {
     order: -1;
-    height: clamp(300px, 92vw, 440px) !important;
+    height: clamp(380px, 122vw, 620px) !important;
     min-height: 0 !important;
     max-height: none !important;
   }
 
   .founder-photo-img {
-    object-fit: contain !important;
-    object-position: center bottom !important;
+    object-fit: cover !important;
+    object-position: center top !important;
   }
 
   /* ── ManualSection inner padding ── */
