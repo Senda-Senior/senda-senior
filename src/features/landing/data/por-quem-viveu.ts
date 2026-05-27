@@ -34,6 +34,6 @@ export const FOUNDERS: Founder[] = [
 ]
 
 export const FOUNDER_PHOTOS: Record<string, string> = {
-  'Luciana Moura': '/brand/photos/founder-luciana.png',
-  'Julianne Pimentel': '/brand/photos/founder-julianne.png',
+  'Luciana Moura': '/LUCIANA FOTO.webp',
+  'Julianne Pimentel': '/JULIANNE FOTO.webp',
 }
