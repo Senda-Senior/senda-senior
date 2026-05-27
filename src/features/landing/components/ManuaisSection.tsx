@@ -112,13 +112,13 @@ export function ManuaisSection() {
       <div
         style={{
           display: 'flex',
-          justifyContent: isCompact ? 'flex-start' : 'center',
+          justifyContent: 'center',
           alignItems: 'center',
           gap: isCompact ? 8 : 2,
-          flexWrap: isCompact ? 'wrap' : 'nowrap',
+          flexWrap: 'wrap',
           flexShrink: 0,
           marginBottom: 'clamp(12px, 2vw, 20px)',
-          overflowX: isCompact ? 'auto' : 'visible',
+          overflowX: 'visible',
           paddingBottom: isCompact ? 4 : 0,
         }}
       >

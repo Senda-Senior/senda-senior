@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { useLenis } from 'lenis/react'
 import NextImage from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight, BookOpen, ChevronDown, Files, HeartHandshake, Users } from 'lucide-react'
+import { ArrowLeft, ArrowRight, BookOpen, ChevronDown, Files, HeartHandshake, Users, ShieldCheck, CalendarCheck, FileText, Stethoscope } from 'lucide-react'
 import { Reveal } from '@/design'
 
 import { CARDS } from '@/features/landing/data/fundadoras-strip'
@@ -25,6 +25,179 @@ const MOBILE_CARD_TRANSITION = {
   mass: 0.9,
 } as const
 const MOBILE_CARD_RADIUS = 'var(--radius-lg)'
+
+function ExpandedManuais({ onClose, isMobile }: { onClose: () => void; isMobile?: boolean }) {
+  const manuais = [
+    { num: '01', fase: 'Fase 1', titulo: 'Prevent Care', desc: 'Pais ainda autônomos. O melhor momento para planejar.', bg: 'var(--color-sage-pale)', numColor: 'var(--color-forest)', titleColor: 'var(--color-forest)', descColor: 'var(--color-forest-60)' },
+    { num: '02', fase: 'Fase 2', titulo: 'Care', desc: 'Os primeiros sinais apareceram. Hora de agir com estrutura.', bg: 'var(--color-warm-tan)', numColor: 'var(--color-brown-deep)', titleColor: 'var(--color-brown-deep)', descColor: 'var(--color-brown-deep-60)' },
+    { num: '03', fase: 'Fase 3', titulo: 'Immediate Care', desc: 'Supervisão constante. Decisões urgentes com clareza.', bg: 'var(--color-terracotta)', numColor: 'rgba(255,255,255,0.25)', titleColor: 'white', descColor: 'rgba(255,255,255,0.7)' },
+  ]
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+      transition={{ delay: 0.2 }}
+      className="flex flex-col h-full w-full pt-4 px-2"
+    >
+      {!isMobile && (
+        <div className="flex justify-between items-start w-full mb-8">
+          <button onClick={onClose} className="flex items-center gap-2 border-2 border-[var(--color-terracotta)] text-[var(--color-terracotta)] hover:bg-[var(--color-terracotta)] hover:text-white transition-colors px-5 py-2.5 rounded-full font-sans text-sm font-bold">
+            <ArrowLeft size={16} strokeWidth={2.5} />
+            Voltar aos produtos
+          </button>
+          <h2 className="font-serif text-3xl font-bold tracking-wide text-[var(--color-ink)]">Os Manuais</h2>
+        </div>
+      )}
+      <div className="flex flex-col md:flex-row gap-8 md:gap-12 w-full flex-1 items-center md:items-start pb-8 md:pb-0">
+        {/* Texto esquerda */}
+        <div className="flex-1 flex flex-col justify-center">
+          <p className="font-sans text-[11.5px] font-bold uppercase tracking-[0.18em] text-[var(--color-terracotta)] mb-4">Metodologia Senda Sênior</p>
+          <h3 className="font-serif text-[clamp(28px,3vw,38px)] font-semibold text-[var(--color-ink)] leading-tight mb-4">
+            Três momentos,<br />um caminho.
+          </h3>
+          <p className="font-sans text-[15px] leading-relaxed text-[var(--color-ink-sub)] mb-8 max-w-[320px]">
+            Cada manual foi escrito para o momento exato que a sua família está vivendo — sem exageros, sem falta.
+          </p>
+          <Link href="/#manuais" onClick={onClose} className="inline-flex items-center gap-3 bg-[var(--color-terracotta)] text-white px-7 py-3 rounded-full font-bold text-[13px] tracking-widest uppercase hover:opacity-90 transition-opacity self-start">
+            Ver todos os manuais <ArrowRight size={15} strokeWidth={2.5} />
+          </Link>
+        </div>
+        {/* Cards direita */}
+        <div className="w-full md:w-[320px] flex flex-col gap-3 flex-shrink-0">
+          {manuais.map((m) => (
+            <div key={m.titulo} className="rounded-2xl px-5 py-4 flex items-center gap-4" style={{ background: m.bg }}>
+              <span className="font-serif text-[40px] font-light leading-none flex-shrink-0" style={{ color: m.numColor }}>{m.num}</span>
+              <div>
+                <p className="font-sans text-[10px] font-bold uppercase tracking-widest mb-0.5" style={{ color: m.descColor }}>{m.fase}</p>
+                <p className="font-serif text-[17px] font-semibold leading-tight" style={{ color: m.titleColor }}>{m.titulo}</p>
+                <p className="font-sans text-[12.5px] leading-snug mt-1" style={{ color: m.descColor }}>{m.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+function ExpandedAssessoria({ onClose, isMobile }: { onClose: () => void; isMobile?: boolean }) {
+  const etapas = [
+    { num: '01', icon: <Stethoscope size={18} strokeWidth={1.8} />, titulo: 'Diagnóstico', desc: 'Avaliamos a situação atual do idoso e da família.' },
+    { num: '02', icon: <FileText size={18} strokeWidth={1.8} />, titulo: 'Plano de cuidado', desc: 'Estruturado, revisável e adaptado à realidade de cada família.' },
+    { num: '03', icon: <CalendarCheck size={18} strokeWidth={1.8} />, titulo: 'Acompanhamento', desc: 'Presença contínua nos momentos que mais importam.' },
+  ]
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+      transition={{ delay: 0.2 }}
+      className="flex flex-col h-full w-full pt-4 px-2"
+    >
+      {!isMobile && (
+        <div className="flex justify-between items-start w-full mb-8">
+          <button onClick={onClose} className="flex items-center gap-2 border-2 border-[var(--color-terracotta)] text-[var(--color-terracotta)] hover:bg-[var(--color-terracotta)] hover:text-white transition-colors px-5 py-2.5 rounded-full font-sans text-sm font-bold">
+            <ArrowLeft size={16} strokeWidth={2.5} />
+            Voltar aos produtos
+          </button>
+          <h2 className="font-serif text-3xl font-bold tracking-wide text-[var(--color-ink)]">A Assessoria</h2>
+        </div>
+      )}
+      <div className="flex flex-col md:flex-row gap-8 md:gap-12 w-full flex-1 items-center md:items-start pb-8 md:pb-0">
+        {/* Texto esquerda */}
+        <div className="flex-1 flex flex-col justify-center">
+          <p className="font-sans text-[11.5px] font-bold uppercase tracking-[0.18em] text-[var(--color-terracotta)] mb-4">Assessoria personalizada</p>
+          <h3 className="font-serif text-[clamp(26px,2.8vw,36px)] font-semibold text-[var(--color-ink)] leading-tight mb-4">
+            Junto com você,<br />no ritmo da família.
+          </h3>
+          <p className="font-sans text-[15px] leading-relaxed text-[var(--color-ink-sub)] mb-8 max-w-[320px]">
+            Orientação individual para quem está diante de decisões reais. Não existe resposta genérica para quem cuida.
+          </p>
+          <Link href="https://wa.me/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-[var(--color-terracotta)] text-white px-7 py-3 rounded-full font-bold text-[13px] tracking-widest uppercase hover:opacity-90 transition-opacity self-start">
+            Agendar conversa <ArrowRight size={15} strokeWidth={2.5} />
+          </Link>
+        </div>
+        {/* Etapas direita */}
+        <div className="w-full md:w-[320px] flex flex-col gap-3 flex-shrink-0">
+          {etapas.map((e) => (
+            <div key={e.num} className="rounded-2xl px-5 py-4 flex items-start gap-4 bg-[var(--color-gold-light)]">
+              <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[var(--color-terracotta)] text-white flex items-center justify-center mt-0.5">
+                {e.icon}
+              </div>
+              <div>
+                <p className="font-sans text-[10px] font-bold uppercase tracking-widest text-[var(--color-brown-deep-60)] mb-0.5">{e.num}</p>
+                <p className="font-serif text-[16px] font-semibold text-[var(--color-brown-deep)] leading-tight">{e.titulo}</p>
+                <p className="font-sans text-[13px] leading-snug text-[var(--color-brown-deep-60)] mt-1">{e.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+function ExpandedRepositorio({ onClose, isMobile }: { onClose: () => void; isMobile?: boolean }) {
+  const docs = [
+    { icon: <Stethoscope size={16} strokeWidth={1.8} />, label: 'Laudos e prescrições médicas' },
+    { icon: <FileText size={16} strokeWidth={1.8} />, label: 'Procurações e documentos jurídicos' },
+    { icon: <ShieldCheck size={16} strokeWidth={1.8} />, label: 'Planos de saúde e contatos de emergência' },
+    { icon: <CalendarCheck size={16} strokeWidth={1.8} />, label: 'Histórico de cuidadores e rotinas' },
+  ]
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, transition: { duration: 0.1 } }}
+      transition={{ delay: 0.2 }}
+      className="flex flex-col h-full w-full pt-4 px-2"
+    >
+      {!isMobile && (
+        <div className="flex justify-between items-start w-full mb-8">
+          <button onClick={onClose} className="flex items-center gap-2 border-2 border-[var(--color-terracotta)] text-[var(--color-terracotta)] hover:bg-[var(--color-terracotta)] hover:text-white transition-colors px-5 py-2.5 rounded-full font-sans text-sm font-bold">
+            <ArrowLeft size={16} strokeWidth={2.5} />
+            Voltar aos produtos
+          </button>
+          <h2 className="font-serif text-3xl font-bold tracking-wide text-[var(--color-ink)]">O Repositório</h2>
+        </div>
+      )}
+      <div className="flex flex-col md:flex-row gap-8 md:gap-12 w-full flex-1 items-center md:items-start pb-8 md:pb-0">
+        {/* Texto esquerda */}
+        <div className="flex-1 flex flex-col justify-center">
+          <p className="font-sans text-[11.5px] font-bold uppercase tracking-[0.18em] text-[var(--color-terracotta)] mb-4">Cofre digital</p>
+          <h3 className="font-serif text-[clamp(26px,2.8vw,36px)] font-semibold text-[var(--color-ink)] leading-tight mb-4">
+            Tudo em um lugar.<br />Seguro e acessível.
+          </h3>
+          <p className="font-sans text-[15px] leading-relaxed text-[var(--color-ink-sub)] mb-4 max-w-[320px]">
+            Compartilhe com quem você confia. Ninguém mais precisa procurar o documento certo na hora errada.
+          </p>
+          <div className="flex items-center gap-2 mb-8">
+            <ShieldCheck size={14} strokeWidth={2} className="text-[var(--color-green)]" />
+            <span className="font-sans text-[12px] text-[var(--color-ink-55)]">Criptografia SSL/TLS e AES-256</span>
+          </div>
+          <Link href="/vault" className="inline-flex items-center gap-3 bg-[var(--color-terracotta)] text-white px-7 py-3 rounded-full font-bold text-[13px] tracking-widest uppercase hover:opacity-90 transition-opacity self-start">
+            Acessar meu repositório <ArrowRight size={15} strokeWidth={2.5} />
+          </Link>
+        </div>
+        {/* Documentos direita */}
+        <div className="w-full md:w-[300px] flex flex-col gap-3 flex-shrink-0">
+          {docs.map((d) => (
+            <div key={d.label} className="rounded-2xl px-5 py-3.5 flex items-center gap-3 bg-[var(--color-sage-pale)]">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[var(--color-forest)] text-white flex items-center justify-center">
+                {d.icon}
+              </div>
+              <p className="font-sans text-[14px] font-medium text-[var(--color-forest)] leading-snug">{d.label}</p>
+            </div>
+          ))}
+          <div className="rounded-2xl px-5 py-3 flex items-center gap-2 border border-dashed border-[var(--color-ink-30)]">
+            <span className="font-sans text-[13px] text-[var(--color-ink-45)]">+ Qualquer documento importante</span>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
 
 function ExpandedParceiros({ onClose, isMobile }: { onClose: () => void, isMobile?: boolean }) {
   const specialties = [
@@ -157,6 +330,7 @@ export function FundadorasStrip() {
   const [isMobile, setIsMobile] = useState<boolean | null>(null)
   const reduceMotion = useReducedMotion() ?? false
   const overlayRef = useRef<HTMLDivElement>(null)
+  const lenisStopped = useRef(false)
   const lenis = useLenis()
 
   useEffect(() => {
@@ -184,11 +358,32 @@ export function FundadorasStrip() {
   useEffect(() => {
     if (isMobile === false && activeCard) {
       lenis?.stop()
-    } else {
+      lenisStopped.current = true
+    } else if (lenisStopped.current) {
       lenis?.start()
+      lenisStopped.current = false
     }
-    return () => { lenis?.start() }
+    return () => {
+      if (lenisStopped.current) {
+        lenis?.start()
+        lenisStopped.current = false
+      }
+    }
   }, [activeCard, isMobile, lenis])
+
+  // On bfcache restore, React doesn't re-run effects — Lenis may still be
+  // stopped and activeCard stale. Reset both.
+  useEffect(() => {
+    const handlePageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) {
+        setActiveCard(null)
+        lenis?.start()
+        lenisStopped.current = false
+      }
+    }
+    window.addEventListener('pageshow', handlePageShow)
+    return () => window.removeEventListener('pageshow', handlePageShow)
+  }, [lenis])
 
   useEffect(() => {
     if (isMobile || !activeCard) return
@@ -477,13 +672,10 @@ export function FundadorasStrip() {
                               }
                               className="flex flex-col overflow-hidden px-5 pb-8 pt-5"
                             >
-                              {activeCard === 'users' ? (
-                                <ExpandedParceiros onClose={() => setActiveCard(null)} isMobile />
-                              ) : (
-                                <div className="flex flex-col items-center justify-center py-10 text-[var(--color-ink-sub)]">
-                                    <p>Conteúdo de {card.title} em breve...</p>
-                                </div>
-                              )}
+                              {activeCard === 'users' && <ExpandedParceiros onClose={() => setActiveCard(null)} isMobile />}
+                              {activeCard === 'book-open' && <ExpandedManuais onClose={() => setActiveCard(null)} isMobile />}
+                              {activeCard === 'heart-handshake' && <ExpandedAssessoria onClose={() => setActiveCard(null)} isMobile />}
+                              {activeCard === 'files' && <ExpandedRepositorio onClose={() => setActiveCard(null)} isMobile />}
                             </motion.div>
                           )}
                         </AnimatePresence>
@@ -556,25 +748,10 @@ export function FundadorasStrip() {
 
               {/* Main Content (Right) */}
               <div className="flex-1 bg-[var(--color-cream)] rounded-[32px] p-10 flex flex-col shadow-xl border border-[rgba(42,37,32,0.06)] overflow-y-auto relative">
-                {activeCard === 'users' ? (
-                  <ExpandedParceiros onClose={() => setActiveCard(null)} />
-                ) : (
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="flex flex-col items-center justify-center h-full text-[var(--color-ink-sub)] relative"
-                  >
-                    <button
-                      onClick={() => setActiveCard(null)}
-                      className="absolute top-4 left-4 flex items-center gap-2 border-2 border-[var(--color-terracotta)] text-[var(--color-terracotta)] hover:bg-[var(--color-terracotta)] hover:text-white transition-colors px-5 py-2.5 rounded-full font-sans text-sm font-bold"
-                    >
-                      <ArrowLeft size={16} strokeWidth={2.5} />
-                      Voltar aos produtos
-                    </button>
-                    <p>Conteúdo de {CARDS.find(c => c.icon === activeCard)?.title} em breve...</p>
-                  </motion.div>
-                )}
+                {activeCard === 'users' && <ExpandedParceiros onClose={() => setActiveCard(null)} />}
+                {activeCard === 'book-open' && <ExpandedManuais onClose={() => setActiveCard(null)} />}
+                {activeCard === 'heart-handshake' && <ExpandedAssessoria onClose={() => setActiveCard(null)} />}
+                {activeCard === 'files' && <ExpandedRepositorio onClose={() => setActiveCard(null)} />}
               </div>
             </div>
           </motion.div>

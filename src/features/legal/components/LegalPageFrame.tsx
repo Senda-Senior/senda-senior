@@ -11,7 +11,7 @@ export function LegalPageFrame({
   fallbackHref = '/#hero',
   children,
 }: {
-  eyebrow: string
+  eyebrow?: string
   title: string
   updatedAt: string
   fallbackHref?: string

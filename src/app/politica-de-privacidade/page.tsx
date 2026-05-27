@@ -1,4 +1,4 @@
-import { LegalPageFrame } from '@/features/legal/components/LegalPageFrame'
+﻿import { LegalPageFrame } from '@/features/legal/components/LegalPageFrame'
 
 export const metadata = {
   title: 'Política de Privacidade | Senda Sênior',
@@ -89,7 +89,7 @@ export default function PrivacyPolicyPage() {
             5. Armazenamento, segurança e retenção
           </h2>
           <p className="font-sans text-[15px] leading-[1.8] text-[var(--color-ink-sub)]">
-            São adotadas medidas técnicas e administrativas adequadas à natureza dos dados tratados, incluindo criptografia SSL/TLS em trânsito e proteção reforçada do acesso ao repositório. Os dados permanecem armazenados apenas pelo período necessário ao cumprimento das finalidades descritas nesta política, podendo ser preservados em ambiente isolado quando houver obrigação legal ou necessidade de defesa em juízo.
+            São adotadas medidas técnicas e administrativas adequadas à natureza dos dados tratados, incluindo criptografia SSL/TLS para dados em trânsito e AES-256 para dados em repouso, além de proteção reforçada do acesso ao repositório. Os dados permanecem armazenados apenas pelo período necessário ao cumprimento das finalidades descritas nesta política, podendo ser preservados em ambiente isolado quando houver obrigação legal ou necessidade de defesa em juízo.
           </p>
         </section>
 

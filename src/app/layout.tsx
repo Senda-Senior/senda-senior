@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Fraunces, DM_Sans } from 'next/font/google'
 import { WhatsAppFloat } from '@/features/landing'
+import { BfCacheGuard } from '@/lib/utils/BfCacheGuard'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -12,6 +13,11 @@ export const metadata: Metadata = {
   authors: [{ name: 'Senda Sênior' }],
   metadataBase: new URL('https://sendasenior.com.br'),
   alternates: { canonical: '/' },
+  icons: {
+    icon: '/brand/senda-favicon.png',
+    shortcut: '/brand/senda-favicon.png',
+    apple: '/apple-icon',
+  },
   robots: {
     index: true,
     follow: true,
@@ -59,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         antes do React hidratar. Esse warning não reflete bug nosso.
       */}
       <body suppressHydrationWarning>
+        <BfCacheGuard />
         <a href="#main-content" className="sr-only">
           Pular para conteúdo principal
         </a>

@@ -73,10 +73,8 @@ function FounderCard({ name, role, bio, credentials, reverse }: Founder) {
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: 'clamp(15.5px, 1.3vw, 18.4px)',
-                fontWeight: 700,
-                lineHeight: 1.4,
-                textAlign: 'justify',
-                textJustify: 'inter-word',
+                fontWeight: 400,
+                lineHeight: 1.6,
                 color: 'var(--color-ink)',
                 margin: 0,
               }}
@@ -231,7 +229,7 @@ export function PorQuemViveu() {
             }}
           >
             A Senda Sênior é uma empresa de planejamento e assessoria para o
-            envelhecimento familiar. Fundada por Luciana e Julianne, duas
+            envelhecimento familiar. Fundada por Julianne e Luciana, duas
             mulheres que viveram pessoalmente os desafios de cuidar de mães
             idosas, oferecemos orientação estruturada para famílias em qualquer
             fase do cuidado.

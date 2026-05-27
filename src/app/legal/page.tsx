@@ -9,7 +9,6 @@ export const metadata = {
 export default function LegalPage() {
   return (
     <LegalPageFrame
-      eyebrow="Jurídico"
       title="Política de Cookies"
       updatedAt="8 de maio de 2026"
     >

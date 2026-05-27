@@ -5,21 +5,37 @@ import { useEffect, useState } from 'react'
 import NextImage from 'next/image'
 
 export function SplashScreen() {
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    // Bloquear o scroll da página enquanto a splash screen está visível
+    // bfcache restoration: React doesn't re-run effects, so the splash may
+    // still be "visible" and body.overflow may still be "hidden" from before
+    // the user navigated away. Reset both immediately on restore.
+    const handlePageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) {
+        setIsVisible(false)
+        document.body.style.overflow = ''
+      }
+    }
+    window.addEventListener('pageshow', handlePageShow)
+
+    if (sessionStorage.getItem('splash-shown')) {
+      return () => window.removeEventListener('pageshow', handlePageShow)
+    }
+
+    setIsVisible(true)
     document.body.style.overflow = 'hidden'
-    
-    // Esconder a tela após 2.2 segundos
+
     const timer = setTimeout(() => {
       setIsVisible(false)
       document.body.style.overflow = ''
+      sessionStorage.setItem('splash-shown', '1')
     }, 2200)
 
     return () => {
       clearTimeout(timer)
       document.body.style.overflow = ''
+      window.removeEventListener('pageshow', handlePageShow)
     }
   }, [])
 

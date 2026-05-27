@@ -59,7 +59,7 @@ export const NAV_COLUMNS: NavColumn[] = [
       { label: 'Termos de Serviço', href: '/termos-de-servico' },
       { label: 'Política de Privacidade', href: '/politica-de-privacidade' },
       { label: 'Política de Cookies', href: '/legal' },
-      { label: 'Tratamento de Dados (LGPD)', href: '/legal' },
+      { label: 'Tratamento de Dados (LGPD)', href: '/politica-de-privacidade' },
     ],
   },
 ]

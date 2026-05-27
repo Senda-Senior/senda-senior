@@ -40,7 +40,12 @@ export function Footer() {
               {col.title}
             </h4>
             {col.links.map((link) => (
-              <a key={link.label} href={link.href} className={FOOTER_LINK}>
+              <a
+                key={link.label}
+                href={link.href}
+                className={FOOTER_LINK}
+                {...(link.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
                 {link.label}
               </a>
             ))}
@@ -79,6 +84,8 @@ export function Footer() {
                 key={label}
                 href={href}
                 aria-label={label}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-[rgba(42,37,32,0.08)] text-[var(--color-ink)] no-underline transition-[background] duration-[200ms]"
               >
                 <Icon size={15} strokeWidth={1.8} />

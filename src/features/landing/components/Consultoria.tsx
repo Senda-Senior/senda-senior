@@ -121,6 +121,8 @@ export function Consultoria() {
 
           <Link
             href="https://wa.me/"
+            target="_blank"
+            rel="noopener noreferrer"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
