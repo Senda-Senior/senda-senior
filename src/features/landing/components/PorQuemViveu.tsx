@@ -38,7 +38,7 @@ function FounderCard({ name, role, bio, credentials, reverse }: Founder) {
       }}
     >
       {!reverse && (
-        <div style={{ position: 'relative', minHeight: 240 }}>
+        <div className="founder-photo-col" style={{ position: 'relative', minHeight: 240 }}>
           <NextImage
             src={photo}
             alt={name}
@@ -146,7 +146,7 @@ function FounderCard({ name, role, bio, credentials, reverse }: Founder) {
       </div>
 
       {reverse && (
-        <div style={{ position: 'relative', minHeight: 240 }}>
+        <div className="founder-photo-col" style={{ position: 'relative', minHeight: 240 }}>
           <NextImage
             src={photo}
             alt={name}

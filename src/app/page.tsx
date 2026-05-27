@@ -12,6 +12,7 @@ import {
   CTAFinal,
   Footer,
   SplashScreen,
+  ScrollToTop,
 } from '@/features/landing'
 import { SmoothScroll } from '@/lib/utils/SmoothScroll'
 
@@ -70,6 +71,7 @@ export default function Home() {
         </div>
       </main>
       <Footer />
+      <ScrollToTop />
     </SmoothScroll>
   )
 }

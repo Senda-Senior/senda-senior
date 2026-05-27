@@ -830,6 +830,13 @@ body.reader-locked {
     min-height: 200px;
   }
 
+  /* Photo always appears above text on mobile regardless of desktop reverse order */
+  .founder-photo-col {
+    order: -1;
+    min-height: 72vw !important;
+    max-height: 360px !important;
+  }
+
   /* ── ManualSection inner padding ── */
   #manuais {
     padding: 20px 16px 16px !important;
