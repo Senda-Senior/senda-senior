@@ -35,13 +35,6 @@ function safePostAuthPath(): string {
   return '/dashboard'
 }
 
-function initialOAuthError(): string {
-  if (typeof window === 'undefined') return ''
-  const params = new URLSearchParams(window.location.search)
-  const errorParam = params.get('error')
-  return errorParam ? decodeURIComponent(errorParam).replaceAll('+', ' ') : ''
-}
-
 function extractMessage(value: unknown, fallback: string): string {
   if (value instanceof Error && value.message.trim()) {
     return value.message
@@ -198,7 +191,7 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [marketingConsent, setMarketingConsent] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(initialOAuthError)
+  const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
   const [mode, setMode] = useState<AuthMode>(() => {
@@ -263,10 +256,16 @@ export default function Login() {
     const errorParam = params.get('error')
 
     if (errorParam) {
+      const oauthError = decodeURIComponent(errorParam).replaceAll('+', ' ')
       params.delete('error')
 
       const search = params.toString()
       window.history.replaceState(null, '', search ? `/login?${search}` : '/login')
+      const timeout = window.setTimeout(() => setError(oauthError), 0)
+      return () => {
+        window.clearTimeout(timeout)
+        clearModeResetTimeout()
+      }
     }
 
     return clearModeResetTimeout

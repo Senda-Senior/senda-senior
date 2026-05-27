@@ -7,15 +7,11 @@ import NextImage from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, BookOpen, ChevronDown, Files, HeartHandshake, Users, ShieldCheck, CalendarCheck, FileText, Stethoscope } from 'lucide-react'
 import { Reveal } from '@/design'
-import { listenMediaQuery } from '@/lib/utils/mediaQuery'
+import { useMediaQuery } from '@/lib/utils/mediaQuery'
 
 import { CARDS } from '@/features/landing/data/fundadoras-strip'
 
 const MOBILE_PRODUCT_QUERY = '(max-width: 768px), (orientation: landscape) and (max-height: 500px)'
-
-function getInitialIsMobileProductLayout() {
-  return typeof window !== 'undefined' && window.matchMedia(MOBILE_PRODUCT_QUERY).matches
-}
 
 const ICONS = {
   'book-open': BookOpen,
@@ -334,17 +330,11 @@ function ExpandedParceiros({ onClose, isMobile }: { onClose: () => void, isMobil
 
 export function FundadorasStrip() {
   const [activeCard, setActiveCard] = useState<string | null>(null)
-  const [isMobile, setIsMobile] = useState<boolean>(getInitialIsMobileProductLayout)
+  const isMobile = useMediaQuery(MOBILE_PRODUCT_QUERY)
   const reduceMotion = useReducedMotion() ?? false
   const overlayRef = useRef<HTMLDivElement>(null)
   const lenisStopped = useRef(false)
   const lenis = useLenis()
-
-  useEffect(() => {
-    const mq = window.matchMedia(MOBILE_PRODUCT_QUERY)
-    const handler = (e: MediaQueryListEvent | MediaQueryList) => setIsMobile(e.matches)
-    return listenMediaQuery(mq, handler)
-  }, [])
 
   // Resolve o salto de rolagem: rola suavemente para o deck quando um card é ativado no mobile
   useEffect(() => {

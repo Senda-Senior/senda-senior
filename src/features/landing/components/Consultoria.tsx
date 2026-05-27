@@ -2,17 +2,12 @@
 
 /* eslint-disable @next/next/no-img-element */
 
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 import { SERVICOS } from '@/features/landing/data/consultoria'
-import { listenMediaQuery } from '@/lib/utils/mediaQuery'
+import { useMediaQuery } from '@/lib/utils/mediaQuery'
 
 const LANDSCAPE_MOBILE_QUERY = '(orientation: landscape) and (max-height: 500px)'
-
-function getInitialLandscapeMobile() {
-  return typeof window !== 'undefined' && window.matchMedia(LANDSCAPE_MOBILE_QUERY).matches
-}
 
 function WhatsAppIcon({ size = 16 }: { size?: number }) {
   return (
@@ -56,13 +51,7 @@ function ServiceIcon({ src }: { src: string }) {
 /* ─── Component ─────────────────────────────────────────────────────── */
 
 export function Consultoria() {
-  const [isLandscapeMobile, setIsLandscapeMobile] = useState(getInitialLandscapeMobile)
-
-  useEffect(() => {
-    const mq = window.matchMedia(LANDSCAPE_MOBILE_QUERY)
-    const handler = (e: MediaQueryListEvent | MediaQueryList) => setIsLandscapeMobile(e.matches)
-    return listenMediaQuery(mq, handler)
-  }, [])
+  const isLandscapeMobile = useMediaQuery(LANDSCAPE_MOBILE_QUERY)
 
   return (
     <section
