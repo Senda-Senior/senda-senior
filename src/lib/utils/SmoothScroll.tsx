@@ -44,7 +44,7 @@ function AnchorHandler() {
  */
 export function SmoothScroll({ children }: { children: ReactNode }) {
   return (
-    <ReactLenis root options={{ lerp: 0.1, duration: 2.2, wheelMultiplier: 0.85, smoothTouch: false }}>
+    <ReactLenis root options={{ lerp: 0.1, duration: 2.2, wheelMultiplier: 0.85 }}>
       <AnchorHandler />
       {children}
     </ReactLenis>
