@@ -62,11 +62,12 @@ const ACOES: Array<{ icon: ReactNode; title: string; desc: string; href?: string
 
 interface DashboardViewProps {
   userEmail: string
+  displayName: string
   firstName: string
   initialChecklist: ChecklistItem[]
 }
 
-export function DashboardView({ userEmail, firstName, initialChecklist }: DashboardViewProps) {
+export function DashboardView({ userEmail, displayName, firstName, initialChecklist }: DashboardViewProps) {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null)
   const [hoveredAction, setHoveredAction] = useState<number | null>(null)
 
@@ -156,7 +157,7 @@ export function DashboardView({ userEmail, firstName, initialChecklist }: Dashbo
                 color: 'var(--color-ink-sub)',
               }}
             >
-              {userEmail}
+              {displayName || userEmail}
             </span>
           </div>
           <LogoutButton />
