@@ -69,5 +69,41 @@ export async function GET(request: NextRequest) {
     return redirectToLoginWithError('session_exchange_failed')
   }
 
+  // Persiste o nome vindo de user_metadata no profile (sign-up com Google/Facebook
+  // ou confirmação de e-mail após cadastro tradicional). Só escreve se o
+  // profile ainda não tem `display_name` — evita sobrescrever edições
+  // posteriores feitas em /profile.
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (user) {
+    const meta = (user.user_metadata ?? {}) as {
+      full_name?: string
+      first_name?: string
+      last_name?: string
+      name?: string
+    }
+    const fromMeta =
+      meta.full_name?.trim() ||
+      [meta.first_name, meta.last_name].filter(Boolean).join(' ').trim() ||
+      meta.name?.trim() ||
+      ''
+
+    if (fromMeta) {
+      const { data: existing } = await supabase
+        .from('profiles')
+        .select('display_name')
+        .eq('user_id', user.id)
+        .maybeSingle()
+
+      if (!existing?.display_name) {
+        await supabase
+          .from('profiles')
+          .update({ display_name: fromMeta })
+          .eq('user_id', user.id)
+      }
+    }
+  }
+
   return response
 }

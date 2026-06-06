@@ -60,6 +60,14 @@ export const signInSchema = z.object({
 export type SignInInput = z.infer<typeof signInSchema>
 
 export const signUpSchema = z.object({
+  firstName: z
+    .string()
+    .min(1, 'Informe seu nome.')
+    .max(80, 'Nome muito longo.'),
+  lastName: z
+    .string()
+    .min(1, 'Informe seu sobrenome.')
+    .max(80, 'Sobrenome muito longo.'),
   email: emailSchema,
   password: strongPasswordSchema,
 })
