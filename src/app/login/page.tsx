@@ -22,7 +22,7 @@ import { createClient as createBrowserClient } from '@/lib/supabase/client'
 
 type AuthMode = 'login' | 'register' | 'reset'
 type OAuthProvider = 'google' | 'facebook'
-type FieldErrors = Partial<Record<'email' | 'password', string>>
+type FieldErrors = Partial<Record<'firstName' | 'lastName' | 'email' | 'password', string>>
 
 function safePostAuthPath(): string {
   const params = new URLSearchParams(
@@ -187,6 +187,8 @@ function SocialButton({
 }
 
 export default function Login() {
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [marketingConsent, setMarketingConsent] = useState(false)
@@ -233,7 +235,23 @@ export default function Login() {
       setPassword('')
     }
     if (nextMode !== 'register') {
+      setFirstName('')
+      setLastName('')
       setMarketingConsent(false)
+    }
+  }
+
+  function handleFirstNameChange(event: ChangeEvent<HTMLInputElement>) {
+    setFirstName(event.target.value)
+    if (fieldErrors.firstName) {
+      setFieldErrors((current) => ({ ...current, firstName: undefined }))
+    }
+  }
+
+  function handleLastNameChange(event: ChangeEvent<HTMLInputElement>) {
+    setLastName(event.target.value)
+    if (fieldErrors.lastName) {
+      setFieldErrors((current) => ({ ...current, lastName: undefined }))
     }
   }
 
@@ -279,7 +297,7 @@ export default function Login() {
       mode === 'login'
         ? signInSchema.safeParse({ email, password })
         : mode === 'register'
-          ? signUpSchema.safeParse({ email, password })
+          ? signUpSchema.safeParse({ firstName, lastName, email, password })
           : resetPasswordRequestSchema.safeParse({ email })
 
     if (!parsed.success) {
@@ -324,12 +342,17 @@ export default function Login() {
         return
       }
 
+      const fullName = `${firstName.trim()} ${lastName.trim()}`.trim()
+
       const { data, error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: {
           emailRedirectTo: authCallbackUrl(postAuthPath),
           data: {
+            full_name: fullName,
+            first_name: firstName.trim(),
+            last_name: lastName.trim(),
             marketing_consent: marketingConsent,
           },
         },
@@ -431,6 +454,31 @@ export default function Login() {
               </div>
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
+                {isRegister ? (
+                  <div style={{ display: 'flex', gap: 12 }}>
+                    <PremiumField
+                      id="auth-first-name"
+                      label="Nome"
+                      type="text"
+                      autoComplete="given-name"
+                      placeholder="Seu nome"
+                      value={firstName}
+                      onChange={handleFirstNameChange}
+                      error={fieldErrors.firstName}
+                    />
+                    <PremiumField
+                      id="auth-last-name"
+                      label="Sobrenome"
+                      type="text"
+                      autoComplete="family-name"
+                      placeholder="Seu sobrenome"
+                      value={lastName}
+                      onChange={handleLastNameChange}
+                      error={fieldErrors.lastName}
+                    />
+                  </div>
+                ) : null}
+
                 <PremiumField
                   id="auth-email"
                   label="E-mail"

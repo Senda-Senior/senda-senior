@@ -16,15 +16,17 @@ interface Props {
   files: VaultFile[]
   trashedFiles: VaultFile[]
   userEmail: string
+  displayName: string
 }
 
-export function VaultView({ quota, categories, files, trashedFiles, userEmail }: Props) {
+export function VaultView({ quota, categories, files, trashedFiles, userEmail, displayName }: Props) {
   const [activeSlug, setActiveSlug] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [showTrash, setShowTrash] = useState(false)
 
   const trashedCount = trashedFiles.length
-  const userInitial = userEmail.split('@')[0]?.[0]?.toUpperCase() ?? 'U'
+  // usa a primeira letra do NOME, não do email
+  const userInitial = (displayName || userEmail)[0]?.toUpperCase() ?? 'U'
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
@@ -150,7 +152,7 @@ export function VaultView({ quota, categories, files, trashedFiles, userEmail }:
               {userInitial}
             </div>
             <span style={{ fontSize: 16.1, fontWeight: 500, color: 'var(--color-ink-sub)' }}>
-              {userEmail}
+              {displayName || userEmail}
             </span>
           </div>
           <LogoutButton />

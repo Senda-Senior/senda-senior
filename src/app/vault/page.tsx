@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { requireUser } from '@/lib/server'
+import { requireUser, getProfile } from '@/lib/server'
 import {
   getCategories,
   getQuota,
@@ -12,6 +12,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function VaultPage() {
   const user = await requireUser()
+  const profile = await getProfile(user)
 
   const [quota, categories, activeList, trashedList] = await Promise.all([
     getQuota(user.id),
@@ -28,6 +29,7 @@ export default async function VaultPage() {
         files={activeList.items}
         trashedFiles={trashedList.items}
         userEmail={user.email ?? ''}
+        displayName={profile.displayName ?? ''}
       />
     </Suspense>
   )

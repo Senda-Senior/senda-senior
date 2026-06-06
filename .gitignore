@@ -15,6 +15,10 @@
 /playwright-report/
 /test-results/
 
+# visual regression screenshots (Playwright) + saved storage state
+/screenshots/
+/screenshots/**/auth.json
+
 # next.js
 /.next/
 /out/
