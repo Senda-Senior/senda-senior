@@ -512,6 +512,7 @@ export default function Login() {
                   <label className="flex items-center gap-2 pt-1 text-xs font-medium text-[#4a423b]">
                     <input
                       type="checkbox"
+                      aria-label="Concordo em receber conteúdos e novidades da Senda Sênior"
                       checked={marketingConsent}
                       onChange={(event) => setMarketingConsent(event.target.checked)}
                       className="h-4 w-4 rounded-[3px] border border-[#b7ab9b] bg-transparent text-ink focus:ring-0"

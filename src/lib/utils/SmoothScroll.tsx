@@ -23,7 +23,8 @@ function AnchorHandler() {
       if (!el) return
 
       e.preventDefault()
-      lenis?.scrollTo(el, { duration: 1.8, offset: -20, force: true })
+      lenis?.start()
+      lenis?.scrollTo(el, { duration: 1.8, offset: -20 })
     }
 
     document.addEventListener('click', handleClick)
