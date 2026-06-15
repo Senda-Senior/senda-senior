@@ -25,6 +25,7 @@ interface Pilar {
   desc: string
   color: string
   bg: string
+  href: string
 }
 
 const PILARES: Pilar[] = [
@@ -35,6 +36,7 @@ const PILARES: Pilar[] = [
     desc: 'Testamento, diretivas antecipadas e procurações organizadas e seguras.',
     color: 'var(--color-green)',
     bg: 'linear-gradient(135deg, #E8F0EB 0%, #D4E5DB 100%)',
+    href: '/vault/juridico',
   },
   {
     icon: <Heart size={28} strokeWidth={1.5} />,
@@ -43,6 +45,7 @@ const PILARES: Pilar[] = [
     desc: 'Exames, medicamentos e médicos centralizados — para você e quem você ama.',
     color: 'var(--color-terracotta)',
     bg: 'linear-gradient(135deg, #F5EFE6 0%, #EDE5D8 100%)',
+    href: '/vault/saude',
   },
   {
     icon: <ShieldCheck size={28} strokeWidth={1.5} />,
@@ -51,6 +54,7 @@ const PILARES: Pilar[] = [
     desc: 'Família, cuidadores e profissionais — com acesso controlado por você.',
     color: 'var(--color-green)',
     bg: 'linear-gradient(135deg, #F0F5F2 0%, #E0EBE5 100%)',
+    href: '/rede-de-confianca',
   },
 ]
 
@@ -319,10 +323,13 @@ export function DashboardView({ userEmail, displayName, firstName, initialCheckl
           }}
         >
           {PILARES.map((p, i) => (
-            <div
+            <Link
               key={p.label}
+              href={p.href}
               id={`card-${p.label.toLowerCase()}`}
               style={{
+                display: 'block',
+                textDecoration: 'none',
                 padding: 32,
                 borderRadius: 16,
                 background: p.bg,
@@ -399,7 +406,7 @@ export function DashboardView({ userEmail, displayName, firstName, initialCheckl
                   →
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 

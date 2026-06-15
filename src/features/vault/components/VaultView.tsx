@@ -8,6 +8,7 @@ import { ErrorBoundary } from '@/design'
 import { LogoutButton } from '@/features/dashboard/components/LogoutButton'
 import { VaultUploader } from './VaultUploader'
 import { VaultFileCard } from './VaultFileCard'
+import { VaultCategoryBanner } from './VaultCategoryBanner'
 import type { VaultCategory, VaultFile, VaultQuota } from '@/features/vault/types'
 
 interface Props {
@@ -17,10 +18,11 @@ interface Props {
   trashedFiles: VaultFile[]
   userEmail: string
   displayName: string
+  initialCategorySlug?: string
 }
 
-export function VaultView({ quota, categories, files, trashedFiles, userEmail, displayName }: Props) {
-  const [activeSlug, setActiveSlug] = useState<string | null>(null)
+export function VaultView({ quota, categories, files, trashedFiles, userEmail, displayName, initialCategorySlug }: Props) {
+  const [activeSlug, setActiveSlug] = useState<string | null>(initialCategorySlug ?? null)
   const [search, setSearch] = useState('')
   const [showTrash, setShowTrash] = useState(false)
 
@@ -357,6 +359,8 @@ export function VaultView({ quota, categories, files, trashedFiles, userEmail, d
             />
           )}
         </section>
+
+        {activeSlug && <VaultCategoryBanner slug={activeSlug} />}
 
         <section style={{ marginBottom: 24 }}>
           <div style={{ position: 'relative', maxWidth: 420 }}>
