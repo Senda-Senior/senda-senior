@@ -16,6 +16,7 @@ const { createServerClientMock, exchangeCodeForSessionMock } = vi.hoisted(() => 
 
         return exchangeCodeForSessionMock(code)
       },
+      getUser: async () => ({ data: { user: null } }),
     },
   }))
 

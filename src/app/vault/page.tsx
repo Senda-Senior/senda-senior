@@ -29,7 +29,7 @@ export default async function VaultPage() {
         files={activeList.items}
         trashedFiles={trashedList.items}
         userEmail={user.email ?? ''}
-        displayName={profile.displayName ?? ''}
+        displayName={profile.displayName ?? user.email?.split('@')[0] ?? 'Usuário'}
       />
     </Suspense>
   )

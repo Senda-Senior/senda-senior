@@ -423,18 +423,26 @@ export async function updateMetadata(
           pattern,
           patch.categorySlug as SystemCategorySlug,
         )
-        // Persist to DB for cross-session learning
-        await supabase.from('vault_classifier_overrides').upsert({
-          user_id: user.id,
-          pattern: override.pattern,
-          category_slug: override.category,
-          weight: override.weight,
-          match_count: 1,
-          created_at: override.createdAt,
-          updated_at: override.createdAt,
-        }, {
-          onConflict: 'user_id,pattern',
-        }).eq('user_id', user.id)
+        // Persiste no DB para aprendizado entre sessões. Best-effort: falha
+        // aqui não deve bloquear o update de metadata, mas precisa ser
+        // observável — sem log o feedback loop degrada em silêncio.
+        const { error: overrideError } = await supabase
+          .from('vault_classifier_overrides')
+          .upsert({
+            user_id: user.id,
+            pattern: override.pattern,
+            category_slug: override.category,
+            weight: override.weight,
+            match_count: 1,
+            created_at: override.createdAt,
+            updated_at: override.createdAt,
+          }, {
+            onConflict: 'user_id,pattern',
+          })
+          .eq('user_id', user.id)
+        if (overrideError) {
+          console.error('[vault] failed to persist classifier override', overrideError)
+        }
       }
     }
   }
