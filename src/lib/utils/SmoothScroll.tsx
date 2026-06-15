@@ -21,13 +21,7 @@ function AnchorHandler() {
       e.preventDefault()
 
       const absoluteY = el.getBoundingClientRect().top + window.scrollY - 80
-      // start() calls reset() internally, syncing targetScroll to actualScroll
-      // so the next scrollTo never hits the "target === targetScroll" early-return.
-      // lock: true blocks wheel/trackpad momentum events for the duration of the
-      // animation — without it, inertia events call scrollTo(currentFrame + delta)
-      // each tick, replacing the animation with a tiny competing one.
-      lenis?.start()
-      lenis?.scrollTo(absoluteY, { duration: 1.5, lock: true })
+      window.scrollTo({ top: absoluteY, behavior: 'smooth' })
     }
 
     document.addEventListener('click', handleClick)
