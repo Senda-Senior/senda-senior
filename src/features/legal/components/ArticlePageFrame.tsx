@@ -17,7 +17,7 @@ export function ArticlePageFrame({
   children: ReactNode
 }) {
   return (
-    <main className="min-h-screen bg-[#c8d2b7] text-[var(--color-ink)]">
+    <main className="min-h-screen bg-[var(--color-warm-tan)] text-[var(--color-ink)]">
       <header className="sticky top-0 z-30 border-b border-[rgba(42,37,32,0.08)] bg-[rgba(63,66,44,0.96)] px-4 py-3 backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-[1180px] flex-wrap items-center justify-between gap-3">
           <Link href="/#hero" className="flex items-center no-underline">
@@ -64,8 +64,8 @@ export function ArticlePageFrame({
             </p>
           </div>
 
-          <div className="px-8 py-8 sm:px-14 sm:py-10">
-            <div className="mx-auto max-w-[680px]">
+          <div className="px-8 py-12 sm:px-14 sm:py-16">
+            <div className="mx-auto max-w-[860px]">
               {children}
             </div>
           </div>

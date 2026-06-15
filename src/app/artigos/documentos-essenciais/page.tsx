@@ -13,12 +13,11 @@ export const metadata = {
   description: 'Organizar-se juridicamente com antecedência é uma das formas mais seguras de proteger sua família.',
 }
 
-const p = 'font-sans text-[16px] leading-[1.8] text-[var(--color-ink-sub)]'
-const h2 = 'font-serif text-[21px] font-semibold text-[var(--color-green-dark)] mt-10 mb-3 leading-snug'
+const p = 'font-sans text-[17px] leading-[1.9] text-[var(--color-ink-sub)]'
+const h2 = 'font-serif text-[26px] font-semibold text-[var(--color-green-dark)] mt-16 mb-5 leading-[1.2]'
 const label = 'font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--color-terracotta)] mb-1'
-const answer = 'font-sans text-[16px] leading-[1.8] text-[var(--color-ink-sub)]'
+const answer = 'font-sans text-[17px] leading-[1.9] text-[var(--color-ink-sub)]'
 const qa = 'border-l-2 border-[rgba(45,95,79,0.2)] pl-4 space-y-3'
-const divider = 'border-t border-[rgba(45,61,45,0.08)] mt-8'
 
 export default function ArtigoDocumentosEssenciais() {
   return (
@@ -28,7 +27,7 @@ export default function ArtigoDocumentosEssenciais() {
       author="Luciana Moura"
       date="Mar 03, 2026 · 6 min de leitura"
     >
-      <div className="space-y-5">
+      <div className="space-y-6">
         <p className={p}>
           Organizar-se juridicamente pode parecer uma tarefa distante ou até incômoda, especialmente quando se trata de planejar o futuro dos pais. No entanto, preparar-se com antecedência é uma das formas mais seguras de evitar conflitos, garantir a tranquilidade da família e assegurar que as vontades do idoso sejam respeitadas.
         </p>
@@ -36,7 +35,6 @@ export default function ArtigoDocumentosEssenciais() {
           Aqui, apresentamos quatro documentos essenciais que toda família deveria ter em mãos antes dos 70 anos dos pais. Eles não apenas protegem a família juridicamente, mas também ajudam a evitar situações de angústia e incerteza em momentos críticos.
         </p>
 
-        <div className={divider} />
 
         {/* 1 */}
         <h2 className={h2}>1. Procuração (Procuração Específica)</h2>
@@ -63,7 +61,6 @@ export default function ArtigoDocumentosEssenciais() {
           </div>
         </div>
 
-        <div className={divider} />
 
         {/* 2 */}
         <h2 className={h2}>2. Testamento ou Planejamento Sucessório</h2>
@@ -90,7 +87,6 @@ export default function ArtigoDocumentosEssenciais() {
           </div>
         </div>
 
-        <div className={divider} />
 
         {/* 3 */}
         <h2 className={h2}>3. Diretivas Antecipadas de Vontade (DAV) / Testamento Vital</h2>
@@ -117,7 +113,6 @@ export default function ArtigoDocumentosEssenciais() {
           </div>
         </div>
 
-        <div className={divider} />
 
         {/* 4 */}
         <h2 className={h2}>4. Inventário de Bens e Documentos Importantes</h2>

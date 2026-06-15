@@ -13,9 +13,9 @@ export const metadata = {
   description: 'Um guia prático e humano para abordar temas delicados com leveza e respeito.',
 }
 
-const p = 'font-sans text-[16px] leading-[1.8] text-[var(--color-ink-sub)]'
-const h2 = 'font-serif text-[19px] font-semibold text-[var(--color-green-dark)] mt-8 mb-2 leading-snug'
-const lead = 'font-sans text-[17.5px] leading-[1.8] text-[var(--color-ink)] font-[450]'
+const p = 'font-sans text-[17px] leading-[1.9] text-[var(--color-ink-sub)]'
+const h2 = 'font-serif text-[26px] font-semibold text-[var(--color-green-dark)] mt-16 mb-4 leading-[1.2]'
+const lead = 'font-sans text-[18.5px] leading-[1.8] text-[var(--color-ink)] font-[450] italic'
 const cta = 'rounded-[18px] bg-[rgba(63,66,44,0.07)] px-6 py-5 mt-8'
 
 export default function ArtigoComoConversar() {
@@ -26,7 +26,7 @@ export default function ArtigoComoConversar() {
       author="Julianne Pimentel"
       date="Mar 12, 2026 · 5 min de leitura"
     >
-      <div className="space-y-5">
+      <div className="space-y-6">
         <p className={lead}>
           Um guia prático e humano para abordar temas delicados com leveza e respeito.
         </p>
