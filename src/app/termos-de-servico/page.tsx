@@ -12,7 +12,7 @@ export default function TermsOfServicePage() {
     >
       <div className="space-y-8">
         <p className="font-sans text-[16px] leading-[1.8] text-[var(--color-ink-sub)]">
-          Os presentes Termos de Serviço regulam a utilização da plataforma digital e a aquisição dos produtos e serviços oferecidos pela SENDA SÊNIOR — PLANEJAMENTO E ASSESSORIA. Ao acessar o site ou adquirir qualquer produto, o usuário declara plena ciência e concordância com as cláusulas aqui dispostas, em conformidade com o Código de Defesa do Consumidor (Lei nº 8.078/90) e o Marco Civil da Internet (Lei nº 12.965/14).
+          Os presentes Termos de Serviço regulam a utilização da plataforma digital e a aquisição dos produtos e serviços oferecidos pela Senda Sênior — Planejamento e Assessoria. Ao acessar o site ou adquirir qualquer produto, o usuário declara plena ciência e concordância com as cláusulas aqui dispostas, em conformidade com o Código de Defesa do Consumidor (Lei nº 8.078/90) e o Marco Civil da Internet (Lei nº 12.965/14).
         </p>
 
         <section className="space-y-4">
