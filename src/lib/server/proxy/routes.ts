@@ -1,3 +1,11 @@
+/**
+ * routes.ts (middleware)
+ * Configuração de rotas — prefixos protegidos, auth, rate-limit, CSP — matchesPrefix(), shouldRateLimit(), pickBucket()
+ *
+ * Conecta: importado em middleware | não importa nada
+ * Camada: edge (middleware config)
+ */
+
 export const PROTECTED_PREFIXES = [
   '/dashboard',
   '/update-password',

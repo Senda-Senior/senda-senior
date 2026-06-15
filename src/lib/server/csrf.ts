@@ -1,3 +1,11 @@
+/**
+ * csrf.ts
+ * Proteção CSRF com validação de origin — assertSameOrigin() para usar primeira linha de server actions
+ *
+ * Conecta: importa headers, env.server | importado em server actions mutáveis
+ * Camada: server (server-only)
+ */
+
 import 'server-only'
 import { headers } from 'next/headers'
 import { serverEnv } from '@/config/env.server'

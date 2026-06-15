@@ -1,3 +1,10 @@
+/**
+ * ScrollToTop.tsx
+ * Botão flutuante voltar ao topo — usa Lenis easing exponencial, aparece nos últimos 15% da página
+ *
+ * Conecta: useLenis de lenis/react | motion de framer-motion
+ * Camada: browser
+ */
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'

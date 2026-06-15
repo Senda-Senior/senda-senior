@@ -1,3 +1,11 @@
+/**
+ * next.config.ts
+ * Configuração do Next.js 16 — React Compiler, transpilação, remotePatterns e security headers
+ *
+ * Conecta: headers adicionais (X-Content-Type-Options, X-Frame-Options, etc.) | CSP vem de proxy.ts
+ * Camada: build-time / server
+ */
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {

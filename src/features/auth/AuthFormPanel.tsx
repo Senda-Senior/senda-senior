@@ -1,3 +1,11 @@
+/**
+ * AuthFormPanel.tsx
+ * Painel direito das páginas de auth para exibir formulários de login/signup com layout responsivo.
+ *
+ * Conecta: importa cn (utilitário de classNames) | importado por AuthPage
+ * Camada: browser
+ */
+
 'use client'
 
 import type { ReactNode } from 'react'

@@ -1,3 +1,11 @@
+/**
+ * Divider.tsx
+ * Linha curta terracota do guia §5 (48×3px, radius 2px) — separador visual para títulos/subtítulos
+ *
+ * Conecta: importa cn | importado em design/index.ts
+ * Camada: shared (browser + server)
+ */
+
 import { cn } from './cn'
 
 /**

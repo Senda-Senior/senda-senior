@@ -1,3 +1,11 @@
+/**
+ * index.ts
+ * Barril de exports públicos — todo componente e hook da landing é re-exportado daqui
+ *
+ * Conecta: importa todos de components/* e shared/* | importado por páginas da landing
+ * Camada: shared
+ */
+
 export { Hero } from './components/Hero'
 export { Header } from './components/Header'
 export { CustomCursor } from './components/CustomCursor'

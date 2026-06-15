@@ -1,3 +1,11 @@
+/**
+ * Label.tsx
+ * Rótulo/metadata com estilos capitalizados do guia §3 — 11px uppercase, letter-spacing 0.15em
+ *
+ * Conecta: importa cn | importado em design/index.ts
+ * Camada: shared (browser + server)
+ */
+
 import type { HTMLAttributes } from 'react'
 import { cn } from './cn'
 

@@ -1,3 +1,7 @@
+-- 0011_revoke_quota_enforce_execute.sql
+-- Revoga EXECUTE de vault_quotas_enforce_limit() — resolve Security Advisor warnings
+-- Tabelas: nenhuma (revoga permissions)
+
 -- ─── 0011_revoke_quota_enforce_execute ─────────────────────────────
 -- Resolve os warnings remanescentes do Supabase Security Advisor:
 -- "Public Can Execute SECURITY DEFINER Function" e

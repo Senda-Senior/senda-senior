@@ -1,3 +1,7 @@
+-- 0006_db_hardening_part2.sql
+-- Endurecimento de segurança parte 2/2 — RLS, audit particionado, pg_cron jobs, storage policies
+-- Tabelas: public.vault_audit_log (particionada), policies para todas as tabelas de vault
+
 -- ─── 0006_db_hardening_part2 ───────────────────────────────────────
 -- Endurecimento parte 2/2: audit log particionado, RLS para tabelas
 -- novas (0005), policies de storage com mime allowlist, pg_cron jobs

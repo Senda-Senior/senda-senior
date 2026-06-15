@@ -1,3 +1,11 @@
+/**
+ * SmoothScroll.tsx
+ * Wrapper do Lenis (smooth scroll) com handler de anchor navigation — expõe useLenis hook
+ *
+ * Conecta: importa lenis/react | importado em root layout
+ * Camada: browser (use client)
+ */
+
 'use client'
 
 import { ReactLenis, useLenis } from 'lenis/react'

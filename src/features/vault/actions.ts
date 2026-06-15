@@ -1,3 +1,11 @@
+/**
+ * actions.ts
+ * Server actions para fluxo de upload — prepareUpload, confirmUpload, updateMetadata, softDelete, restore
+ *
+ * Conecta: chamado por VaultUploader.tsx, VaultFileCard.tsx, VaultFileEditModal.tsx; usa classifier, storage, data
+ * Camada: server
+ */
+
 'use server'
 
 import { revalidatePath } from 'next/cache'

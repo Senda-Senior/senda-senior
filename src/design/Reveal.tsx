@@ -1,3 +1,11 @@
+/**
+ * Reveal.tsx
+ * Scroll-reveal com fade + slide (24px de baixo para cima) — detecta viewport via Lenis + getBoundingClientRect
+ *
+ * Conecta: importa framer-motion, lenis/react | usado em landing pages
+ * Camada: browser (use client)
+ */
+
 'use client'
 
 import { motion, useReducedMotion } from 'framer-motion'

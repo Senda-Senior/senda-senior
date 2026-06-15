@@ -1,3 +1,11 @@
+/**
+ * auth.ts (middleware)
+ * Resolve do user via Supabase no middleware — sincroniza cookies de sessão para request/response
+ *
+ * Conecta: importa @supabase/ssr, env, headers.ts | importado em middleware.ts
+ * Camada: edge (middleware)
+ */
+
 import { createServerClient } from '@supabase/ssr'
 import type { User } from '@supabase/supabase-js'
 import type { NextRequest } from 'next/server'

@@ -1,3 +1,11 @@
+/**
+ * actions.ts
+ * Server actions para dashboard — toggle checklist items e logout.
+ *
+ * Conecta: importa createServerClient (supabase), requireUser, assertSameOrigin (lib/server), isValidChecklistKey | chamado por Checklist (client), LogoutButton (client)
+ * Camada: server
+ */
+
 'use server'
 
 import { revalidatePath } from 'next/cache'

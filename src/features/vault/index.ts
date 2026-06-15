@@ -1,3 +1,11 @@
+/**
+ * index.ts
+ * Barrel export — public API do vault para features e pages
+ *
+ * Conecta: importado por pages, componentes externos, outras features
+ * Camada: shared
+ */
+
 export type {
   VaultCategory,
   VaultFile,

@@ -1,4 +1,12 @@
 /**
+ * index.ts
+ * Barrel export de todos os primitivos de UI do design system — sóbrios e reutilizáveis
+ *
+ * Conecta: re-exporta todos os primitivos (Button, Card, Field, etc) | importado em toda app
+ * Camada: shared (browser + server)
+ */
+
+/**
  * ─── Design System — Senda Sênior ──────────────────────────────────
  *
  * Primitivos de UI sóbrios, alinhados ao Guia_Desenvolvedor.md.

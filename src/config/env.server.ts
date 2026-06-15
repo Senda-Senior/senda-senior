@@ -1,3 +1,11 @@
+/**
+ * env.server.ts
+ * Variáveis de ambiente server-only (service role, rate-limit, webhooks) — importa server-only para bloquear vazamento
+ *
+ * Conecta: importa env.ts | importado apenas em server actions/route handlers
+ * Camada: server (server-only, build falha se usado no client)
+ */
+
 import 'server-only'
 import { z } from 'zod'
 import { env as clientEnv } from './env'

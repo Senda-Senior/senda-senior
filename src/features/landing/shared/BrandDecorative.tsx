@@ -1,17 +1,13 @@
 'use client'
 
 /**
- * Decorative SVG brand elements — Senda Sênior visual identity
+ * BrandDecorative.tsx
+ * Elementos SVG decorativos da marca — S-curve, compass rose, star scatter, section dividers, quote marks
  *
- * These components implement the brand's core visual vocabulary:
- * - S-curve flowing ribbon (Prancheta 7 energy)
- * - Compass rose / navigational star
- * - Star scatter constellation
- * - Abstract section dividers
- *
- * All elements render as inline SVGs for pixel-perfect scaling
- * and can be used as overlays, watermarks, and section decorations.
+ * Conecta: nenhum | usado como overlays em seções
+ * Camada: browser
  */
+'use client'
 
 interface DecoProps {
   className?: string

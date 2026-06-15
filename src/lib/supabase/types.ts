@@ -1,4 +1,12 @@
 /**
+ * types.ts
+ * Tipos do banco de dados Supabase — gerados/curados manualmente espelhando migrations
+ *
+ * Conecta: importado em client.ts, server.ts, admin.ts | não importa nada
+ * Camada: shared (tipos de banco)
+ */
+
+/**
  * ─── Tipos do banco Supabase ───────────────────────────────────────
  *
  * Curado à mão, espelhando exatamente as migrations em

@@ -1,6 +1,9 @@
 /**
- * Data for `src/features/landing/components/PorQuemViveu.tsx`.
- * Phase 1 of refactor/landing-coherence - extracted from inline const.
+ * por-quem-viveu.ts
+ * Dados das 2 fundadoras (bios, credenciais, foto paths) — layout alternado foto/texto
+ *
+ * Conecta: nenhuma | importado por PorQuemViveu.tsx
+ * Camada: shared
  */
 
 export type Founder = {

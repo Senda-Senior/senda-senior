@@ -1,4 +1,12 @@
 /**
+ * hash.ts
+ * Calcula SHA-256 de um File no browser para detecção de duplicata antes do upload
+ *
+ * Conecta: importado por client/upload.ts no inicio do pipeline de upload
+ * Camada: browser
+ */
+
+/**
  * Calcula sha-256 de um File no browser. Usado pelo fluxo de upload
  * para detecção de duplicata antes mesmo de enviar bytes.
  *

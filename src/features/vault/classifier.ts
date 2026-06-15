@@ -1,4 +1,12 @@
 /**
+ * classifier.ts
+ * Auto-categorização de arquivos via multi-signal scoring — regexes, dicionários, fuzzy matching, feedback loop
+ *
+ * Conecta: importado por actions.ts (classify no confirmUpload), pode ser usado por UI para preview
+ * Camada: shared (função pura, cache em memória para user overrides)
+ */
+
+/**
  * ─── classifier ────────────────────────────────────────────────────
  *
  * Algoritmo de auto-categorização. Multi-signal scoring:

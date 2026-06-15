@@ -1,3 +1,11 @@
+/**
+ * cn.ts
+ * Utility para merge condicional de classes Tailwind — resolve conflitos corretamente via twMerge
+ *
+ * Conecta: importa clsx, tailwind-merge | importado em todos os design primitivos
+ * Camada: shared (browser + server)
+ */
+
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 

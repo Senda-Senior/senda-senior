@@ -1,3 +1,11 @@
+/**
+ * profile.ts
+ * Helpers de profile do usuário — getProfile() e updateDisplayName() servidor-only
+ *
+ * Conecta: importa createServerClient, User | importado em server actions
+ * Camada: server (server-only)
+ */
+
 import 'server-only'
 import type { User } from '@supabase/supabase-js'
 import { createClient as createServerClient } from '@/lib/supabase/server'

@@ -1,3 +1,11 @@
+/**
+ * artigos/documentos-essenciais/page.tsx
+ * Artigo sobre documentos jurídicos — procuração, testamento, DAV, inventário de bens
+ *
+ * Conecta: ArticlePageFrame (features/legal/components)
+ * Camada: server (RSC)
+ */
+
 import { ArticlePageFrame } from '@/features/legal/components/ArticlePageFrame'
 
 export const metadata = {

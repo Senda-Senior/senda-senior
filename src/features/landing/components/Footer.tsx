@@ -1,3 +1,10 @@
+/**
+ * Footer.tsx
+ * Rodapé da landing — grid com logo, colunas nav, newsletter, sociais, legal
+ *
+ * Conecta: NAV_COLUMNS, SOCIALS de @/features/landing/data/footer
+ * Camada: browser
+ */
 'use client'
 
 import NextImage from 'next/image'

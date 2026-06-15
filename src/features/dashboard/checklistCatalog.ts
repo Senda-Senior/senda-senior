@@ -1,4 +1,12 @@
 /**
+ * checklistCatalog.ts
+ * Define o catálogo estático de itens do Checklist Prevent Care — textos, ordem e chaves.
+ *
+ * Conecta: nenhuma importação | importado por data.ts (getChecklist), actions.ts (validação)
+ * Camada: shared
+ */
+
+/**
  * Catálogo dos itens do "Checklist Prevent Care".
  *
  * `key` é o contrato com o banco (`care_checklist_items.item_key`).

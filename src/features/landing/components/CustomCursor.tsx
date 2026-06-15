@@ -1,3 +1,10 @@
+/**
+ * CustomCursor.tsx
+ * Cursor personalizado com círculo verde — rastreia mouse, responde a data-cursor labels, respeitando prefers-reduced-motion
+ *
+ * Conecta: listenMediaQuery de @/lib/utils/mediaQuery | motion de framer-motion
+ * Camada: browser
+ */
 'use client'
 
 import { useEffect, useState } from 'react'

@@ -1,3 +1,11 @@
+/**
+ * admin.ts
+ * Supabase client service-role (BYPASSA RLS) — para webhooks/cron/scripts administrativos
+ *
+ * Conecta: importa @supabase/supabase-js, env.server | ainda não configurado
+ * Camada: server (server-only, admin-only)
+ */
+
 import 'server-only'
 
 /**

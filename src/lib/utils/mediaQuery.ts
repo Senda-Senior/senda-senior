@@ -1,3 +1,11 @@
+/**
+ * mediaQuery.ts
+ * Hook useMediaQuery e utility listenMediaQuery — compatível com legacy addListener/removeListener
+ *
+ * Conecta: importa useSyncExternalStore (react) | importado em components responsive
+ * Camada: browser (use client)
+ */
+
 'use client'
 
 import { useSyncExternalStore } from 'react'

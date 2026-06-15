@@ -1,3 +1,11 @@
+/**
+ * DigitalReader.tsx
+ * Leitor visual interativo dos capítulos do manual com navegação lateral, modo foco, scroll progress bar, e transições suaves.
+ *
+ * Conecta: importa manualChapters de @/features/manual/data | importado por rota dinâmica /manual/[slug]
+ * Camada: browser ('use client')
+ */
+
 'use client'
 
 import { useEffect, useRef, useState } from 'react'

@@ -1,3 +1,7 @@
+-- 0002_vault.sql
+-- Cria cofre digital de documentos — storage bucket, categorias, tags, files, quotas, audit
+-- Tabelas: public.vault_categories, public.vault_tags, public.vault_files, public.vault_file_versions, public.vault_quotas, public.vault_classification_results, public.vault_access_log, public.vault_shares
+
 -- ─── 0002_vault ──────────────────────────────────────────────────────
 -- cofre digital de documentos.
 -- referência: docs/vault/model.md

@@ -1,3 +1,11 @@
+/**
+ * VaultView.tsx
+ * Página principal do vault — grid de arquivos, filtros por categoria, busca, quota, uploader
+ *
+ * Conecta: renderizado pela página /vault; passa props para VaultUploader, VaultFileCard, VaultCategoryBanner
+ * Camada: browser (use client)
+ */
+
 'use client'
 
 import Link from 'next/link'

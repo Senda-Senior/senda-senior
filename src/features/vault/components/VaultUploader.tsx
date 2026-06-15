@@ -1,3 +1,11 @@
+/**
+ * VaultUploader.tsx
+ * Componente drag-drop de upload — orquestra hashing, prepareUpload, upload, confirmUpload com UI de progresso
+ *
+ * Conecta: renderizado por VaultView; chama uploadFile (client/upload.ts), actions server-side
+ * Camada: browser (use client)
+ */
+
 'use client'
 
 import { useRef, useState, useTransition } from 'react'

@@ -1,3 +1,7 @@
+-- 0012_handle_new_user_set_display_name.sql
+-- Fixa handle_new_user() — popula display_name a partir de user_metadata no signup
+-- Tabelas: public.profiles (trigger de auth.users)
+
 -- ─── 0012: handle_new_user — popula display_name a partir de user_metadata ──
 --
 -- Problema: 0004 criou handle_new_user() inserindo o profile com user_id

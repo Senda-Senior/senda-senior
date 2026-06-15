@@ -3,14 +3,13 @@
 import NextImage from 'next/image'
 
 /**
- * Estrela de 4 pontas — elemento decorativo principal da identidade Senda Sênior.
- * Extraído dos cards da pasta design (Prancheta 4).
+ * BrandStar.tsx
+ * Estrela de 4 pontas — elemento SVG principal + cluster de 4 + raster images (PNG sem fundo)
  *
- * Uso:
- *   <BrandStar size={32} />                        — estrela única
- *   <StarCluster size={48} />                       — cluster de 4 estrelas (accent palette)
- *   <StarCluster size={48} mono="var(--green)" />   — cluster monocromático
+ * Conecta: nenhum | usa NextImage para assets raster
+ * Camada: browser
  */
+'use client'
 
 interface BrandStarProps {
   size?: number

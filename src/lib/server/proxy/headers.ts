@@ -1,3 +1,11 @@
+/**
+ * headers.ts (middleware)
+ * Headers de segurança + CSP + IP extraction — buildCSP(), applySecurityHeaders(), createForwardedHeaders()
+ *
+ * Conecta: importa next/server | importado em middleware, auth.ts
+ * Camada: edge (middleware)
+ */
+
 import { NextResponse, type NextRequest } from 'next/server'
 
 export const IS_PROD = process.env.NODE_ENV === 'production'

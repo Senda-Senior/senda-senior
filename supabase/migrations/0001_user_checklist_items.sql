@@ -1,3 +1,7 @@
+-- 0001_user_checklist_items.sql
+-- Cria user_checklist_items — persiste estado do checklist Prevent Care do dashboard
+-- Tabelas: public.user_checklist_items
+
 -- ════════════════════════════════════════════════════════════════════
 -- 0001 — user_checklist_items
 --

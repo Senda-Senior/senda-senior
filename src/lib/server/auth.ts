@@ -1,3 +1,11 @@
+/**
+ * auth.ts
+ * Contrato de autenticação servidor — getUser() e requireUser() para proteção de rotas
+ *
+ * Conecta: importa createServerClient, headers, redirect | importado em server actions/route handlers
+ * Camada: server (server-only)
+ */
+
 import 'server-only'
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'

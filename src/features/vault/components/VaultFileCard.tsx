@@ -1,3 +1,11 @@
+/**
+ * VaultFileCard.tsx
+ * Card de arquivo — exibe nome, categoria, tamanho, ícone; menu com download, editar, favoritar, excluir
+ *
+ * Conecta: renderizado por VaultView em grid; abre VaultFileEditModal; chama ações (download, delete, restore)
+ * Camada: browser (use client)
+ */
+
 'use client'
 
 import { useRef, useState, useTransition, useEffect } from 'react'

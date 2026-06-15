@@ -1,3 +1,11 @@
+/**
+ * not-found.tsx
+ * Página 404 — erro quando rota não existe + CTA para voltar à home
+ *
+ * Conecta: nenhuma (página pública estática)
+ * Camada: server (RSC com force-dynamic)
+ */
+
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'

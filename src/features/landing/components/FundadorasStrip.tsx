@@ -1,3 +1,10 @@
+/**
+ * FundadorasStrip.tsx
+ * Seção "Sobre nós" com produtos — grid desktop (texto + 2x2 cards) ou accordion mobile com overlay modal
+ *
+ * Conecta: CARDS de @/features/landing/data/fundadoras-strip | Reveal de @/design | useLenis, useMediaQuery
+ * Camada: browser
+ */
 'use client'
 
 import { useState, useEffect, useRef } from 'react'

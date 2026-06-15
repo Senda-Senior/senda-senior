@@ -1,3 +1,11 @@
+/**
+ * page.tsx
+ * Landing page — hero, manifesto, componentes da jornada de cuidado, CTA final com SmoothScroll
+ *
+ * Conecta: features/landing (Hero, Manifesto, Consultoria, etc.) | SmoothScroll (Lenis)
+ * Camada: browser (client components)
+ */
+
 import {
   CustomCursor,
   Header,

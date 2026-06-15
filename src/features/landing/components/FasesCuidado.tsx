@@ -1,3 +1,10 @@
+/**
+ * FasesCuidado.tsx
+ * Seção das 3 fases de cuidado — sticky scroll carousel (desktop) ou stacked (mobile) com expand
+ *
+ * Conecta: listenMediaQuery de @/lib/utils/mediaQuery | data inline (FASES)
+ * Camada: browser
+ */
 'use client'
 
 /* eslint-disable @next/next/no-img-element */

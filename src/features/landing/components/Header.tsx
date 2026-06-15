@@ -1,3 +1,10 @@
+/**
+ * Header.tsx
+ * Navegação fixa principal da landing — menu desktop/mobile, logo, links de âncora com Lenis scroll
+ *
+ * Conecta: NAV_LINKS de @/features/landing/data/header | Manifesto, Hero, Footer importam
+ * Camada: browser
+ */
 'use client'
 
 import NextImage from 'next/image'

@@ -1,3 +1,11 @@
+/**
+ * mappers.ts
+ * Converte rows do Postgres para tipos públicos do vault — VaultFile, VaultCategory, etc
+ *
+ * Conecta: importado por data.ts (mapJoinedFile), actions.ts (confirmUpload), VAULT_FILE_SELECT usado globalmente
+ * Camada: shared
+ */
+
 import type { Database } from '@/lib/supabase/types'
 import type {
   VaultCategory,

@@ -1,3 +1,7 @@
+-- 0013_backfill_display_name_from_metadata.sql
+-- Retroage display_name para usuários existentes com NULL/vazio — lê raw_user_meta_data
+-- Tabelas: public.profiles (backfill)
+
 -- ─── 0013: backfill display_name para usuários existentes ───────────
 --
 -- 0012 corrigiu handle_new_user() para novos cadastros. Esta migration

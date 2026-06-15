@@ -1,3 +1,11 @@
+/**
+ * proxy.ts
+ * Edge middleware para Next.js 16 — aplica rate-limit, CSP, security headers e redireciona rotas protegidas.
+ *
+ * Conecta: checkRateLimit, buildCSP, createForwardedHeaders, createSecuredNextResponse (lib/server/proxy)
+ * Camada: edge
+ */
+
 import { NextResponse, type NextRequest } from 'next/server'
 import type { User } from '@supabase/supabase-js'
 import { checkRateLimit } from '@/lib/server'

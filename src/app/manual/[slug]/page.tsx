@@ -1,3 +1,11 @@
+/**
+ * manual/[slug]/page.tsx
+ * Leitor de capítulo do manual — rota dinâmica com generateStaticParams (ISR-like)
+ *
+ * Conecta: getChapterBySlug, getChapterSlugs, DigitalReader (features/manual)
+ * Camada: server (RSC com staticParams)
+ */
+
 import { notFound } from 'next/navigation'
 import { getChapterBySlug, getChapterSlugs, DigitalReader } from '@/features/manual'
 

@@ -1,3 +1,11 @@
+/**
+ * server.ts
+ * Supabase client server-only para RSC/Route Handlers/Server Actions — createServerClient com cookies da request
+ *
+ * Conecta: importa @supabase/ssr, env, cookies (next/headers) | importado em server actions
+ * Camada: server (server-only)
+ */
+
 import 'server-only'
 import { cookies } from 'next/headers'
 import { createServerClient } from '@supabase/ssr'

@@ -1,3 +1,11 @@
+/**
+ * update-password/page.tsx
+ * Página de reset de senha — validação forte, checklist de requisitos, redirecionamento pós-sucesso
+ *
+ * Conecta: createBrowserClient (lib/supabase/client) | updatePasswordSchema (features/auth)
+ * Camada: browser (client component com 'use client')
+ */
+
 'use client'
 
 import NextImage from 'next/image'

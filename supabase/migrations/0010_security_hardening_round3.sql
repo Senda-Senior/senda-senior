@@ -1,3 +1,7 @@
+-- 0010_security_hardening_round3.sql
+-- Hardening round 3 — audit trigger actor fix, explicit RLS deny, purge storage cleanup
+-- Tabelas: nenhuma (refactor de triggers)
+
 -- ─── 0010: security hardening round 3 ─────────────────────────────────────
 -- FU-03 : Audit trigger actor changed from file owner → auth.uid()
 --         NULL actor = system/cron operation (correct for purge jobs)

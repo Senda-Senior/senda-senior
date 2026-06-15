@@ -1,3 +1,11 @@
+/**
+ * manual/layout.tsx
+ * Layout do leitor de manual — ReaderBodyLock desabilita scroll para modo foco
+ *
+ * Conecta: ReaderBodyLock (componente client) | metadata customizada
+ * Camada: server
+ */
+
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import { ReaderBodyLock } from './ReaderBodyLock'

@@ -1,3 +1,7 @@
+-- 0007_revoke_security_definer_execute.sql
+-- Revoga EXECUTE de funções SECURITY DEFINER — resolve Supabase Security Advisor warnings
+-- Tabelas: nenhuma (revoga permissions)
+
 -- ─── 0007_revoke_security_definer_execute ─────────────────────────
 -- Resolve FU-F: warnings do Supabase Security Advisor para
 -- "Public Can Execute SECURITY DEFINER Function" e

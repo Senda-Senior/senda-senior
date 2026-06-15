@@ -1,3 +1,11 @@
+/**
+ * apple-icon.tsx
+ * Apple touch icon dinâmica — gerada via next/og para home screen iOS
+ *
+ * Conecta: nenhuma (asset estático)
+ * Camada: server (route handler de imagem)
+ */
+
 import { ImageResponse } from 'next/og'
 
 export const runtime = 'nodejs'

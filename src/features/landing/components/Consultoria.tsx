@@ -1,3 +1,10 @@
+/**
+ * Consultoria.tsx
+ * Seção consultoria individual — grid 42/58, editorial text esquerda + timeline serviços direita
+ *
+ * Conecta: SERVICOS de @/features/landing/data/consultoria | useMediaQuery de @/lib/utils/mediaQuery
+ * Camada: browser
+ */
 'use client'
 
 /* eslint-disable @next/next/no-img-element */

@@ -1,13 +1,15 @@
+/**
+ * auth/callback/route.ts
+ * Route handler PKCE do Supabase — troca code por sessão e popula display_name do profile
+ *
+ * Conecta: createServerClient (supabase/ssr) | persiste nome de user_metadata no profile (auth.users)
+ * Camada: server (route handler GET)
+ */
+
 import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
 import { env } from '@/config/env'
 import { IS_PROD } from '@/lib/server/proxy/headers'
-
-/**
- * Troca o `code` devolvido pelos links de email (confirmação, magic link,
- * recuperação) por uma sessão com cookies. Sem esta rota, o fluxo PKCE
- * do Supabase nunca assina a sessão no browser/servidor.
- */
 function safeNextParam(next: string | null, fallback: string): string {
   if (!next || !next.startsWith('/') || next.startsWith('//') || next.includes('\\')) {
     return fallback

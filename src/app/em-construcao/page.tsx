@@ -1,3 +1,11 @@
+/**
+ * em-construcao/page.tsx
+ * Página-stub em construção — fallback para páginas not ready com volta para landing
+ *
+ * Conecta: LegalPageFrame (features/legal/components)
+ * Camada: server (RSC com force-dynamic)
+ */
+
 import { LegalPageFrame } from '@/features/legal/components/LegalPageFrame'
 
 export const metadata = {

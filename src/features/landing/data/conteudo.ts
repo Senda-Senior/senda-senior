@@ -1,6 +1,9 @@
 /**
- * Data for `src/features/landing/components/Conteudo.tsx`.
- * Phase 1 of refactor/landing-coherence — extracted from inline const.
+ * conteudo.ts
+ * Dados de 3 artigos educativos com meta, autor, foto, cor de fundo — grid cards
+ *
+ * Conecta: nenhuma | importado por Conteudo.tsx
+ * Camada: shared
  */
 
 export type Artigo = {

@@ -1,3 +1,11 @@
+/**
+ * ErrorBoundary.tsx
+ * Error boundary React que captura erros de renderização e exibe fallback com UI amigável
+ *
+ * Conecta: importa lucide-react | importado em design/index.ts
+ * Camada: browser (use client)
+ */
+
 'use client'
 
 import type { ReactNode } from 'react'

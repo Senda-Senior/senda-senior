@@ -1,3 +1,11 @@
+/**
+ * upload.ts
+ * Pipeline cliente de upload — orquestra hashing, prepareUpload, upload e confirmUpload
+ *
+ * Conecta: importado por VaultUploader.tsx; chama sha256OfFile, server actions, Supabase Storage
+ * Camada: browser
+ */
+
 import { createClient as createBrowserClient } from '@/lib/supabase/client'
 import { sha256OfFile } from './hash'
 import type { ActionResult } from '../errors'

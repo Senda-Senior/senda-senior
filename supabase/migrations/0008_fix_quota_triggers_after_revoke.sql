@@ -1,3 +1,7 @@
+-- 0008_fix_quota_triggers_after_revoke.sql
+-- Corrige regressão de quota triggers após 0007 — torna vault_quotas_recalc() SECURITY DEFINER novamente
+-- Tabelas: nenhuma (refactor de triggers)
+
 -- Fix upload regression introduced after 0007.
 --
 -- Root cause:

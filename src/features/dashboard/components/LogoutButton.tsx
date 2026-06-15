@@ -1,3 +1,11 @@
+/**
+ * LogoutButton.tsx
+ * Botão de logout na header do dashboard — chama signOutAction (server action) para fazer logout global.
+ *
+ * Conecta: importa signOutAction (actions) | importado por DashboardView
+ * Camada: browser
+ */
+
 'use client'
 
 import { useState } from 'react'

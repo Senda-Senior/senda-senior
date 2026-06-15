@@ -1,3 +1,11 @@
+/**
+ * Field.tsx
+ * Input com rótulo, dica e mensagem de erro — sem dependências externas
+ *
+ * Conecta: importa cn | importado em design/index.ts
+ * Camada: browser (use client)
+ */
+
 'use client'
 
 import { forwardRef, useId, type InputHTMLAttributes, type ReactNode } from 'react'

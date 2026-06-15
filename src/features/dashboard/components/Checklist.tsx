@@ -1,3 +1,11 @@
+/**
+ * Checklist.tsx
+ * Checklist Prevent Care com persistência otimista — mostra itens com progresso visual e toggle interativo.
+ *
+ * Conecta: importa toggleChecklistItem (actions), ChecklistItem (types) | importado por DashboardView
+ * Camada: browser
+ */
+
 'use client'
 
 import { useOptimistic, useTransition } from 'react'

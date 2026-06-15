@@ -1,3 +1,11 @@
+/**
+ * Card.tsx
+ * Contêiner sóbrio com variantes (surface, outline, muted, onGreen) e cantos suaves — padding default p-8
+ *
+ * Conecta: importa cn | importado em design/index.ts
+ * Camada: shared (browser + server)
+ */
+
 import type { HTMLAttributes, ReactNode } from 'react'
 import { cn } from './cn'
 

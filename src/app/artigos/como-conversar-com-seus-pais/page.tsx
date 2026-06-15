@@ -1,3 +1,11 @@
+/**
+ * artigos/como-conversar-com-seus-pais/page.tsx
+ * Artigo sobre diálogo familiar — guia prático para abordar temas delicados com pais idosos
+ *
+ * Conecta: ArticlePageFrame (features/legal/components)
+ * Camada: server (RSC)
+ */
+
 import { ArticlePageFrame } from '@/features/legal/components/ArticlePageFrame'
 
 export const metadata = {

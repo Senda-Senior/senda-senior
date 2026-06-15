@@ -1,3 +1,11 @@
+/**
+ * DashboardView.tsx
+ * Componente principal do dashboard — exibe header com profile, hero section, pilares, ações rápidas e checklist.
+ *
+ * Conecta: importa Checklist, LogoutButton (components), ChecklistItem (types) | importado por DashboardPage (RSC)
+ * Camada: browser
+ */
+
 'use client'
 
 import Link from 'next/link'

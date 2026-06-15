@@ -1,3 +1,11 @@
+/**
+ * env.ts
+ * Validação de variáveis de ambiente públicas (NEXT_PUBLIC_*) com Zod — roda em dev/build e falha se ausentes
+ *
+ * Conecta: lê process.env | importado em toda app (browser + server)
+ * Camada: shared (validação na inicialização)
+ */
+
 import { z } from 'zod'
 
 /**

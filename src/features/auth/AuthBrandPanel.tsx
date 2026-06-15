@@ -1,3 +1,11 @@
+/**
+ * AuthBrandPanel.tsx
+ * Painel visual esquerdo das páginas de auth com foto de marca, gradientes de leitura e decorações.
+ *
+ * Conecta: importa NextImage (next/image) | importado por AuthPage (pages)
+ * Camada: browser
+ */
+
 'use client'
 
 import type { ReactNode } from 'react'

@@ -11,6 +11,7 @@
 !.yarn/versions
 
 # testing
+/dump
 /coverage
 /playwright-report/
 /test-results/
@@ -30,6 +31,14 @@
 .DS_Store
 *.pem
 .claude
+
+# agentic local infra (never commit)
+CLAUDE.md
+docs/specs/
+docs/patterns/
+context.md
+**/context.md
+supabase-go
 
 # local correction notes
 primeiras_correcoes.md

@@ -1,3 +1,10 @@
+/**
+ * WhatsAppFloat.tsx
+ * Botão flutuante WhatsApp — ícone fixo com hover scale, link para wa.me
+ *
+ * Conecta: nenhum | posiciona-se fixo no viewport
+ * Camada: browser
+ */
 'use client'
 
 import Link from 'next/link'

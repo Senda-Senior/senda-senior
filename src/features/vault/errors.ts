@@ -1,4 +1,12 @@
 /**
+ * errors.ts
+ * Códigos de erro padronizados e mensagens de UI para operações do vault
+ *
+ * Conecta: importado por actions.ts (fail/success), validation.ts, componentes (VAULT_ERROR_MESSAGES)
+ * Camada: shared
+ */
+
+/**
  * códigos de erro padronizados. retornados em `{ ok: false, error }` por
  * server actions. mensagens humanas ficam aqui para a ui pegar.
  */

@@ -1,3 +1,11 @@
+/**
+ * dashboard/page.tsx
+ * Painel principal do usuário — RSC protegido (requireUser) + checklist de cuidados + perfil
+ *
+ * Conecta: requireUser, getProfile (lib/server) | getChecklist, DashboardView (features/dashboard)
+ * Camada: server (RSC com force-dynamic)
+ */
+
 import { Suspense } from 'react'
 import { requireUser, getProfile } from '@/lib/server'
 import { getChecklist, DashboardView } from '@/features/dashboard'

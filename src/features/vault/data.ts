@@ -1,3 +1,11 @@
+/**
+ * data.ts
+ * Queries ao Postgres — getFile, listFiles, getCategories, getTags, getQuota, etc
+ *
+ * Conecta: importado por actions.ts (prepareUpload, confirmUpload), RSC pages
+ * Camada: server (RSC + server actions)
+ */
+
 import 'server-only'
 
 import { createClient as createServerClient } from '@/lib/supabase/server'

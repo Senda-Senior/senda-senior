@@ -1,3 +1,10 @@
+/**
+ * ManuaisSection.tsx
+ * Seção manuais com preview — tab buttons, imagem fundo + card flutuante com detalhes editável
+ *
+ * Conecta: MANUAIS de @/features/landing/data/fases-cuidado | listenMediaQuery de @/lib/utils/mediaQuery
+ * Camada: browser
+ */
 'use client'
 
 import { useEffect, useState } from 'react'

@@ -1,4 +1,12 @@
 /**
+ * types.ts
+ * Tipos TypeScript para o domínio dashboard — ChecklistItem.
+ *
+ * Conecta: nenhuma importação | importado por data.ts, components (Checklist, DashboardView)
+ * Camada: shared
+ */
+
+/**
  * Itens do checklist exibido no dashboard.
  *
  * O catálogo (textos, ordem) vive em código (`./checklistCatalog.ts`)

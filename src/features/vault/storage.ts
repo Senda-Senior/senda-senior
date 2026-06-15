@@ -1,3 +1,11 @@
+/**
+ * storage.ts
+ * Operações em Supabase Storage — signed URLs (upload/download), stat object, remove
+ *
+ * Conecta: importado por actions.ts (prepareUpload, confirmUpload, getDownloadUrl), storage.ts
+ * Camada: server (requer server client)
+ */
+
 import 'server-only'
 
 import type { SupabaseClient } from '@supabase/supabase-js'

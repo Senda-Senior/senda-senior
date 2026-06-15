@@ -1,3 +1,11 @@
+/**
+ * errors.ts
+ * Tipos de erro compartilhados da app (AuthError, NetworkError, ValidationError, StorageError) + type guards
+ *
+ * Conecta: importado em toda app para tratamento de erros | não importa nada
+ * Camada: shared (browser + server)
+ */
+
 export type AppError =
   | AuthError
   | NetworkError

@@ -1,6 +1,9 @@
 /**
- * Data for `src/features/landing/components/Footer.tsx`.
- * Phase 1 of refactor/landing-coherence - extracted from inline const.
+ * footer.ts
+ * Dados do rodapé — 3 colunas nav, sociais com ícones Lucide, WhatsAppIcon custom
+ *
+ * Conecta: importa NavLink de types.ts | importado por Footer.tsx
+ * Camada: shared
  */
 
 import { createElement, type ComponentType } from 'react'

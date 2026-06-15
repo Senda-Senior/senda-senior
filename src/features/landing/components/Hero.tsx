@@ -1,3 +1,10 @@
+/**
+ * Hero.tsx
+ * Seção principal acima da dobra — mockup de família, headline com Reveal, CTAs
+ *
+ * Conecta: Reveal de @/design | ScrollIndicator renderiza inline
+ * Camada: browser
+ */
 'use client'
 
 import NextImage from 'next/image'

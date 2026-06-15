@@ -1,3 +1,11 @@
+/**
+ * Section.tsx
+ * Contêiner de seção com padding vertical generoso (respiro guia §5) e variantes de tone (cream, terracotta, green, etc)
+ *
+ * Conecta: importa cn | importado em design/index.ts
+ * Camada: shared (browser + server)
+ */
+
 import type { HTMLAttributes, ReactNode } from 'react'
 import { cn } from './cn'
 

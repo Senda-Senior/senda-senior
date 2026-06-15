@@ -1,3 +1,10 @@
+/**
+ * PorQuemViveu.tsx
+ * Seção fundadoras — header com stagger Reveal + cards alternados (foto + bio + credentials)
+ *
+ * Conecta: FOUNDERS, FOUNDER_PHOTOS de @/features/landing/data/por-quem-viveu | motion de framer-motion
+ * Camada: browser
+ */
 'use client'
 
 import { motion } from 'framer-motion'

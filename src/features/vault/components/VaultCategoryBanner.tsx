@@ -1,3 +1,11 @@
+/**
+ * VaultCategoryBanner.tsx
+ * Banner de educação por categoria — descrição contextual + checklist de documentos recomendados
+ *
+ * Conecta: renderizado condicionalmente por VaultView quando categoria está ativa; dados em BANNERS hardcoded
+ * Camada: shared (RSC)
+ */
+
 import type { SystemCategorySlug } from '../categories'
 
 interface BannerData {

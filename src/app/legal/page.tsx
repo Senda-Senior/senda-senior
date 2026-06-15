@@ -1,3 +1,11 @@
+/**
+ * legal/page.tsx
+ * Política de Cookies — categorias (estritamente necessários, analíticos, funcionais) + consentimento
+ *
+ * Conecta: LegalPageFrame (features/legal/components) | links para Termos e Privacidade
+ * Camada: server (RSC)
+ */
+
 import Link from 'next/link'
 
 import { LegalPageFrame } from '@/features/legal/components/LegalPageFrame'

@@ -1,3 +1,11 @@
+/**
+ * ConfirmDialog.tsx
+ * Diálogo de confirmação reutilizável com <dialog> nativo — ganha focus trap + Escape gratuitamente
+ *
+ * Conecta: importa lucide-react | importado em design/index.ts
+ * Camada: browser (use client)
+ */
+
 'use client'
 
 import { useEffect, useRef } from 'react'

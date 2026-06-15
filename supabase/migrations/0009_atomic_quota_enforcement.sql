@@ -1,3 +1,7 @@
+-- 0009_atomic_quota_enforcement.sql
+-- Enforça quota atomicamente — previne race condition TOCTOU no INSERT de vault_file_blobs
+-- Tabelas: nenhuma (refactor de triggers e funções)
+
 -- ─── 0009: atomic quota enforcement ────────────────────────────────
 -- Replaces the BEFORE INSERT trigger on vault_file_blobs (0005 §2.8).
 -- Uses atomic UPDATE instead of SELECT + check to prevent TOCTOU races.

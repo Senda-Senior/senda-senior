@@ -1,3 +1,11 @@
+/**
+ * AppPage.tsx
+ * Componentes de layout para app (AppPageShell, AppPageContainer, AppPageHeader, AppPageCard)
+ *
+ * Conecta: importa cn | importado em design/index.ts
+ * Camada: shared (browser + server)
+ */
+
 import type { HTMLAttributes, ReactNode } from 'react'
 
 import { cn } from './cn'

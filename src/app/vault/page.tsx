@@ -1,3 +1,11 @@
+/**
+ * vault/page.tsx
+ * Cofre digital de documentos — RSC protegido + categorias, quota, arquivos ativos e deletados
+ *
+ * Conecta: requireUser, getProfile (lib/server) | getCategories, getQuota, listFiles, VaultView (features/vault)
+ * Camada: server (RSC com force-dynamic)
+ */
+
 import { Suspense } from 'react'
 import { requireUser, getProfile } from '@/lib/server'
 import {

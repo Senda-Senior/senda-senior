@@ -1,12 +1,9 @@
 /**
- * Data for `src/features/landing/components/ManuaisSection.tsx`.
+ * fases-cuidado.ts
+ * Dados dos 3 manuais (Prevent Care, Care, Immediate Care) com cores, links Hotmart, copycards
  *
- * NOTE on inline color literals (#3a5c3a, #5c3a18, rgba(198,212,188,0.97), etc):
- * Each phase card has a unique palette by design — these colors ARE data,
- * not tokens. Tokenizing them as --color-phase-N-X would just bloat @theme
- * with single-use vars. Brand colors that ARE reused (e.g. brown-deep,
- * gold-warm) are tokenized; per-card bespoke shades stay inline here.
- * See docs/landing-pattern-budget.md §3.2 (color tokens) for the full rule.
+ * Conecta: nenhuma | importado por ManuaisSection.tsx
+ * Camada: shared
  */
 
 export type Manual = {

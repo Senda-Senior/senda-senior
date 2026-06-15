@@ -1,3 +1,11 @@
+/**
+ * rate-limit.ts
+ * Rate limiting com dois modos: distribuído (Upstash Redis) ou in-memory (fallback dev) — checkRateLimit(identifier, bucket)
+ *
+ * Conecta: importa @upstash/ratelimit, env.server | importado em edge middleware/server
+ * Camada: server (server-only)
+ */
+
 import 'server-only'
 import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis'

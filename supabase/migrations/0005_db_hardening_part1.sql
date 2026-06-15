@@ -1,3 +1,7 @@
+-- 0005_db_hardening_part1.sql
+-- Endurecimento de segurança parte 1/2 — vault_tiers, vault_classifier_overrides, refactor funções
+-- Tabelas: public.vault_tiers, public.vault_classifier_overrides, refactor funções
+
 -- ─── 0005_db_hardening_part1 ───────────────────────────────────────
 -- Endurecimento parte 1/2: schema fixes, novas tabelas, CHECK constraints,
 -- triggers de domínio e funções com SET search_path explícito.

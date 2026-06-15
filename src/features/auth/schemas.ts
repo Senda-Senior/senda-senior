@@ -1,3 +1,11 @@
+/**
+ * schemas.ts
+ * Schemas Zod para validação de formulários de auth (login, signup, reset, update de senha).
+ *
+ * Conecta: importa z (Zod) | importado por AuthFormPage (pages), actions (server)
+ * Camada: shared (validação tanto cliente quanto servidor)
+ */
+
 import { z } from 'zod'
 
 /**

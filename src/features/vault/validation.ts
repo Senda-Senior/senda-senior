@@ -1,3 +1,11 @@
+/**
+ * validation.ts
+ * Validação de input, blocklists, schemas Zod e helpers de extensão/MIME
+ *
+ * Conecta: importado por actions.ts (prepareUploadSchema), VaultUploader.tsx (VAULT_LIMITS)
+ * Camada: shared
+ */
+
 import { z } from 'zod'
 import type { VaultErrorCode } from './errors'
 

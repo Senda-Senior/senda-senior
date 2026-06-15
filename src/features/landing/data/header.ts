@@ -1,6 +1,9 @@
 /**
- * Data for `src/features/landing/components/Header.tsx`.
- * Phase 1 of refactor/landing-coherence — extracted from inline const.
+ * header.ts
+ * Dados de navegação principal — links âncora para seções, tipos reutilizáveis
+ *
+ * Conecta: importa NavLink de types.ts | importado por Header.tsx
+ * Camada: shared
  */
 
 import type { NavLink } from './types'

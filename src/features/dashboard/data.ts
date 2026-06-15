@@ -1,3 +1,11 @@
+/**
+ * data.ts
+ * Carrega dados do dashboard (checklist) da camada Supabase — merge catálogo + estado persistido.
+ *
+ * Conecta: importa createServerClient (supabase), CHECKLIST_CATALOG, ChecklistItem | importado por DashboardPage (RSC)
+ * Camada: server
+ */
+
 import 'server-only'
 import { createClient as createServerClient } from '@/lib/supabase/server'
 import { CHECKLIST_CATALOG } from './checklistCatalog'

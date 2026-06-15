@@ -1,3 +1,10 @@
+/**
+ * Conteudo.tsx
+ * Seção de artigos e conteúdo educativo — grid 3 colunas de cards com foto, meta, CTA
+ *
+ * Conecta: ARTIGOS de @/features/landing/data/conteudo
+ * Camada: browser
+ */
 'use client'
 
 /* eslint-disable @next/next/no-img-element */

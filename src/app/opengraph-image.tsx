@@ -1,3 +1,11 @@
+/**
+ * opengraph-image.tsx
+ * OG image dinâmica — gerada em runtime (nodejs) via next/og para social shares
+ *
+ * Conecta: nenhuma (asset estático)
+ * Camada: server (route handler de imagem)
+ */
+
 import { ImageResponse } from 'next/og'
 
 export const runtime = 'nodejs'

@@ -1,6 +1,9 @@
 /**
- * Data for `src/features/landing/components/Consultoria.tsx`.
- * Phase 1 of refactor/landing-coherence — extracted from inline const.
+ * consultoria.ts
+ * Dados dos 4 serviços de consultoria com ícones — timeline vertical, descrições curtas
+ *
+ * Conecta: nenhuma | importado por Consultoria.tsx
+ * Camada: shared
  */
 
 export type ConsultoriaService = {

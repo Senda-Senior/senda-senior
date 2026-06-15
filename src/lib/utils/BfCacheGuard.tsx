@@ -1,3 +1,11 @@
+/**
+ * BfCacheGuard.tsx
+ * Previne problemas de bfcache (back-forward cache) — reseta DOM mutations ao restaurar página
+ *
+ * Conecta: nenhuma | importado em root layout
+ * Camada: browser (use client)
+ */
+
 'use client'
 
 import { useEffect } from 'react'

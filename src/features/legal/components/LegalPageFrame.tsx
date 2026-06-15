@@ -1,3 +1,11 @@
+/**
+ * LegalPageFrame.tsx
+ * Layout padrão para páginas de legal (privacidade, termos) com header sticky, logo, navigation links, e conteúdo principal aninhado.
+ *
+ * Conecta: importa BackToLandingButton | importado por páginas de legal (politica-de-privacidade, termos-de-servico)
+ * Camada: server (RSC)
+ */
+
 import type { ReactNode } from 'react'
 import Link from 'next/link'
 import NextImage from 'next/image'

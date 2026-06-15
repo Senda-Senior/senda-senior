@@ -1,6 +1,9 @@
 /**
- * Data for `src/features/landing/components/FundadorasStrip.tsx`.
- * Phase 1 of refactor/landing-coherence — extracted from inline const.
+ * fundadoras-strip.ts
+ * Dados dos 4 produtos (Manuais, Assessoria, Repositório, Parceiros) com ícones e backgrounds
+ *
+ * Conecta: nenhuma | importado por FundadorasStrip.tsx
+ * Camada: shared
  */
 
 export type FundadoraCard = {

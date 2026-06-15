@@ -1,3 +1,11 @@
+/**
+ * VaultFileEditModal.tsx
+ * Modal de edição — nome, descrição, categoria (com feedback loop de override), favorito
+ *
+ * Conecta: renderizado condicionalmente por VaultFileCard; chama updateMetadata server action
+ * Camada: browser (use client)
+ */
+
 'use client'
 
 import { useEffect, useRef, useState, useTransition } from 'react'

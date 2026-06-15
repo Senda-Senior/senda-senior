@@ -1,3 +1,7 @@
+-- 0003_vault_unaccent_fix.sql
+-- Corrige trigger de search_vector — fixa search_path de vault_files_update_search()
+-- Tabelas: public.vault_files (função de trigger)
+
 -- ─── 0003_vault_unaccent_fix ─────────────────────────────────────────
 -- Corrige o trigger de search_vector. No Supabase, a extensão
 -- `unaccent` mora no schema `extensions`, e funções no schema `public`

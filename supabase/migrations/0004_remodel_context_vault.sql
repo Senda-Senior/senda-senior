@@ -1,3 +1,9 @@
+-- 0004_remodel_context_vault.sql
+-- Remodelagem lógica — profiles, care_checklist_items, vault refatorado, remove old tables
+-- Tabelas: public.profiles, public.care_checklist_items, public.vault_* (recriadas)
+-- Conecta: base do modelo atual; referenciada por todas as queries de vault em features/vault/data.ts
+-- Camada: dados (migration Supabase, aplicada — nunca editar)
+
 -- ─── 0004_remodel_context_vault ─────────────────────────────────────
 -- remodelagem lógica: profiles, care_*, categorias sistema vs. usuário,
 -- vault_files (documento) + vault_file_blobs (mídia). remove

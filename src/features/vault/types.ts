@@ -1,4 +1,12 @@
 /**
+ * types.ts
+ * Tipos públicos do vault — espelho dos rows do banco (camelCase) + agregações de leitura
+ *
+ * Conecta: importado por mappers.ts, data.ts, actions.ts, index.ts e componentes
+ * Camada: shared
+ */
+
+/**
  * tipos públicos do vault.
  * espelho dos rows do banco (camelCase) + agregações de leitura.
  */

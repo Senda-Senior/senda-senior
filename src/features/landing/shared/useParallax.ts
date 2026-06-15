@@ -1,13 +1,14 @@
+/**
+ * useParallax.ts
+ * Hook de parallax vinculado ao scroll — aplica translateY proporcional, respeitando prefers-reduced-motion
+ *
+ * Conecta: nenhum | usado em componentes de landing (Hero, etc.)
+ * Camada: shared
+ */
 'use client'
 
 import { useEffect, useRef } from 'react'
 
-/**
- * Parallax leve vinculado ao scroll do viewport. Aplica translateY
- * proporcional ao deslocamento vertical do elemento em relação ao
- * centro da tela. Mantenha `speed` baixo (0.03–0.1) — o guia §6 pede
- * movimento sutil.
- */
 export function useParallax<T extends HTMLElement = HTMLDivElement>(speed = 0.08) {
   const ref = useRef<T>(null)
 

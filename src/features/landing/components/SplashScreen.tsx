@@ -1,3 +1,10 @@
+/**
+ * SplashScreen.tsx
+ * Tela de splash inicial — logo + wordmark com fade/scale, 2.2s de duração, sessionStorage check
+ *
+ * Conecta: nenhum | gerencia estado de exibição com useEffect
+ * Camada: browser
+ */
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'

@@ -1,3 +1,10 @@
+/**
+ * ScrollIndicator.tsx
+ * Indicador de scroll no hero — texto + ícone animado, desaparece após scroll
+ *
+ * Conecta: nenhum | renderiza na Hero section
+ * Camada: browser
+ */
 'use client'
 
 import { motion } from 'framer-motion'

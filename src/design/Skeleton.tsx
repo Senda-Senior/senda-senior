@@ -1,3 +1,11 @@
+/**
+ * Skeleton.tsx
+ * Carregador sóbrio com animação pulse para placeholders — variantes line, block, circle
+ *
+ * Conecta: importa cn | importado em design/index.ts
+ * Camada: shared (browser + server)
+ */
+
 import type { HTMLAttributes } from 'react'
 import { cn } from './cn'
 

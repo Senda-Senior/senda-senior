@@ -1,3 +1,11 @@
+/**
+ * client.ts
+ * Supabase client para browser — createBrowserClient com env vars públicas, RLS respeitado
+ *
+ * Conecta: importa @supabase/ssr, env | importado em client components
+ * Camada: browser (use client)
+ */
+
 import { createBrowserClient } from '@supabase/ssr'
 import { env } from '@/config/env'
 import type { Database } from './types'

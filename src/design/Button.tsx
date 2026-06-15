@@ -1,3 +1,11 @@
+/**
+ * Button.tsx
+ * Primitivo de botão com variantes (primary, secondary, ghost, danger) e tamanhos (sm, md, lg) — alinhado ao Guia_Desenvolvedor.md
+ *
+ * Conecta: importa cn | importado em design/index.ts
+ * Camada: shared (browser + server)
+ */
+
 import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react'
 import { cn } from './cn'
 

@@ -1,3 +1,11 @@
+/**
+ * layout.tsx
+ * Root layout da aplicação — fontes (Fraunces serif + DM Sans), SmoothScroll (Lenis), metadata global
+ *
+ * Conecta: WhatsAppFloat (features/landing) | BfCacheGuard | SmoothScroll
+ * Camada: server
+ */
+
 import type { Metadata } from 'next'
 import { Fraunces, DM_Sans } from 'next/font/google'
 import { WhatsAppFloat } from '@/features/landing'

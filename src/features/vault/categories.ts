@@ -1,12 +1,18 @@
 /**
+ * categories.ts
+ * Catálogo de categorias sistema — slugs, tipos e metadata (ícones, cores)
+ *
+ * Conecta: importado por classifier.ts (validar slugs), data.ts (queries), actions.ts, componentes
+ * Camada: shared
+ */
+
+/**
  * catálogo de categorias sistema. espelho das seeds em
  * supabase/migrations/0002_vault.sql.
  *
  * usado pelo classifier (saber os slugs disponíveis) e pela ui
  * (mostrar enquanto a query pro banco não retorna).
  */
-
-
 
 export const SYSTEM_CATEGORY_SLUGS = [
   'juridico',

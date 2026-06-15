@@ -1,3 +1,11 @@
+/**
+ * login/page.tsx
+ * Página de autenticação pública — sign-in, sign-up, password reset + OAuth (Google, Facebook)
+ *
+ * Conecta: createBrowserClient (lib/supabase/client) | schemas de validação (features/auth)
+ * Camada: browser (client component com 'use client')
+ */
+
 'use client'
 
 import Link from 'next/link'

@@ -1,3 +1,10 @@
+/**
+ * Manifesto.tsx
+ * Seção verde escuro com proposta de valor — lado esquerdo texto com Reveal, direito SVG foto mãe/filha
+ *
+ * Conecta: Reveal de @/design | importa de nenhum data
+ * Camada: browser
+ */
 'use client'
 
 /* eslint-disable @next/next/no-img-element */
