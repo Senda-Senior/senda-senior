@@ -21,7 +21,11 @@ function AnchorHandler() {
       e.preventDefault()
 
       const absoluteY = el.getBoundingClientRect().top + window.scrollY - 80
-      window.scrollTo({ top: absoluteY, behavior: 'smooth' })
+      lenis?.start()
+      lenis?.scrollTo(absoluteY, {
+        duration: 2.6,
+        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      })
     }
 
     document.addEventListener('click', handleClick)
