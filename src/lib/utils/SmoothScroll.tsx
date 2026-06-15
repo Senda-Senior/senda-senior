@@ -23,8 +23,15 @@ function AnchorHandler() {
       if (!el) return
 
       e.preventDefault()
+
+      // Calcula posição absoluta com window.scrollY (não animatedScroll do Lenis,
+      // que pode estar em trânsito durante o lerp e gerar target errado).
+      // stop+start reseta targetScroll = actualScroll, evitando o early-return
+      // "target === targetScroll" do Lenis quando já está na posição.
+      const absoluteY = el.getBoundingClientRect().top + window.scrollY - 80
+      lenis?.stop()
       lenis?.start()
-      lenis?.scrollTo(el, { duration: 1.8, offset: -20 })
+      lenis?.scrollTo(absoluteY, { duration: 1.5 })
     }
 
     document.addEventListener('click', handleClick)
