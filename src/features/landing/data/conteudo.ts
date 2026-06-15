@@ -12,6 +12,7 @@ export type Artigo = {
   titleColor: string
   tagColor: string
   photo: string
+  href: string
 }
 
 export const ARTIGOS: Artigo[] = [
@@ -24,16 +25,18 @@ export const ARTIGOS: Artigo[] = [
     titleColor: 'var(--color-forest-dark)',
     tagColor: 'var(--color-forest-60)',
     photo: '/conversa-pais.webp',
+    href: '/artigos/como-conversar-com-seus-pais',
   },
   {
     tag: 'ORGANIZAÇÃO',
-    title: '5 documentos que toda família deveria ter prontos antes dos 70 anos dos pais',
+    title: '4 documentos que toda família deveria ter prontos antes dos 70 anos dos pais',
     author: 'Luciana Moura',
     date: 'Mar 03, 2026 - 6 mins de leitura',
     bg: 'var(--color-golden-beige)',
     titleColor: 'var(--color-brown-rich)',
     tagColor: 'var(--color-brown-rich-65)',
     photo: '/5-documentos.webp',
+    href: '/artigos/documentos-essenciais',
   },
   {
     tag: 'MÉTODO',
@@ -44,5 +47,6 @@ export const ARTIGOS: Artigo[] = [
     titleColor: 'var(--color-ink)',
     tagColor: 'var(--color-ink-55)',
     photo: '/qual-momento.webp',
+    href: '/em-construcao',
   },
 ]

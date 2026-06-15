@@ -58,7 +58,7 @@ export function Conteudo() {
           {ARTIGOS.map((a, i) => (
             <Link
               key={i}
-              href="/em-construcao"
+              href={a.href}
               className="flex flex-col overflow-hidden rounded-[12px] text-inherit no-underline outline-none transition-transform duration-[200ms] ease-[ease] hover:z-10 hover:scale-[1.015] focus-visible:ring-2 focus-visible:ring-[var(--color-cream)]/35 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-sage-dark)]"
               style={{ background: a.bg }}
             >
