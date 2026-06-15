@@ -4,10 +4,6 @@ import { ReactLenis, useLenis } from 'lenis/react'
 import type { ReactNode } from 'react'
 import { useEffect } from 'react'
 
-/**
- * Intercepta cliques em links #âncora e delega ao Lenis.
- * Precisa estar dentro do contexto ReactLenis para acessar useLenis().
- */
 function AnchorHandler() {
   const lenis = useLenis()
 
@@ -24,14 +20,14 @@ function AnchorHandler() {
 
       e.preventDefault()
 
-      // Calcula posição absoluta com window.scrollY (não animatedScroll do Lenis,
-      // que pode estar em trânsito durante o lerp e gerar target errado).
-      // stop+start reseta targetScroll = actualScroll, evitando o early-return
-      // "target === targetScroll" do Lenis quando já está na posição.
       const absoluteY = el.getBoundingClientRect().top + window.scrollY - 80
-      lenis?.stop()
-      lenis?.start()
-      lenis?.scrollTo(absoluteY, { duration: 1.5 })
+      // start() calls reset() internally, syncing targetScroll to actualScroll
+      // so the next scrollTo never hits the "target === targetScroll" early-return.
+      // lock: true blocks wheel/trackpad momentum events for the duration of the
+      // animation — without it, inertia events call scrollTo(currentFrame + delta)
+      // each tick, replacing the animation with a tiny competing one.
+      lenis.start()
+      lenis.scrollTo(absoluteY, { duration: 1.5, lock: true })
     }
 
     document.addEventListener('click', handleClick)
@@ -41,15 +37,6 @@ function AnchorHandler() {
   return null
 }
 
-/**
- * Wrapper Lenis com configuração padrão da marca:
- *   - lerp suave (0.1)
- *   - duração editorial (1.5s)
- *   - sensibilidade do scroll levemente acima do default
- *
- * Mantido em `lib/utils/` por ser cross-cutting (não pertence a
- * nenhuma feature específica).
- */
 export function SmoothScroll({ children }: { children: ReactNode }) {
   return (
     <ReactLenis root options={{ lerp: 0.1, duration: 2.2, wheelMultiplier: 0.85 }}>
