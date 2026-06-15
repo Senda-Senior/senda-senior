@@ -26,8 +26,8 @@ function AnchorHandler() {
       // lock: true blocks wheel/trackpad momentum events for the duration of the
       // animation — without it, inertia events call scrollTo(currentFrame + delta)
       // each tick, replacing the animation with a tiny competing one.
-      lenis.start()
-      lenis.scrollTo(absoluteY, { duration: 1.5, lock: true })
+      lenis?.start()
+      lenis?.scrollTo(absoluteY, { duration: 1.5, lock: true })
     }
 
     document.addEventListener('click', handleClick)
