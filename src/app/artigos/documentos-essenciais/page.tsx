@@ -13,10 +13,10 @@ export const metadata = {
   description: 'Organizar-se juridicamente com antecedência é uma das formas mais seguras de proteger sua família.',
 }
 
-const p = 'font-sans text-[17px] leading-[1.9] text-[var(--color-ink-sub)]'
+const p = 'font-sans text-[17px] leading-[1.9] text-[var(--color-ink-sub)] text-justify'
 const h2 = 'font-serif text-[26px] font-semibold text-[var(--color-green-dark)] mt-16 mb-5 leading-[1.2]'
 const label = 'font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--color-terracotta)] mb-1'
-const answer = 'font-sans text-[17px] leading-[1.9] text-[var(--color-ink-sub)]'
+const answer = 'font-sans text-[17px] leading-[1.9] text-[var(--color-ink-sub)] text-justify'
 const qa = 'border-l-2 border-[rgba(45,95,79,0.2)] pl-4 space-y-3'
 
 export default function ArtigoDocumentosEssenciais() {

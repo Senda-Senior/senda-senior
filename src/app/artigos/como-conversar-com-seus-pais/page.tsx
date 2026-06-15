@@ -13,9 +13,9 @@ export const metadata = {
   description: 'Um guia prático e humano para abordar temas delicados com leveza e respeito.',
 }
 
-const p = 'font-sans text-[17px] leading-[1.9] text-[var(--color-ink-sub)]'
+const p = 'font-sans text-[17px] leading-[1.9] text-[var(--color-ink-sub)] text-justify'
 const h2 = 'font-serif text-[26px] font-semibold text-[var(--color-green-dark)] mt-16 mb-4 leading-[1.2]'
-const lead = 'font-sans text-[18.5px] leading-[1.8] text-[var(--color-ink)] font-[450] italic'
+const lead = 'font-sans text-[18.5px] leading-[1.8] text-[var(--color-ink)] font-[450] italic text-justify'
 const cta = 'rounded-[18px] bg-[rgba(63,66,44,0.07)] px-6 py-5 mt-8'
 
 export default function ArtigoComoConversar() {

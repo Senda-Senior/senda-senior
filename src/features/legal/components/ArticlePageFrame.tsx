@@ -64,10 +64,8 @@ export function ArticlePageFrame({
             </p>
           </div>
 
-          <div className="px-8 py-12 sm:px-14 sm:py-16">
-            <div className="mx-auto max-w-[860px]">
-              {children}
-            </div>
+          <div className="px-8 py-12 sm:px-10 sm:py-16">
+            {children}
           </div>
         </section>
       </div>
