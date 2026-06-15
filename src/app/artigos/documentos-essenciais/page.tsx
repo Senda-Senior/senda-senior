@@ -15,6 +15,7 @@ export const metadata = {
 
 const p = 'font-sans text-[17px] leading-[1.9] text-[var(--color-ink-sub)] text-justify'
 const h2 = 'font-serif text-[26px] font-semibold text-[var(--color-green-dark)] mt-16 mb-5 leading-[1.2]'
+const lead = 'font-serif text-[22px] leading-[1.5] text-[var(--color-ink)] font-normal mb-6'
 const label = 'font-sans text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--color-terracotta)] mb-1'
 const answer = 'font-sans text-[17px] leading-[1.9] text-[var(--color-ink-sub)] text-justify'
 const qa = 'border-l-2 border-[rgba(45,95,79,0.2)] pl-4 space-y-3'
@@ -28,7 +29,7 @@ export default function ArtigoDocumentosEssenciais() {
       date="Mar 03, 2026 · 6 min de leitura"
     >
       <div className="space-y-6">
-        <p className={p}>
+        <p className={lead}>
           Organizar-se juridicamente pode parecer uma tarefa distante ou até incômoda, especialmente quando se trata de planejar o futuro dos pais. No entanto, preparar-se com antecedência é uma das formas mais seguras de evitar conflitos, garantir a tranquilidade da família e assegurar que as vontades do idoso sejam respeitadas.
         </p>
         <p className={p}>
