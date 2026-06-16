@@ -11,6 +11,15 @@ import { ArticlePageFrame } from '@/features/legal/components/ArticlePageFrame'
 export const metadata = {
   title: 'Como conversar com seus pais sobre o futuro | Senda Sênior',
   description: 'Um guia prático e humano para abordar temas delicados com leveza e respeito.',
+  alternates: { canonical: '/artigos/como-conversar-com-seus-pais' },
+  openGraph: {
+    type: 'article',
+    title: 'Como conversar com seus pais sobre o futuro',
+    description: 'Um guia prático e humano para abordar temas delicados com leveza e respeito.',
+    url: '/artigos/como-conversar-com-seus-pais',
+    publishedTime: '2026-03-12T00:00:00.000Z',
+    authors: ['Julianne Pimentel'],
+  },
 }
 
 const p = 'font-sans text-[17px] leading-[1.9] text-[var(--color-ink-sub)] text-justify'
@@ -25,6 +34,9 @@ export default function ArtigoComoConversar() {
       title="Como conversar com seus pais sobre o futuro sem que ninguém fuja da mesa"
       author="Julianne Pimentel"
       date="Mar 12, 2026 · 5 min de leitura"
+      slug="como-conversar-com-seus-pais"
+      description="Um guia prático e humano para abordar temas delicados com leveza e respeito."
+      datePublished="2026-03-12"
     >
       <div className="space-y-6">
         <p className={lead}>

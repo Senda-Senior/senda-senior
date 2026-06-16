@@ -47,7 +47,32 @@ export const metadata: Metadata = {
   },
 }
 
-// Definicão das fontes 
+/**
+ * JSON-LD de Organização — ajuda o Google/AI a entender QUE entidade é a "Senda Sênior"
+ * (desambiguação: existem outras empresas com nome parecido). Não é executável, então não
+ * conflita com a CSP. Atualize `sameAs` quando houver perfis sociais oficiais.
+ */
+const organizationLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Senda Sênior',
+  legalName: 'Senda Sênior',
+  slogan: 'Planejamento & Assessoria Sênior',
+  url: 'https://sendasenior.com.br',
+  logo: 'https://sendasenior.com.br/brand/logo-wordmark-dark.png',
+  image: 'https://sendasenior.com.br/brand/logo-wordmark-dark.png',
+  description:
+    'Plataforma de planejamento e assessoria para o envelhecimento familiar. Manuais e consultoria para famílias organizarem o cuidado de pais idosos antes da urgência.',
+  email: 'contato@sendasenior.com.br',
+  areaServed: { '@type': 'Country', name: 'Brasil' },
+  knowsLanguage: 'pt-BR',
+  founder: [
+    { '@type': 'Person', name: 'Julianne Pimentel' },
+    { '@type': 'Person', name: 'Luciana Moura' },
+  ],
+}
+
+// Definicão das fontes
 const fraunces = Fraunces({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
@@ -73,6 +98,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         antes do React hidratar. Esse warning não reflete bug nosso.
       */}
       <body suppressHydrationWarning>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}
+        />
         <BfCacheGuard />
         <a href="#main-content" className="sr-only">
           Pular para conteúdo principal

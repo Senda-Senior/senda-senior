@@ -2,6 +2,9 @@
 
 export const metadata = {
   title: 'Política de Privacidade | Senda Sênior',
+  description:
+    'Como a Senda Sênior coleta, usa e protege seus dados pessoais, em conformidade com a LGPD.',
+  alternates: { canonical: '/politica-de-privacidade' },
 }
 
 export default function PrivacyPolicyPage() {

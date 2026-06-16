@@ -7,9 +7,10 @@ test.describe('Authentication Flow', () => {
     // Switch to register mode
     await page.getByRole('button', { name: 'Cadastrar', exact: true }).click();
     
-    // Look for registration form elements using accessibility locators
+    // Look for registration form elements using accessibility locators.
+    // `exact` evita colidir com o campo "Confirmar senha" (modo cadastro).
     const emailInput = page.getByLabel('E-mail');
-    const passwordInput = page.getByLabel('Senha');
+    const passwordInput = page.getByLabel('Senha', { exact: true });
     const submitButton = page.getByRole('button', { name: /juntar-se a senda/i });
     
     // Verify form elements are present

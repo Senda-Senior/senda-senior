@@ -2,6 +2,9 @@ import { LegalPageFrame } from '@/features/legal/components/LegalPageFrame'
 
 export const metadata = {
   title: 'Termos de Serviço | Senda Sênior',
+  description:
+    'Termos de uso da plataforma Senda Sênior — planejamento e assessoria para o cuidado de pais idosos.',
+  alternates: { canonical: '/termos-de-servico' },
 }
 
 export default function TermsOfServicePage() {

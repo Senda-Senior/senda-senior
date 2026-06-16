@@ -11,6 +11,15 @@ import { ArticlePageFrame } from '@/features/legal/components/ArticlePageFrame'
 export const metadata = {
   title: '4 documentos que toda família deveria ter antes dos 70 anos dos pais | Senda Sênior',
   description: 'Organizar-se juridicamente com antecedência é uma das formas mais seguras de proteger sua família.',
+  alternates: { canonical: '/artigos/documentos-essenciais' },
+  openGraph: {
+    type: 'article',
+    title: '4 documentos que toda família deveria ter antes dos 70 anos dos pais',
+    description: 'Organizar-se juridicamente com antecedência é uma das formas mais seguras de proteger sua família.',
+    url: '/artigos/documentos-essenciais',
+    publishedTime: '2026-03-03T00:00:00.000Z',
+    authors: ['Luciana Moura'],
+  },
 }
 
 const p = 'font-sans text-[17px] leading-[1.9] text-[var(--color-ink-sub)] text-justify'
@@ -27,6 +36,9 @@ export default function ArtigoDocumentosEssenciais() {
       title="4 documentos que toda família deveria ter prontos antes dos 70 anos dos pais"
       author="Luciana Moura"
       date="Mar 03, 2026 · 6 min de leitura"
+      slug="documentos-essenciais"
+      description="Organizar-se juridicamente com antecedência é uma das formas mais seguras de proteger sua família."
+      datePublished="2026-03-03"
     >
       <div className="space-y-6">
         <p className={lead}>

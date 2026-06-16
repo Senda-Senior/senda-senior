@@ -3,21 +3,62 @@ import Link from 'next/link'
 import NextImage from 'next/image'
 import { BackToLandingButton } from './BackToLandingButton'
 
+const SITE = 'https://sendasenior.com.br'
+
 export function ArticlePageFrame({
   eyebrow,
   title,
   author,
   date,
+  slug,
+  description,
+  datePublished,
   children,
 }: {
   eyebrow?: string
   title: string
   author: string
   date: string
+  /** Slug em /artigos/<slug> — habilita o Article JSON-LD (SEO/GEO). */
+  slug?: string
+  /** Descrição curta do artigo (para o JSON-LD). */
+  description?: string
+  /** Data de publicação em ISO 8601 (ex.: 2026-03-03). */
+  datePublished?: string
   children: ReactNode
 }) {
+  // Article JSON-LD — faz o artigo ser elegível a rich results e citável por IA.
+  const articleLd = slug
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: title,
+        ...(description ? { description } : {}),
+        author: { '@type': 'Person', name: author },
+        ...(datePublished ? { datePublished } : {}),
+        image: `${SITE}/opengraph-image`,
+        inLanguage: 'pt-BR',
+        url: `${SITE}/artigos/${slug}`,
+        mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE}/artigos/${slug}` },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Senda Sênior',
+          logo: {
+            '@type': 'ImageObject',
+            url: `${SITE}/brand/logo-wordmark-dark.png`,
+          },
+        },
+      }
+    : null
+
   return (
     <main className="min-h-screen bg-[var(--color-warm-tan)] text-[var(--color-ink)]">
+      {articleLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
+        />
+      )}
       <header className="sticky top-0 z-30 border-b border-[rgba(42,37,32,0.08)] bg-[rgba(63,66,44,0.96)] px-4 py-3 backdrop-blur-md">
         <div className="mx-auto flex w-full max-w-[1180px] flex-wrap items-center justify-between gap-3">
           <Link href="/#hero" className="flex items-center no-underline">
