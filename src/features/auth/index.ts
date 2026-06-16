@@ -8,6 +8,7 @@
 
 export { AuthBrandPanel } from './AuthBrandPanel'
 export { AuthFormPanel } from './AuthFormPanel'
+export { Turnstile } from './Turnstile'
 export {
   emailSchema,
   passwordSchema,

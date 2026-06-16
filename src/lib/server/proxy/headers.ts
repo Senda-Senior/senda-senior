@@ -53,7 +53,9 @@ function buildSharedCSPDirectives(): string[] {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://use.typekit.net https://p.typekit.net",
     "font-src 'self' https://fonts.gstatic.com https://use.typekit.net data:",
     "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://p.typekit.net",
-    "connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co https://vercel.live https://use.typekit.net https://p.typekit.net",
+    "connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co https://vercel.live https://use.typekit.net https://p.typekit.net https://challenges.cloudflare.com",
+    // Cloudflare Turnstile (CAPTCHA): o widget roda num iframe de challenges.cloudflare.com.
+    "frame-src 'self' https://challenges.cloudflare.com",
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",
@@ -66,17 +68,21 @@ function buildSharedCSPDirectives(): string[] {
 export function buildCSP(nonce: string, mode: CSPMode): string {
   const shared = buildSharedCSPDirectives()
 
+  // Cloudflare Turnstile (CAPTCHA) carrega api.js de challenges.cloudflare.com.
+  // As páginas de auth (/login, /update-password) são public-static.
+  const TURNSTILE_SRC = 'https://challenges.cloudflare.com'
+
   if (mode === 'public-static') {
     const scriptSrc = IS_PROD
-      ? "'self' 'unsafe-inline'"
-      : "'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel-scripts.com"
+      ? `'self' 'unsafe-inline' ${TURNSTILE_SRC}`
+      : `'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel-scripts.com ${TURNSTILE_SRC}`
 
     return ["script-src " + scriptSrc, ...shared].join('; ')
   }
 
   const scriptSrc = IS_PROD
     ? `'self' 'nonce-${nonce}' 'strict-dynamic'`
-    : `'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel-scripts.com`
+    : `'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel-scripts.com ${TURNSTILE_SRC}`
 
   return [`script-src ${scriptSrc}`, ...shared].join('; ')
 }

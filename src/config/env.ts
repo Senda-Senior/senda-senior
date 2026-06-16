@@ -36,12 +36,17 @@ const clientSchema = z.object({
     .string()
     .url('NEXT_PUBLIC_SITE_URL deve ser uma URL válida.')
     .optional(),
+  // Cloudflare Turnstile (CAPTCHA anti-bot no auth). Opcional: ausente = sem CAPTCHA.
+  // Só ativar quando o CAPTCHA estiver habilitado no painel do Supabase (Auth → Attack
+  // Protection), senão o widget aparece mas o Supabase ignora o token.
+  NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().min(1).optional(),
 })
 
 const clientProcessEnv = {
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+  NEXT_PUBLIC_TURNSTILE_SITE_KEY: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
 }
 
 const parsed = clientSchema.safeParse(clientProcessEnv)

@@ -25,8 +25,13 @@ import {
   signInSchema,
   signUpSchema,
   STRONG_PASSWORD_MIN_LENGTH,
+  Turnstile,
 } from '@/features/auth'
+import { env } from '@/config/env'
 import { createClient as createBrowserClient } from '@/lib/supabase/client'
+
+const TURNSTILE_SITE_KEY = env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+const CAPTCHA_ENABLED = Boolean(TURNSTILE_SITE_KEY)
 
 type AuthMode = 'login' | 'register' | 'reset'
 type OAuthProvider = 'google' | 'facebook'
@@ -208,6 +213,8 @@ export default function Login() {
   const [confirm, setConfirm] = useState('')
   const [acceptTerms, setAcceptTerms] = useState(false)
   const [marketingConsent, setMarketingConsent] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const [captchaReset, setCaptchaReset] = useState(0)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
@@ -323,6 +330,13 @@ export default function Login() {
       return
     }
 
+    // CAPTCHA é exigido (quando habilitado) em todos os fluxos por senha/e-mail.
+    // OAuth não usa token (fluxo de redirect).
+    if (CAPTCHA_ENABLED && !captchaToken) {
+      setError('Confirme que você não é um robô.')
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -330,6 +344,7 @@ export default function Login() {
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email,
           password,
+          options: { captchaToken: captchaToken ?? undefined },
         })
 
         if (signInError) {
@@ -346,6 +361,7 @@ export default function Login() {
           email,
           {
             redirectTo: authCallbackUrl('/update-password'),
+            captchaToken: captchaToken ?? undefined,
           },
         )
 
@@ -367,6 +383,7 @@ export default function Login() {
         password,
         options: {
           emailRedirectTo: authCallbackUrl(postAuthPath),
+          captchaToken: captchaToken ?? undefined,
           data: {
             full_name: fullName,
             first_name: firstName.trim(),
@@ -393,6 +410,8 @@ export default function Login() {
       setError(extractMessage(caughtError, 'Não foi possível concluir agora.'))
     } finally {
       setLoading(false)
+      // Token Turnstile é de uso único: força um novo desafio para a próxima tentativa.
+      if (CAPTCHA_ENABLED) setCaptchaReset((n) => n + 1)
     }
   }
 
@@ -647,6 +666,14 @@ export default function Login() {
                   <div className="rounded-[8px] border border-[#c8d4c0] bg-[#eef3eb] px-4 py-3 text-xs font-medium text-green-dark">
                     {success}
                   </div>
+                ) : null}
+
+                {CAPTCHA_ENABLED && TURNSTILE_SITE_KEY ? (
+                  <Turnstile
+                    siteKey={TURNSTILE_SITE_KEY}
+                    onToken={setCaptchaToken}
+                    resetSignal={captchaReset}
+                  />
                 ) : null}
 
                 <button
