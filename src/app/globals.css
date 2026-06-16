@@ -938,3 +938,34 @@ body.reader-locked {
     margin-bottom: 20px !important;
   }
 }
+
+/* ── MANUAIS deck-card: engatar sticky só quando couber na vertical ──
+   A seção #manuais precisa de ~820px de altura no pior caso (1920px de
+   largura: padding/fontes do card escalam com vw). Um elemento `position:
+   sticky; top:0` mais alto que o viewport tem o excedente (card + botão)
+   inacessível — o sticky nunca destrava e a próxima seção desliza por cima.
+   Por isso: ≥981px de largura → relative + z-index (empilha sobre as seções
+   sticky anteriores, mas rola normal); só com ALTURA ≥880px engata o sticky
+   (deck) e a runway de 20vh. Notebooks baixos rolam normal e mostram tudo. */
+#manuais-runway {
+  display: none;
+}
+
+@media (min-width: 981px) {
+  #manuais-deck {
+    position: relative;
+    z-index: 40;
+  }
+}
+
+@media (min-width: 981px) and (min-height: 880px) {
+  #manuais-deck {
+    position: sticky;
+    top: 0;
+  }
+
+  #manuais-runway {
+    display: block;
+    height: 20vh;
+  }
+}

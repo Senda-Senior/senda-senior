@@ -53,12 +53,17 @@ export default function Home() {
           <MetodologiaSection />
         </div>
 
-        {/* 5. ManuaisSection — showcase de manuais, deck card */}
-        <div className="w-full bg-[var(--color-cream)] min-[981px]:sticky min-[981px]:top-0 min-[981px]:z-40">
+        {/* 5. ManuaisSection — showcase de manuais, deck card.
+            Sticky/z-index controlados por globals.css (#manuais-deck): o efeito deck só
+            engata quando há altura suficiente (min-height:880px) para conter a seção;
+            em notebooks baixos vira scroll normal para o card+botão serem alcançáveis
+            (sticky mais alto que o viewport esconde o excedente). */}
+        <div id="manuais-deck" className="w-full bg-[var(--color-cream)]">
           <ManuaisSection />
         </div>
-        {/* runway: ManuaisSection fica visível por mais 20vh antes da Consultoria subir */}
-        <div className="hidden min-[981px]:block min-[981px]:h-[20vh]" aria-hidden />
+        {/* runway: ManuaisSection fica visível por mais 20vh antes da Consultoria subir
+            (só no modo deck — ver globals.css #manuais-runway) */}
+        <div id="manuais-runway" aria-hidden />
 
         {/* 6. Consultoria — deck card, z maior que a metodologia */}
         <div className="w-full bg-[#d3c0a2] md:sticky md:top-0 md:z-[45]">
