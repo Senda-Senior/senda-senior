@@ -1,6 +1,12 @@
 /**
  * FundadorasStrip.tsx
- * Seção "Sobre nós" com produtos — grid desktop (texto + 2x2 cards) ou accordion mobile com overlay modal
+ * Seção de SERVIÇOS/PRODUTOS (cards Manuais/Assessoria/Repositório/Parceiros) — grid desktop
+ * (texto + 2x2 cards) ou accordion mobile com overlay modal.
+ *
+ * ALERTA ARMADILHA DE NOMES (id vs conteúdo): apesar do nome "FundadorasStrip", esta seção NÃO
+ *    mostra as fundadoras — mostra os serviços. Seu id é `#por-quem-viveu` (label "Serviços"
+ *    no menu). As FUNDADORAS (bios) ficam no componente PorQuemViveu, id `#sobre`. Os ids
+ *    batem com o HEADING de cada seção, não com o nome do componente. Não troque os ids.
  *
  * Conecta: CARDS de @/features/landing/data/fundadoras-strip | Reveal de @/design | useLenis, useMediaQuery
  * Camada: browser
@@ -418,6 +424,8 @@ export function FundadorasStrip() {
   }, [activeCard, isMobile])
 
   return (
+    // id `#por-quem-viveu` = seção de SERVIÇOS (menu "Serviços"). As fundadoras ficam em
+    // PorQuemViveu / `#sobre`. Ver "ARMADILHA DE NOMES" no topo do arquivo.
     <section
       id="por-quem-viveu"
       style={{

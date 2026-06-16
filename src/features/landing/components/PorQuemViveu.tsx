@@ -1,6 +1,11 @@
 /**
- * sobre_nos.tsx
- * Seção fundadoras — header com stagger Reveal + cards alternados (foto + bio + credentials)
+ * PorQuemViveu.tsx
+ * Seção SOBRE / FUNDADORAS — header com stagger Reveal + cards alternados (foto + bio + credentials).
+ *
+ * ALERTA ARMADILHA DE NOMES (id vs conteúdo): apesar do nome "PorQuemViveu", o id desta seção é
+ *    `#sobre` (label "Sobre" no menu) e TODOS os seletores de CSS desta seção usam `#sobre`.
+ *    O id `#por-quem-viveu` pertence ao componente FundadorasStrip (serviços). Os ids batem
+ *    com o HEADING de cada seção, não com o nome do componente. Não troque os ids.
  *
  * Conecta: FOUNDERS, FOUNDER_PHOTOS de @/features/landing/data/por-quem-viveu | motion de framer-motion
  * Camada: browser
@@ -187,6 +192,8 @@ export function PorQuemViveu() {
   }, [])
 
   return (
+    // id `#sobre` = seção SOBRE/FUNDADORAS (menu "Sobre"). Os serviços ficam em
+    // FundadorasStrip / `#por-quem-viveu`. Ver "ARMADILHA DE NOMES" no topo do arquivo.
     <section
       id="sobre"
       style={{

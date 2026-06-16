@@ -41,7 +41,10 @@ export default function Home() {
           <Manifesto />
         </div>
 
-        {/* 3. FundadorasStrip — deck card no desktop, scroll livre no mobile */}
+        {/* 3. FundadorasStrip — deck card no desktop, scroll livre no mobile.
+            ALERTA id `#por-quem-viveu` (menu "Serviços"): mostra os SERVIÇOS, não as fundadoras.
+            As fundadoras estão no item 7 (PorQuemViveu, id `#sobre`). Nomes cruzados de propósito
+            documentado — ver cabeçalho de cada componente. */}
         <div className="w-full bg-[var(--color-cream)] md:sticky md:top-0 md:z-20">
           <FundadorasStrip />
         </div>
@@ -70,7 +73,9 @@ export default function Home() {
           <Consultoria />
         </div>
 
-        {/* 7. Por quem viveu — scroll normal */}
+        {/* 7. PorQuemViveu — scroll normal.
+            ALERTA id `#sobre` (menu "Sobre"): mostra as FUNDADORAS (bios), não os serviços.
+            Os serviços estão no item 3 (FundadorasStrip, id `#por-quem-viveu`). */}
         <div className="relative w-full bg-[var(--color-cream)] md:z-50">
           <PorQuemViveu />
         </div>

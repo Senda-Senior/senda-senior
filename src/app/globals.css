@@ -517,14 +517,16 @@ body.reader-locked {
     justify-content: flex-start !important;
   }
 
-  /* ── PorQuemViveu founder cards: stack ── */
-  #por-quem-viveu>div>div:last-child>div {
+  /* ── PorQuemViveu founder cards: stack ──
+     ALERTA id `#sobre` = componente PorQuemViveu (fundadoras). NÃO confundir com `#por-quem-viveu`,
+        que é o FundadorasStrip (serviços). O id bate com o heading, não com o nome do componente. */
+  #sobre>div>div:last-child>div {
     grid-template-columns: 1fr !important;
     min-height: auto !important;
   }
 
-  #por-quem-viveu>div>div:last-child>div>div:first-child,
-  #por-quem-viveu>div>div:last-child>div>div:last-child {
+  #sobre>div>div:last-child>div>div:first-child,
+  #sobre>div>div:last-child>div>div:last-child {
     min-height: 200px;
   }
 
@@ -822,14 +824,15 @@ body.reader-locked {
     grid-template-columns: 1fr !important;
   }
 
-  /* ── PorQuemViveu founder cards: side-by-side → stacked ── */
-  #por-quem-viveu>div>div:last-child>div {
+  /* ── PorQuemViveu founder cards: side-by-side → stacked ──
+     ALERTA id `#sobre` = componente PorQuemViveu (fundadoras), NÃO `#por-quem-viveu` (FundadorasStrip/serviços). */
+  #sobre>div>div:last-child>div {
     grid-template-columns: 1fr !important;
     min-height: auto !important;
   }
 
-  #por-quem-viveu>div>div:last-child>div>div:first-child,
-  #por-quem-viveu>div>div:last-child>div>div:last-child {
+  #sobre>div>div:last-child>div>div:first-child,
+  #sobre>div>div:last-child>div>div:last-child {
     min-height: 200px;
   }
 

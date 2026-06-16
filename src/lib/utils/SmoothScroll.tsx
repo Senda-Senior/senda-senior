@@ -20,6 +20,10 @@ const EASE_IN_OUT = (t: number) => -(Math.cos(Math.PI * t) - 1) / 2
 const DURATION = 2.6
 const HEADER_OFFSET = 80
 
+// ALERTA MAPA ID→CONTEÚDO (os nomes confundem): `#por-quem-viveu` = SERVIÇOS (componente
+//    FundadorasStrip, menu "Serviços"); `#sobre` = SOBRE/FUNDADORAS (componente PorQuemViveu,
+//    menu "Sobre"). Os ids batem com o heading de cada seção, não com o nome do componente.
+//
 // Âncora de teto para cada seção: a seção imediatamente acima na ordem da página.
 // Quando uma seção está grudada (stuck) e não conseguimos calcular sua posição
 // via getBoundingClientRect, subimos primeiro até o teto — que está acima e tem
