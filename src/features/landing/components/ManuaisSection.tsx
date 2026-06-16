@@ -22,12 +22,14 @@ export function ManuaisSection() {
 
   useEffect(() => {
     const compact = window.matchMedia('(max-width: 980px)')
-    // Short-height notebook-ish windows (e.g. 1366x768 class devices, or resized browsers)
-    // get hit by the desktop layout but don't have the vertical room for the `100svh` + absolute
-    // top/bottom pinned card. This adds a height-aware escape hatch without changing
-    // desktop-large or mobile behavior.
+    // O esmagamento vertical NÃO depende da largura/resolução, e sim da ALTURA útil do
+    // viewport em CSS px. Notebooks "1920x1080" rodam com escalonamento do SO (125%/150%),
+    // então a largura CSS vai a 1280-1536px (estoura qualquer teto de max-width) mas a altura
+    // cai para ~700-860px. Nesses casos o layout desktop trava em `100svh` + card absoluto
+    // top/bottom e o conteúdo colide. A válvula de escape é dirigida só por ALTURA (sem teto
+    // de largura), preservando o `100svh` premium em monitores altos (altura > 900px).
     const notebook = window.matchMedia(
-      '(min-width: 769px) and (max-width: 1200px) and (max-height: 760px)',
+      '(min-width: 769px) and (max-height: 900px)',
     )
     const sync = () => {
       setIsCompact(compact.matches)
