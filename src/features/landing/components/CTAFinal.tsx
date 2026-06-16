@@ -96,7 +96,7 @@ export function CTAFinal() {
 
             {/* Secundário: outline ink */}
             <Link
-              href="#manual"
+              href="#metodologia"
               id="cta-conhecer-etapas"
               style={{
                 display: 'inline-flex',

@@ -12,7 +12,7 @@ import {
   Hero,
   FundadorasStrip,
   Manifesto,
-  ManualSection,
+  MetodologiaSection,
   ManuaisSection,
   Consultoria,
   PorQuemViveu,
@@ -46,9 +46,11 @@ export default function Home() {
           <FundadorasStrip />
         </div>
 
-        {/* 4. FasesCuidado — Os 3 momentos do cuidado. Gerencia seu próprio sticky + 300vh internamente */}
-        <div id="manual" className="relative z-30 w-full">
-          <ManualSection />
+        {/* 4. Metodologia — Os 3 momentos do cuidado + quiz de diagnóstico.
+            `relative` (não-sticky) de propósito: é teto do #manuais no CEILING e alvo de
+            CTAs; sticky corromperia o getDocumentTop dele. */}
+        <div id="metodologia" className="relative z-30 w-full">
+          <MetodologiaSection />
         </div>
 
         {/* 5. ManuaisSection — showcase de manuais, deck card */}
@@ -58,7 +60,7 @@ export default function Home() {
         {/* runway: ManuaisSection fica visível por mais 20vh antes da Consultoria subir */}
         <div className="hidden min-[981px]:block min-[981px]:h-[20vh]" aria-hidden />
 
-        {/* 6. Consultoria — deck card, z maior que FasesCuidado */}
+        {/* 6. Consultoria — deck card, z maior que a metodologia */}
         <div className="w-full bg-[#d3c0a2] md:sticky md:top-0 md:z-[45]">
           <Consultoria />
         </div>

@@ -141,7 +141,11 @@ html {
 }
 
 html {
-  scroll-behavior: smooth;
+  /* Lenis controla o smooth-scroll via JS. `scroll-behavior: smooth` nativo
+     brigava com ele (o browser re-animava cada scrollTop que o Lenis setava
+     por frame), resultando em scroll que "empurra fraquinho e não sobe" em
+     trajetos longos. Mantemos `auto` — o Lenis faz a suavização. */
+  scroll-behavior: auto;
 }
 
 body {

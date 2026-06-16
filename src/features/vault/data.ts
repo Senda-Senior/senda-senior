@@ -30,12 +30,29 @@ import type { Database } from '@/lib/supabase/types'
 type SystemCategoryRow = Database['public']['Tables']['vault_system_categories']['Row']
 type UserCategoryRow = Database['public']['Tables']['vault_categories']['Row']
 
-/** Select PostgREST compartilhado entre RSC e actions. */
+/** Select PostgREST compartilhado entre RSC e actions (inclui `text_content`). */
 export const VAULT_FILE_SELECT = `
   id, user_id, current_blob_id, display_name, original_name,
   system_category_slug, user_category_id, manual_override, confidence,
   description, favorite, is_private, status,
   text_content, version_count,
+  created_at, updated_at, deleted_at,
+  current_blob:vault_file_blobs!current_blob_id(*),
+  system_category:vault_system_categories(*),
+  user_category:vault_categories(*),
+  tags_join:vault_file_tags(tag:vault_tags(*))
+`
+
+/**
+ * Select enxuto para LISTAGEM — idêntico ao VAULT_FILE_SELECT porém SEM
+ * `text_content` (texto extraído completo do documento). A lista/grid nunca
+ * exibe esse campo; trazê-lo inflava cada row com payloads grandes à toa.
+ */
+export const VAULT_FILE_LIST_SELECT = `
+  id, user_id, current_blob_id, display_name, original_name,
+  system_category_slug, user_category_id, manual_override, confidence,
+  description, favorite, is_private, status,
+  version_count,
   created_at, updated_at, deleted_at,
   current_blob:vault_file_blobs!current_blob_id(*),
   system_category:vault_system_categories(*),
@@ -140,9 +157,11 @@ export async function listFiles(
   const sort = filters.sort ?? 'created_at'
   const order = filters.order ?? 'desc'
 
+  // Sem `count: 'exact'` — nenhum chamador lê `.total`, e a contagem exata
+  // força um scan adicional no Postgres. `total` reflete a página retornada.
   let query = supabase
     .from('vault_files')
-    .select(VAULT_FILE_SELECT, { count: 'exact' })
+    .select(VAULT_FILE_LIST_SELECT)
     .eq('user_id', userId)
 
   if (filters.trashed) {
@@ -169,14 +188,14 @@ export async function listFiles(
     .order(sort, { ascending: order === 'asc' })
     .range((page - 1) * pageSize, page * pageSize - 1)
 
-  const { data, error, count } = await query
+  const { data, error } = await query
   if (error || !data) {
     return { items: [], total: 0, page, pageSize }
   }
 
   const items = (data as unknown[]).map((row) => mapJoinedFile(row)!).filter(Boolean) as VaultFile[]
 
-  return { items, total: count ?? 0, page, pageSize }
+  return { items, total: items.length, page, pageSize }
 }
 
 /**

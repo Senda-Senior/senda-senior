@@ -1,8 +1,6 @@
-import Link from 'next/link'
-import NextImage from 'next/image'
-import { Users, UserCheck, Stethoscope, ShieldCheck, ArrowLeft } from 'lucide-react'
+import { Users, UserCheck, Stethoscope, ShieldCheck } from 'lucide-react'
 import { requireUser, getProfile } from '@/lib/server'
-import { LogoutButton } from '@/features/dashboard/components/LogoutButton'
+import { AppShell } from '@/features/dashboard/components/AppShell'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,188 +36,53 @@ export default async function RedeDeConfiancaPage() {
   const profile = await getProfile(user)
 
   const displayName = profile.displayName ?? user.email?.split('@')[0] ?? 'Usuário'
-  const userInitial = displayName[0]?.toUpperCase() ?? 'U'
+  const firstName = displayName.split(' ')[0] || 'Usuário'
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-cream)' }}>
-      <header
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 50,
-          padding: '0 clamp(20px, 4vw, 48px)',
-          height: 72,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          background: 'rgba(245,239,230,0.9)',
-          backdropFilter: 'blur(16px)',
-          borderBottom: '1px solid rgba(45, 61, 45, 0.1)',
-          boxShadow: '0 1px 0 rgba(255,255,255,0.6) inset',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(16px, 3vw, 40px)' }}>
-          <Link href="/" style={{ textDecoration: 'none', lineHeight: 0 }}>
-            <NextImage
-              src="/brand/logo-wordmark-dark.png"
-              alt="Senda Sênior"
-              width={220}
-              height={64}
-              style={{ height: 36, width: 'auto' }}
-              priority
-            />
-          </Link>
-          <nav style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
-            <Link href="/dashboard" style={{ fontSize: 17.25, fontWeight: 500, color: 'var(--color-ink-sub)', textDecoration: 'none' }}>
-              Painel
-            </Link>
-            <span style={{ fontSize: 17.25, fontWeight: 700, color: 'var(--color-green-dark)' }}>
-              Rede de Confiança
-            </span>
-          </nav>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 10,
-              padding: '6px 14px',
-              borderRadius: 10,
-              background: 'rgba(45,95,79,0.06)',
-            }}
-          >
-            <div
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: '50%',
-                background: 'var(--color-green)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 14.95,
-                fontWeight: 700,
-                color: 'white',
-              }}
-            >
-              {userInitial}
-            </div>
-            <span style={{ fontSize: 16.1, fontWeight: 500, color: 'var(--color-ink-sub)' }}>
-              {displayName}
-            </span>
-          </div>
-          <LogoutButton />
-        </div>
-      </header>
-
-      <main
-        style={{
-          maxWidth: 780,
-          margin: '0 auto',
-          padding: 'clamp(36px, 5vw, 64px) clamp(20px, 4vw, 48px) 80px',
-        }}
-      >
-        <Link
-          href="/dashboard"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
-            fontSize: 14.5,
-            fontWeight: 500,
-            color: 'var(--color-ink-sub)',
-            textDecoration: 'none',
-            marginBottom: 36,
-          }}
-        >
-          <ArrowLeft size={15} strokeWidth={2} />
-          Voltar ao painel
-        </Link>
-
-        <p
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: 11.5,
-            fontWeight: 700,
-            letterSpacing: '0.16em',
-            textTransform: 'uppercase',
-            color: 'var(--color-terracotta)',
-            marginBottom: 10,
-          }}
-        >
-          Em breve
-        </p>
-        <h1
-          style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: 'clamp(28px, 3.5vw, 40px)',
-            fontWeight: 600,
-            letterSpacing: '-0.02em',
-            color: 'var(--color-ink)',
-            lineHeight: 1.12,
-            marginBottom: 16,
-          }}
-        >
-          Rede de Confiança
-        </h1>
-        <p
-          style={{
-            fontSize: 'clamp(16px, 1.5vw, 18.5px)',
-            color: 'var(--color-ink-sub)',
-            lineHeight: 1.65,
-            maxWidth: 560,
-            marginBottom: 40,
-          }}
-        >
-          Aqui você vai cadastrar e organizar todas as pessoas envolvidas no cuidado — com controle preciso sobre quem acessa quais informações.
-        </p>
-
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-            gap: 16,
-            marginBottom: 48,
-          }}
-        >
-          {TIPOS.map((tipo) => (
-            <div
-              key={tipo.label}
-              style={{
-                padding: '20px 22px',
-                borderRadius: 14,
-                background: 'rgba(255,255,255,0.85)',
-                border: '1px solid rgba(45, 61, 45, 0.1)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-              }}
-            >
-              <div style={{ color: 'var(--color-green)', opacity: 0.8 }}>{tipo.icon}</div>
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 15.5, fontWeight: 600, color: 'var(--color-ink)', margin: 0 }}>
-                {tipo.label}
-              </p>
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13.8, color: 'var(--color-ink-sub)', lineHeight: 1.55, margin: 0 }}>
-                {tipo.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <div
-          style={{
-            padding: '20px 24px',
-            borderRadius: 14,
-            background: 'rgba(45,95,79,0.06)',
-            border: '1px solid rgba(45,95,79,0.12)',
-          }}
-        >
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14.5, color: 'var(--color-ink-sub)', lineHeight: 1.65, margin: 0 }}>
-            Você decide quem vê o quê. Um cuidador pode ter acesso à lista de medicamentos sem ver os documentos jurídicos. Um familiar distante pode ser notificado sem ter acesso ao cofre.
+    <AppShell
+      firstName={firstName}
+      displayName={displayName}
+      pageTitle="Rede de Confiança"
+      pageSubtitle="Gerencie quem acessa quais informações."
+    >
+      <div className="px-5 py-8 lg:px-8 lg:py-10">
+        <div className="max-w-[720px]">
+          <p className="mb-3 font-sans text-[10.5px] font-bold uppercase tracking-[0.2em] text-[var(--color-terracotta)]">
+            Em breve
           </p>
+          <h1 className="mb-4 font-serif text-[clamp(26px,3.2vw,38px)] font-semibold leading-[1.1] tracking-[-0.02em] text-[var(--color-ink)]">
+            Rede de Confiança
+          </h1>
+          <p className="mb-10 max-w-[540px] font-sans text-[15.5px] leading-[1.65] text-[var(--color-ink-sub)]">
+            Aqui você vai cadastrar e organizar todas as pessoas envolvidas no cuidado — com controle preciso sobre quem acessa quais informações.
+          </p>
+
+          <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {TIPOS.map((tipo) => (
+              <div
+                key={tipo.label}
+                className="rounded-[16px] border border-[rgba(42,37,32,0.07)] bg-white p-5 shadow-[0_2px_12px_rgba(42,37,32,0.04)]"
+              >
+                <div className="mb-3 text-[var(--color-green)] opacity-70">
+                  {tipo.icon}
+                </div>
+                <p className="mb-1.5 font-sans text-[14.5px] font-semibold text-[var(--color-ink)]">
+                  {tipo.label}
+                </p>
+                <p className="font-sans text-[13px] leading-[1.6] text-[var(--color-ink-sub)]">
+                  {tipo.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="rounded-[14px] border border-[rgba(45,95,79,0.12)] bg-[rgba(45,95,79,0.04)] px-6 py-5">
+            <p className="font-sans text-[13.5px] leading-[1.7] text-[var(--color-ink-sub)]">
+              Você decide quem vê o quê. Um cuidador pode ter acesso à lista de medicamentos sem ver os documentos jurídicos. Um familiar distante pode ser notificado sem ter acesso ao cofre.
+            </p>
+          </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </AppShell>
   )
 }

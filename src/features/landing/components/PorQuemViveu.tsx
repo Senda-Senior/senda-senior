@@ -1,5 +1,5 @@
 /**
- * PorQuemViveu.tsx
+ * sobre_nos.tsx
  * Seção fundadoras — header com stagger Reveal + cards alternados (foto + bio + credentials)
  *
  * Conecta: FOUNDERS, FOUNDER_PHOTOS de @/features/landing/data/por-quem-viveu | motion de framer-motion
@@ -188,7 +188,7 @@ export function PorQuemViveu() {
 
   return (
     <section
-      id="por-quem-viveu"
+      id="sobre"
       style={{
         background: 'var(--color-cream)',
         width: '100%',
@@ -223,7 +223,7 @@ export function PorQuemViveu() {
               color: 'var(--color-terracotta)',
             }}
           >
-            Por quem viveu
+            Sobre nós
           </motion.p>
 
           <motion.h2

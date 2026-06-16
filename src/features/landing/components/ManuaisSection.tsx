@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 
-import { MANUAIS } from '@/features/landing/data/fases-cuidado'
+import { MANUAIS, SELECT_MANUAL_EVENT } from '@/features/landing/data/fases-cuidado'
 import { listenMediaQuery } from '@/lib/utils/mediaQuery'
 
 export function ManuaisSection() {
@@ -41,6 +41,18 @@ export function ManuaisSection() {
       cleanupCompact()
       cleanupNotebook()
     }
+  }, [])
+
+  // Pré-seleção vinda do quiz da metodologia (resultado → "Ver o manual X").
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const idx = (e as CustomEvent<number>).detail
+      if (typeof idx === 'number' && idx >= 0 && idx < MANUAIS.length) {
+        setActive(idx)
+      }
+    }
+    window.addEventListener(SELECT_MANUAL_EVENT, handler)
+    return () => window.removeEventListener(SELECT_MANUAL_EVENT, handler)
   }, [])
 
   const isNotebookDesktop = isNotebook && !isCompact

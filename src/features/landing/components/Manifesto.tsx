@@ -89,7 +89,7 @@ export function Manifesto() {
 
           <Reveal delay={0.2}>
             <Link
-              href="#sobre"
+              href="#por-quem-viveu"
               className="btn-terracotta-hover"
               style={{
                 display: 'inline-flex',

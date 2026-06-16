@@ -419,7 +419,7 @@ export function FundadorasStrip() {
 
   return (
     <section
-      id="sobre"
+      id="por-quem-viveu"
       style={{
         background: 'var(--color-cream)',
         position: 'relative',
@@ -451,7 +451,7 @@ export function FundadorasStrip() {
                 marginBottom: 24,
               }}
             >
-              Sobre nós
+              Por quem viveu
             </p>
           </Reveal>
 

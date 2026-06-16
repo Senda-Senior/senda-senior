@@ -9,6 +9,7 @@
 import { Suspense } from 'react'
 import { requireUser, getProfile } from '@/lib/server'
 import { getChecklist, DashboardView } from '@/features/dashboard'
+import { AppShell } from '@/features/dashboard/components/AppShell'
 import DashboardLoading from './loading'
 
 export const dynamic = 'force-dynamic'
@@ -20,20 +21,24 @@ export default async function DashboardPage() {
     getProfile(user),
   ])
 
-  // nome real do profile; fallback para parte do email só se profile vazio
   const displayName = profile.displayName
     ?? user.email?.split('@')[0]
     ?? 'Usuário'
   const firstName = displayName.split(' ')[0] || 'Usuário'
 
   return (
-    <Suspense fallback={<DashboardLoading />}>
-      <DashboardView
-        userEmail={user.email ?? ''}
-        displayName={displayName}
-        firstName={firstName}
-        initialChecklist={checklist}
-      />
-    </Suspense>
+    <AppShell
+      firstName={firstName}
+      displayName={displayName}
+      pageTitle="Painel de Cuidado Familiar"
+      pageSubtitle="Organize documentos, cuidados e decisões importantes."
+    >
+      <Suspense fallback={<DashboardLoading />}>
+        <DashboardView
+          firstName={firstName}
+          initialChecklist={checklist}
+        />
+      </Suspense>
+    </AppShell>
   )
 }

@@ -104,12 +104,12 @@ export function Hero() {
                 className="hero-buttons"
                 style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}
               >
-                <Link href="#manual" className={HERO_PRIMARY_CTA}>
+                <Link href="#metodologia" className={HERO_PRIMARY_CTA}>
                   Conhecer os 3 momentos
                   <ArrowRight size={18} strokeWidth={2} aria-hidden="true" />
                 </Link>
 
-                <Link href="#sobre" className={HERO_SECONDARY_CTA}>
+                <Link href="#por-quem-viveu" className={HERO_SECONDARY_CTA}>
                   Entenda como funciona
                 </Link>
               </div>

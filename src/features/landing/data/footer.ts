@@ -42,8 +42,8 @@ export const NAV_COLUMNS: NavColumn[] = [
     title: 'EXPLORE',
     links: [
       { label: 'Sobre nós', href: '#sobre' },
-      { label: 'Manuais', href: '#manual' },
-      { label: 'Serviços', href: '#sobre' },
+      { label: 'Manuais', href: '#manuais' },
+      { label: 'Serviços', href: '#por-quem-viveu' },
       { label: 'Conteúdos', href: '#conteudo' },
     ],
   },

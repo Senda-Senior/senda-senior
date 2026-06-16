@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import { requireUser, getProfile } from '@/lib/server'
 import { getCategories, getQuota, listFiles, VaultView } from '@/features/vault'
+import { AppShell } from '@/features/dashboard/components/AppShell'
 import VaultLoading from '../loading'
 
 export const dynamic = 'force-dynamic'
@@ -11,26 +12,37 @@ export const metadata = {
 
 export default async function VaultJuridicoPage() {
   const user = await requireUser()
-  const profile = await getProfile(user)
 
-  const [quota, categories, activeList, trashedList] = await Promise.all([
+  // profile junto das demais queries — sem round-trip em série.
+  const [profile, quota, categories, activeList, trashedList] = await Promise.all([
+    getProfile(user),
     getQuota(user.id),
     getCategories(user.id),
     listFiles(user.id, { pageSize: 200 }),
     listFiles(user.id, { pageSize: 200, trashed: true }),
   ])
 
+  const displayName = profile.displayName ?? user.email?.split('@')[0] ?? 'Usuário'
+  const firstName = displayName.split(' ')[0] || 'Usuário'
+
   return (
-    <Suspense fallback={<VaultLoading />}>
-      <VaultView
-        quota={quota}
-        categories={categories}
-        files={activeList.items}
-        trashedFiles={trashedList.items}
-        userEmail={user.email ?? ''}
-        displayName={profile.displayName ?? user.email?.split('@')[0] ?? 'Usuário'}
-        initialCategorySlug="juridico"
-      />
-    </Suspense>
+    <AppShell
+      firstName={firstName}
+      displayName={displayName}
+      pageTitle="Documentos e Procurações"
+      pageSubtitle="Testamentos, diretrizes antecipadas e procurações organizadas."
+    >
+      <Suspense fallback={<VaultLoading />}>
+        <VaultView
+          quota={quota}
+          categories={categories}
+          files={activeList.items}
+          trashedFiles={trashedList.items}
+          userEmail={user.email ?? ''}
+          displayName={displayName}
+          initialCategorySlug="juridico"
+        />
+      </Suspense>
+    </AppShell>
   )
 }

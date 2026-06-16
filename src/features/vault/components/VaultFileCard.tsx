@@ -12,7 +12,7 @@ import { useRef, useState, useTransition, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   FileText, File as FileIcon, Image as ImageIcon, FileSpreadsheet,
-  MoreVertical, Download, Trash2, Star, RotateCcw, Pencil,
+  MoreVertical, Download, Trash2, Star, RotateCcw, Pencil, Eye,
 } from 'lucide-react'
 import {
   getDownloadUrl, softDelete, restore, updateMetadata,
@@ -300,8 +300,7 @@ function MenuItem({
   )
 }
 
-function FileTypeIcon({ mime, extension }: { mime: string; extension: string }) {
-  const size = 28
+function FileTypeIcon({ mime, extension, size = 28 }: { mime: string; extension: string; size?: number }) {
   const color = 'var(--color-ink-muted)'
 
   if (mime.startsWith('image/')) {
@@ -327,4 +326,173 @@ function formatSize(bytes: number): string {
 
 function truncate(s: string, n: number): string {
   return s.length > n ? s.slice(0, n - 1) + '…' : s
+}
+
+function formatDate(iso: string): string {
+  const d = new Date(iso)
+  const months = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
+  return `${d.getDate()} ${months[d.getMonth()]}. ${d.getFullYear()}`
+}
+
+export function VaultFileRow({ file, categories }: Props) {
+  const router = useRouter()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [editOpen, setEditOpen] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [isPending, startTransition] = useTransition()
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const inTrash = Boolean(file.deletedAt)
+
+  function handleDownload() {
+    setMenuOpen(false)
+    startTransition(async () => {
+      const result = await getDownloadUrl(file.id)
+      if (result.ok) {
+        window.open(result.data.url, '_blank', 'noopener,noreferrer')
+      }
+    })
+  }
+
+  function handleEdit() {
+    setMenuOpen(false)
+    setEditOpen(true)
+  }
+
+  function handleAskDelete() {
+    setMenuOpen(false)
+    setConfirmDelete(true)
+  }
+
+  function handleDelete() {
+    startTransition(async () => {
+      await softDelete(file.id)
+      setConfirmDelete(false)
+      router.refresh()
+    })
+  }
+
+  function handleRestore() {
+    setMenuOpen(false)
+    startTransition(async () => {
+      await restore(file.id)
+      router.refresh()
+    })
+  }
+
+  function handleToggleFavorite() {
+    setMenuOpen(false)
+    startTransition(async () => {
+      await updateMetadata({ fileId: file.id, patch: { favorite: !file.favorite } })
+      router.refresh()
+    })
+  }
+
+  const catMeta = file.category && isSystemCategory(file.category.slug)
+    ? SYSTEM_CATEGORIES_META[file.category.slug as SystemCategorySlug]
+    : null
+  const catColor = catMeta?.color ?? file.category?.color ?? '#999'
+  const catLabel = file.category?.label ?? 'Outros'
+
+  return (
+    <>
+      <div
+        className="flex items-center gap-3 border-b border-[rgba(42,37,32,0.06)] px-4 py-3 last:border-b-0 hover:bg-[rgba(42,37,32,0.015)] transition-colors"
+        style={{ opacity: isPending ? 0.6 : 1 }}
+      >
+        <div className="flex-shrink-0 text-[var(--color-ink-muted)]">
+          <FileTypeIcon mime={file.mimeType} extension={file.extension} size={20} />
+        </div>
+
+        <div className="min-w-0 flex-1">
+          <p className="truncate font-sans text-[14px] font-medium text-[var(--color-ink)]">
+            {file.favorite && (
+              <Star size={11} fill="#C89F54" stroke="#C89F54" className="mr-1 inline-block align-middle" />
+            )}
+            {file.displayName}
+          </p>
+          <p className="mt-0.5 font-sans text-[12px] text-[var(--color-ink-muted)]">
+            <span style={{ color: catColor, fontWeight: 600 }}>{catLabel}</span>
+            {' · '}{formatSize(file.sizeBytes)}
+            {' · '}{formatDate(file.createdAt)}
+          </p>
+        </div>
+
+        <div className="flex flex-shrink-0 items-center gap-0.5">
+          <button
+            onClick={handleDownload}
+            className="rounded-[6px] p-1.5 text-[var(--color-ink-muted)] transition-colors hover:bg-[rgba(42,37,32,0.06)] hover:text-[var(--color-ink)]"
+            aria-label="Visualizar"
+          >
+            <Eye size={15} strokeWidth={1.8} />
+          </button>
+          <button
+            onClick={handleDownload}
+            className="rounded-[6px] p-1.5 text-[var(--color-ink-muted)] transition-colors hover:bg-[rgba(42,37,32,0.06)] hover:text-[var(--color-ink)]"
+            aria-label="Baixar"
+          >
+            <Download size={15} strokeWidth={1.8} />
+          </button>
+          <div ref={menuRef} className="relative">
+            <button
+              onClick={() => setMenuOpen((o) => !o)}
+              className="rounded-[6px] p-1.5 text-[var(--color-ink-muted)] transition-colors hover:bg-[rgba(42,37,32,0.06)] hover:text-[var(--color-ink)]"
+              aria-label="Mais opções"
+              aria-expanded={menuOpen}
+              aria-haspopup="menu"
+            >
+              <MoreVertical size={15} strokeWidth={1.8} />
+            </button>
+            {menuOpen && (
+              <div className="absolute right-0 top-full z-10 mt-1 min-w-[180px] overflow-hidden rounded-[8px] border border-[rgba(42,37,32,0.08)] bg-white p-1 shadow-[0_4px_16px_rgba(42,37,32,0.12)]">
+                {!inTrash ? (
+                  <>
+                    <MenuItem icon={<Pencil size={14} />} onClick={handleEdit}>Editar</MenuItem>
+                    <MenuItem
+                      icon={<Star size={14} fill={file.favorite ? '#C89F54' : 'transparent'} color="#C89F54" />}
+                      onClick={handleToggleFavorite}
+                    >
+                      {file.favorite ? 'Desfavoritar' : 'Favoritar'}
+                    </MenuItem>
+                    <div className="my-1 h-px bg-[rgba(0,0,0,0.06)]" />
+                    <MenuItem icon={<Trash2 size={14} />} onClick={handleAskDelete} variant="danger">
+                      Excluir
+                    </MenuItem>
+                  </>
+                ) : (
+                  <MenuItem icon={<RotateCcw size={14} />} onClick={handleRestore}>
+                    Restaurar
+                  </MenuItem>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {editOpen && (
+        <VaultFileEditModal onClose={() => setEditOpen(false)} file={file} categories={categories} />
+      )}
+      <ConfirmDialog
+        open={confirmDelete}
+        onClose={() => setConfirmDelete(false)}
+        onConfirm={handleDelete}
+        variant="danger"
+        title={`Excluir "${truncate(file.displayName, 40)}"?`}
+        description="O arquivo vai para a lixeira. Você pode restaurar nos próximos 30 dias — depois disso é removido definitivamente."
+        confirmLabel="Excluir"
+        loading={isPending}
+      />
+    </>
+  )
 }
