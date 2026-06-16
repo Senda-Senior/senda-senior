@@ -9,12 +9,13 @@
 'use client'
 
 import { useMemo, useState, useTransition, type ReactNode } from 'react'
-import { User as UserIcon, Mail, KeyRound, LogOut, Check } from 'lucide-react'
+import { User as UserIcon, Mail, KeyRound, LogOut, Check, AlertTriangle } from 'lucide-react'
 import { Button, Field } from '@/design'
 import { createClient as createBrowserClient } from '@/lib/supabase/client'
 import { STRONG_PASSWORD_MIN_LENGTH, updatePasswordSchema } from '@/features/auth/schemas'
 import { signOutAction } from '@/features/dashboard/actions'
-import { updateProfileNameAction } from './actions'
+import { deleteAccountAction, updateProfileNameAction } from './actions'
+import { DELETE_ACCOUNT_CONFIRMATION } from './constants'
 
 interface Props {
   initialDisplayName: string
@@ -29,6 +30,7 @@ export function ConfiguracoesView({ initialDisplayName, email }: Props) {
         <EmailSection currentEmail={email} />
         <PasswordSection />
         <SessionSection />
+        <DangerZoneSection />
       </div>
     </div>
   )
@@ -286,6 +288,73 @@ function SessionSection() {
         </Button>
       </div>
     </SettingsCard>
+  )
+}
+
+/* ─── Zona de perigo (excluir conta) ───────────────────────────── */
+
+function DangerZoneSection() {
+  const [confirmText, setConfirmText] = useState('')
+  const [feedback, setFeedback] = useState<Feedback>(null)
+  const [isPending, startTransition] = useTransition()
+
+  const canDelete = confirmText.trim().toUpperCase() === DELETE_ACCOUNT_CONFIRMATION
+
+  function handleDelete() {
+    if (!canDelete) return
+    setFeedback(null)
+    startTransition(async () => {
+      // Em sucesso a action redireciona no servidor (não retorna). Só chega aqui em erro.
+      const result = await deleteAccountAction(confirmText)
+      if (result && !result.ok) {
+        setFeedback({ type: 'error', text: result.error })
+      }
+    })
+  }
+
+  return (
+    <section className="rounded-[18px] border border-[#F3C0C0] bg-[#FEF6F5] p-6">
+      <div className="mb-5 flex items-start gap-3">
+        <div className="flex h-[38px] w-[38px] flex-shrink-0 items-center justify-center rounded-full bg-[#FBE3E1] text-[#B91C1C]">
+          <AlertTriangle size={18} strokeWidth={1.8} />
+        </div>
+        <div className="min-w-0">
+          <p className="font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-[#B91C1C]">
+            Zona de perigo
+          </p>
+          <h2 className="font-serif text-[18px] font-semibold leading-[1.2] text-[var(--color-ink)]">
+            Excluir conta
+          </h2>
+          <p className="mt-0.5 font-sans text-[13px] leading-[1.5] text-[var(--color-ink-sub)]">
+            Apaga permanentemente sua conta, perfil, documentos do cofre e todo o histórico.
+            Esta ação não pode ser desfeita.
+          </p>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <Field
+          id="config-delete-confirm"
+          name="delete-confirm"
+          label={`Para confirmar, digite ${DELETE_ACCOUNT_CONFIRMATION}`}
+          placeholder={DELETE_ACCOUNT_CONFIRMATION}
+          value={confirmText}
+          onChange={(e) => setConfirmText(e.target.value)}
+          autoComplete="off"
+        />
+        <FeedbackLine feedback={feedback} />
+        <div className="flex justify-end">
+          <Button
+            size="sm"
+            variant="danger"
+            onClick={handleDelete}
+            disabled={!canDelete || isPending}
+          >
+            {isPending ? 'Excluindo...' : 'Excluir minha conta'}
+          </Button>
+        </div>
+      </div>
+    </section>
   )
 }
 

@@ -67,18 +67,28 @@ export const signInSchema = z.object({
 })
 export type SignInInput = z.infer<typeof signInSchema>
 
-export const signUpSchema = z.object({
-  firstName: z
-    .string()
-    .min(1, 'Informe seu nome.')
-    .max(80, 'Nome muito longo.'),
-  lastName: z
-    .string()
-    .min(1, 'Informe seu sobrenome.')
-    .max(80, 'Sobrenome muito longo.'),
-  email: emailSchema,
-  password: strongPasswordSchema,
-})
+export const signUpSchema = z
+  .object({
+    firstName: z
+      .string()
+      .min(1, 'Informe seu nome.')
+      .max(80, 'Nome muito longo.'),
+    lastName: z
+      .string()
+      .min(1, 'Informe seu sobrenome.')
+      .max(80, 'Sobrenome muito longo.'),
+    email: emailSchema,
+    password: strongPasswordSchema,
+    confirm: z.string().min(1, 'Confirme sua senha.'),
+    // Aceite explícito (LGPD): precisa ser exatamente `true`.
+    acceptTerms: z.boolean().refine((v) => v === true, {
+      message: 'É preciso aceitar os Termos e a Política de Privacidade.',
+    }),
+  })
+  .refine((data) => data.password === data.confirm, {
+    message: 'As senhas não coincidem.',
+    path: ['confirm'],
+  })
 export type SignUpInput = z.infer<typeof signUpSchema>
 
 export const resetPasswordRequestSchema = z.object({

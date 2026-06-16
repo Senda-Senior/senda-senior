@@ -30,7 +30,9 @@ import { createClient as createBrowserClient } from '@/lib/supabase/client'
 
 type AuthMode = 'login' | 'register' | 'reset'
 type OAuthProvider = 'google' | 'facebook'
-type FieldErrors = Partial<Record<'firstName' | 'lastName' | 'email' | 'password', string>>
+type FieldErrors = Partial<
+  Record<'firstName' | 'lastName' | 'email' | 'password' | 'confirm' | 'acceptTerms', string>
+>
 
 function safePostAuthPath(): string {
   const params = new URLSearchParams(
@@ -66,8 +68,12 @@ function mapFieldErrors(
   fieldErrors: Record<string, string[] | undefined>,
 ): FieldErrors {
   return {
+    firstName: fieldErrors.firstName?.[0],
+    lastName: fieldErrors.lastName?.[0],
     email: fieldErrors.email?.[0],
     password: fieldErrors.password?.[0],
+    confirm: fieldErrors.confirm?.[0],
+    acceptTerms: fieldErrors.acceptTerms?.[0],
   }
 }
 
@@ -199,6 +205,8 @@ export default function Login() {
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirm, setConfirm] = useState('')
+  const [acceptTerms, setAcceptTerms] = useState(false)
   const [marketingConsent, setMarketingConsent] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -245,6 +253,8 @@ export default function Login() {
     if (nextMode !== 'register') {
       setFirstName('')
       setLastName('')
+      setConfirm('')
+      setAcceptTerms(false)
       setMarketingConsent(false)
     }
   }
@@ -305,7 +315,7 @@ export default function Login() {
       mode === 'login'
         ? signInSchema.safeParse({ email, password })
         : mode === 'register'
-          ? signUpSchema.safeParse({ firstName, lastName, email, password })
+          ? signUpSchema.safeParse({ firstName, lastName, email, password, confirm, acceptTerms })
           : resetPasswordRequestSchema.safeParse({ email })
 
     if (!parsed.success) {
@@ -410,6 +420,16 @@ export default function Login() {
 
   const isReset = mode === 'reset'
   const isRegister = mode === 'register'
+
+  // Checklist de força de senha (ao vivo) no cadastro — espelha strongPasswordSchema.
+  const passwordChecks = [
+    { label: `Mínimo ${STRONG_PASSWORD_MIN_LENGTH} caracteres`, passed: password.length >= STRONG_PASSWORD_MIN_LENGTH },
+    { label: 'Uma letra maiúscula', passed: /[A-Z]/.test(password) },
+    { label: 'Uma letra minúscula', passed: /[a-z]/.test(password) },
+    { label: 'Um número', passed: /[0-9]/.test(password) },
+    { label: 'Um símbolo', passed: /[^A-Za-z0-9\s]/.test(password) },
+    { label: 'Sem espaços', passed: password.length > 0 && !/\s/.test(password) },
+  ]
   const ctaLabel = loading
     ? 'Aguarde...'
     : isReset
@@ -514,6 +534,70 @@ export default function Login() {
                     error={fieldErrors.password}
                     minLength={isRegister ? STRONG_PASSWORD_MIN_LENGTH : undefined}
                   />
+                ) : null}
+
+                {isRegister ? (
+                  <PremiumField
+                    id="auth-password-confirm"
+                    label="Confirmar senha"
+                    type="password"
+                    autoComplete="new-password"
+                    placeholder="Repita a senha"
+                    value={confirm}
+                    onChange={(event) => {
+                      setConfirm(event.target.value)
+                      if (fieldErrors.confirm) {
+                        setFieldErrors((current) => ({ ...current, confirm: undefined }))
+                      }
+                    }}
+                    error={fieldErrors.confirm}
+                    minLength={STRONG_PASSWORD_MIN_LENGTH}
+                  />
+                ) : null}
+
+                {isRegister && password.length > 0 ? (
+                  <ul className="-mt-2 space-y-1 rounded-[8px] bg-[rgba(42,37,32,0.04)] px-3.5 py-2.5 text-[11.5px] leading-[1.5]">
+                    {passwordChecks.map((c) => (
+                      <li key={c.label} className={c.passed ? 'text-[#3f7a4f]' : 'text-[#8f8375]'}>
+                        {c.passed ? '✓' : '•'} {c.label}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+
+                {isRegister ? (
+                  <div className="flex flex-col gap-1">
+                    <label className="flex items-start gap-2 pt-1 text-xs font-medium text-[#4a423b]">
+                      <input
+                        type="checkbox"
+                        aria-label="Li e aceito os Termos de Uso e a Política de Privacidade"
+                        checked={acceptTerms}
+                        onChange={(event) => {
+                          setAcceptTerms(event.target.checked)
+                          if (fieldErrors.acceptTerms) {
+                            setFieldErrors((current) => ({ ...current, acceptTerms: undefined }))
+                          }
+                        }}
+                        className="mt-0.5 h-4 w-4 flex-shrink-0 rounded-[3px] border border-[#b7ab9b] bg-transparent text-ink focus:ring-0"
+                      />
+                      <span>
+                        Li e aceito os{' '}
+                        <Link href="/termos-de-servico" target="_blank" className="font-bold underline underline-offset-2 hover:text-[#a86545]">
+                          Termos de Uso
+                        </Link>{' '}
+                        e a{' '}
+                        <Link href="/politica-de-privacidade" target="_blank" className="font-bold underline underline-offset-2 hover:text-[#a86545]">
+                          Política de Privacidade
+                        </Link>
+                        .
+                      </span>
+                    </label>
+                    {fieldErrors.acceptTerms ? (
+                      <span className="pl-6 text-[11px] font-medium text-[#b91c1c]">
+                        {fieldErrors.acceptTerms}
+                      </span>
+                    ) : null}
+                  </div>
                 ) : null}
 
                 {isRegister ? (
