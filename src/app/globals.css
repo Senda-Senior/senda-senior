@@ -233,6 +233,17 @@ body.reader-locked {
     opacity: 0.72;
   }
 
+  /* Consultoria: os passos (ícone + texto) crescem um pouco ao passar o mouse.
+     transform-origin à esquerda mantém o alinhamento com a timeline vertical. */
+  .consultoria-step {
+    transition: transform 0.28s var(--ease-senda);
+    transform-origin: left center;
+  }
+
+  .consultoria-step:hover {
+    transform: scale(1.045);
+  }
+
   .btn-terracotta-hover:hover {
     background: var(--color-terracotta-dark) !important;
     transform: translateY(-2px);
