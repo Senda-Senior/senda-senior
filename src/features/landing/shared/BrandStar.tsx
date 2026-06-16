@@ -9,7 +9,6 @@ import NextImage from 'next/image'
  * Conecta: nenhum | usa NextImage para assets raster
  * Camada: browser
  */
-'use client'
 
 interface BrandStarProps {
   size?: number

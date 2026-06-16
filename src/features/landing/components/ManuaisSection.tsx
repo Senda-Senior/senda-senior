@@ -22,12 +22,10 @@ export function ManuaisSection() {
 
   useEffect(() => {
     const compact = window.matchMedia('(max-width: 980px)')
-    // O esmagamento vertical NÃO depende da largura/resolução, e sim da ALTURA útil do
-    // viewport em CSS px. Notebooks "1920x1080" rodam com escalonamento do SO (125%/150%),
-    // então a largura CSS vai a 1280-1536px (estoura qualquer teto de max-width) mas a altura
-    // cai para ~700-860px. Nesses casos o layout desktop trava em `100svh` + card absoluto
-    // top/bottom e o conteúdo colide. A válvula de escape é dirigida só por ALTURA (sem teto
-    // de largura), preservando o `100svh` premium em monitores altos (altura > 900px).
+    // `isNotebook` agora só afina o espaçamento do layout EMPILHADO (compact) em telas
+    // baixas e largas (tablets/celular landscape). O desktop deixou de depender de altura:
+    // virou grid overlay com `min-height: 100svh` + `overflow: visible`, então cresce sozinho
+    // quando o conteúdo não cabe — sem `100svh` rígido nem card absoluto que cortava.
     const notebook = window.matchMedia(
       '(min-width: 769px) and (max-height: 900px)',
     )
@@ -57,14 +55,12 @@ export function ManuaisSection() {
     return () => window.removeEventListener(SELECT_MANUAL_EVENT, handler)
   }, [])
 
-  const isNotebookDesktop = isNotebook && !isCompact
-
   return (
     <section
       id="manuais"
       style={{
         background: 'var(--color-cream)',
-        height: isCompact || isNotebookDesktop ? 'auto' : '100svh',
+        minHeight: isCompact ? undefined : '100svh',
         boxSizing: 'border-box' as const,
         display: 'flex',
         flexDirection: 'column',
@@ -73,8 +69,8 @@ export function ManuaisSection() {
             ? 'clamp(44px, 6vw, 60px) clamp(18px, 5vw, 28px) clamp(44px, 6vw, 64px)'
             : isCompact
               ? 'clamp(56px, 9vw, 72px) clamp(18px, 5vw, 28px) clamp(64px, 10vw, 84px)'
-              : 'clamp(16px, 3vw, 40px) clamp(20px, 5vw, 60px) clamp(12px, 2vw, 28px)',
-        overflow: isCompact || isNotebookDesktop ? 'visible' : 'hidden',
+              : 'clamp(16px, 3vw, 40px) clamp(20px, 5vw, 60px) clamp(28px, 3vw, 48px)',
+        overflow: 'visible',
       }}
     >
       <div
@@ -228,14 +224,10 @@ export function ManuaisSection() {
           maxWidth: 1200,
           width: '100%',
           margin: '0 auto',
-          flex: isCompact || isNotebookDesktop ? 'unset' : 1,
-          minHeight: isCompact
-            ? 'auto'
-            : isNotebookDesktop
-              ? 'clamp(320px, 40vw, 420px)'
-              : 'clamp(280px, 45vh, 420px)',
+          flex: isCompact ? 'unset' : '1 0 auto',
+          minHeight: isCompact ? 'auto' : 'clamp(300px, 50vh, 560px)',
           background: isCompact ? 'transparent' : '#1a1a1a',
-          display: isNotebookDesktop ? 'grid' : 'block',
+          display: isCompact ? 'block' : 'grid',
         }}
       >
         <AnimatePresence mode="wait" initial={false}>
@@ -256,14 +248,12 @@ export function ManuaisSection() {
                     borderRadius: 24,
                     overflow: 'hidden',
                   }
-                : isNotebookDesktop
-                  ? {
-                      position: 'relative',
-                      gridArea: '1 / 1',
-                      minWidth: 0,
-                      minHeight: 0,
-                    }
-                  : { position: 'absolute', inset: 0 }
+                : {
+                    position: 'relative',
+                    gridArea: '1 / 1',
+                    minWidth: 0,
+                    minHeight: 0,
+                  }
             }
           >
             <Image
@@ -284,10 +274,9 @@ export function ManuaisSection() {
           <div
             aria-hidden
             style={{
-              position: isNotebookDesktop ? 'relative' : 'absolute',
-              inset: isNotebookDesktop ? undefined : 0,
-              gridArea: isNotebookDesktop ? '1 / 1' : undefined,
-              zIndex: isNotebookDesktop ? 1 : undefined,
+              position: 'relative',
+              gridArea: '1 / 1',
+              zIndex: 1,
               background:
                 'linear-gradient(90deg, var(--color-black-18) 0%, transparent 55%)',
               pointerEvents: 'none',
@@ -306,14 +295,11 @@ export function ManuaisSection() {
             exit={{ x: -16, opacity: 0 }}
             transition={{ duration: 0.42, ease: [0.25, 0.46, 0.45, 0.94] }}
             style={{
-              position: isCompact ? 'relative' : isNotebookDesktop ? 'relative' : 'absolute',
-              top: isCompact || isNotebookDesktop ? 'auto' : 28,
-              left: isCompact || isNotebookDesktop ? 'auto' : 28,
-              bottom: isCompact || isNotebookDesktop ? 'auto' : 28,
-              gridArea: isNotebookDesktop ? '1 / 1' : undefined,
-              zIndex: isNotebookDesktop ? 2 : undefined,
-              justifySelf: isNotebookDesktop ? 'start' : undefined,
-              alignSelf: isNotebookDesktop ? 'start' : undefined,
+              position: 'relative',
+              gridArea: isCompact ? undefined : '1 / 1',
+              zIndex: isCompact ? undefined : 2,
+              justifySelf: isCompact ? undefined : 'start',
+              alignSelf: isCompact ? undefined : 'stretch',
               width: isCompact ? '100%' : 'clamp(240px, 34%, 360px)',
               maxWidth: isCompact ? '100%' : undefined,
               boxSizing: 'border-box',
@@ -323,15 +309,13 @@ export function ManuaisSection() {
                 ? isNotebook
                   ? '22px 22px 22px'
                   : '28px 24px 24px'
-                : isNotebookDesktop
-                  ? 'clamp(20px, 2vw, 32px)'
-                  : 'clamp(24px, 4vh, 48px)',
+                : 'clamp(24px, 2vw, 40px)',
               display: 'grid',
               gridTemplateRows: '1fr auto',
-              rowGap: isCompact ? (isNotebook ? 16 : 20) : isNotebookDesktop ? 'clamp(14px, 1.4vw, 20px)' : 'clamp(14px, 2.4vh, 24px)',
+              rowGap: isCompact ? (isNotebook ? 16 : 20) : 'clamp(16px, 1.6vw, 24px)',
               backdropFilter: 'blur(10px)',
               WebkitBackdropFilter: 'blur(10px)',
-              margin: isCompact ? (isNotebook ? '-28px 0 0' : '-36px 0 0') : isNotebookDesktop ? '24px 0 24px 24px' : 0,
+              margin: isCompact ? (isNotebook ? '-28px 0 0' : '-36px 0 0') : '28px 0 28px 28px',
               boxShadow: isCompact ? '0 22px 50px rgba(42, 37, 32, 0.14)' : 'none',
             }}
           >
@@ -355,13 +339,11 @@ export function ManuaisSection() {
                   fontFamily: 'var(--font-serif)',
                   fontSize: isCompact
                     ? 'clamp(34px, 10vw, 44px)'
-                    : isNotebookDesktop
-                      ? 'clamp(30px, 2.4vw, 40px)'
-                      : 'clamp(30px, 4.4vh, 46px)',
+                    : 'clamp(30px, 2.6vw, 44px)',
                   fontWeight: 400,
                   lineHeight: 1.03,
                   color: manual.titleColor,
-                  marginBottom: isNotebookDesktop ? 'clamp(18px, 1.6vw, 24px)' : 'clamp(20px, 3vh, 28px)',
+                  marginBottom: 'clamp(18px, 1.8vw, 26px)',
                   whiteSpace: 'pre-line',
                 }}
               >
@@ -373,9 +355,7 @@ export function ManuaisSection() {
                   fontFamily: 'var(--font-sans)',
                   fontSize: isCompact
                     ? 'clamp(17px, 4.5vw, 19px)'
-                    : isNotebookDesktop
-                      ? 'clamp(15px, 1.25vw, 17px)'
-                      : 'clamp(14.95px, 1.8vh, 18.4px)',
+                    : 'clamp(15px, 1.3vw, 18px)',
                   fontWeight: 700,
                   lineHeight: 1.35,
                   color: manual.taglineColor,

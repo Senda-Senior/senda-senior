@@ -26,7 +26,7 @@ interface Props {
   initialCategorySlug?: string
 }
 
-export function VaultView({ quota, categories, files, trashedFiles, userEmail, displayName, initialCategorySlug }: Props) {
+export function VaultView({ quota, categories, files, trashedFiles, initialCategorySlug }: Props) {
   const [activeSlug, setActiveSlug] = useState<string | null>(initialCategorySlug ?? null)
   const [search, setSearch] = useState('')
   const [showTrash, setShowTrash] = useState(false)
