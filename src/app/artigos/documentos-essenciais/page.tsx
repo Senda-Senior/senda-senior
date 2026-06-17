@@ -35,7 +35,7 @@ export default function ArtigoDocumentosEssenciais() {
       eyebrow="Organização"
       title="4 documentos que toda família deveria ter prontos antes dos 70 anos dos pais"
       author="Luciana Moura"
-      date="Mar 03, 2026 · 6 min de leitura"
+      date="Mar 03, 2026 · 7 min de leitura"
       slug="documentos-essenciais"
       description="Organizar-se juridicamente com antecedência é uma das formas mais seguras de proteger sua família."
       datePublished="2026-03-03"
@@ -132,11 +132,19 @@ export default function ArtigoDocumentosEssenciais() {
         <div className={`${qa} space-y-5`}>
           <div>
             <p className={label}>O que é?</p>
-            <p className={answer}>O inventário é um registro organizado de todos os bens, documentos, contas e informações importantes do idoso. Pode incluir imóveis, contas bancárias, documentos pessoais, seguros e até preferências pessoais.</p>
+            <p className={answer}>Diferente do inventário judicial que ocorre após o falecimento, o Inventário Preventivo (embora não seja um documento jurídico formal previsto em lei, trata-se de uma ferramenta de organização patrimonial) é um mapeamento detalhado e organizado de toda a vida patrimonial, financeira e burocrática dos pais. É, na prática, um “mapa do tesouro” que consolida em um único lugar a localização de bens tangíveis (imóveis, veículos, joias, obras de arte), ativos financeiros (contas bancárias, investimentos em ações, previdência privada, criptoativos) e documentos essenciais (escrituras, certidões de nascimento/casamento, apólices de seguro, contratos de aluguel e títulos de propriedade). Além disso, na era digital, este inventário deve incluir a vida digital: informações sobre a existência das contas digitais e orientações para seu gerenciamento.</p>
           </div>
           <div>
             <p className={label}>Por que é importante?</p>
-            <p className={answer}>Facilita a gestão do patrimônio e evita que a família tenha que buscar informações em momentos de</p>
+            <p className={answer}>A importância deste documento reside na continuidade da gestão e na paz de espírito familiar. Em momentos de crise, como uma hospitalização repentina, a família não pode perder tempo procurando uma apólice de seguro saúde ou tentando descobrir em qual banco o idoso recebe sua aposentadoria. O inventário garante que o patrimônio seja gerido com eficiência, evita que bens sejam esquecidos ou perdidos para o Estado (como contas inativas) e facilita imensamente um futuro processo de partilha, podendo reduzir custos e tempo na futura administração do patrimônio, já que toda a informação estará mastigada e pronta para uso.</p>
+          </div>
+          <div>
+            <p className={label}>Quando providenciar?</p>
+            <p className={answer}>O momento ideal é agora, preferencialmente antes que os pais atinjam os 70 anos ou apresentem qualquer sinal de declínio cognitivo. É fundamental que este processo seja colaborativo: os pais devem ser os protagonistas, orientando os filhos sobre onde guardam cada item e quais são suas particularidades. Uma vez criado, o inventário não é estático; ele deve ser revisado anualmente ou sempre que houver uma mudança significativa no patrimônio, como a venda de um carro ou a abertura de uma nova conta de investimentos.</p>
+          </div>
+          <div>
+            <p className={label}>Exemplo prático</p>
+            <p className={answer}>Imagine o caso de Sr. Arnaldo, que sofreu um AVC aos 74 anos. Seus filhos sabiam que ele era organizado, mas não tinham acesso às suas contas. Graças ao Inventário Senda que haviam feito um ano antes, os filhos localizaram rapidamente uma previdência privada que cobria despesas hospitalares de alto custo e encontraram a escritura de um terreno que o Sr. Arnaldo pretendia vender. Sem o inventário, a família teria que arcar com as despesas do próprio bolso e possivelmente nunca saberia da existência daquele investimento, que acabaria esquecido no banco.</p>
           </div>
         </div>
       </div>
