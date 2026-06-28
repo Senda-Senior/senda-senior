@@ -32,7 +32,7 @@ export const ARTIGOS: Artigo[] = [
   },
   {
     tag: 'ORGANIZAÇÃO',
-    title: '4 documentos que toda família deveria ter prontos antes dos 70 anos dos pais',
+    title: '4 documentos que toda família deveria ter prontos enquanto os pais possuem plena capacidade civil',
     author: 'Luciana Moura',
     date: 'Mar 03, 2026 - 6 mins de leitura',
     bg: 'var(--color-golden-beige)',
@@ -44,12 +44,12 @@ export const ARTIGOS: Artigo[] = [
   {
     tag: 'MÉTODO',
     title: 'Em qual fase de cuidado sua família está?',
-    author: 'Julianne Pimentel',
+    author: 'Luciana Moura',
     date: 'Mar 19, 2026 - 4 mins de leitura',
     bg: 'var(--color-warm-cream)',
     titleColor: 'var(--color-ink)',
     tagColor: 'var(--color-ink-55)',
     photo: '/qual-momento.webp',
-    href: '/em-construcao',
+    href: '/artigos/qual-fase-de-cuidado',
   },
 ]

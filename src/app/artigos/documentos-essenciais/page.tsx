@@ -9,12 +9,12 @@
 import { ArticlePageFrame } from '@/features/legal/components/ArticlePageFrame'
 
 export const metadata = {
-  title: '4 documentos que toda família deveria ter antes dos 70 anos dos pais | Senda Sênior',
+  title: '4 documentos essenciais para proteger seus pais | Senda Sênior',
   description: 'Organizar-se juridicamente com antecedência é uma das formas mais seguras de proteger sua família.',
   alternates: { canonical: '/artigos/documentos-essenciais' },
   openGraph: {
     type: 'article',
-    title: '4 documentos que toda família deveria ter antes dos 70 anos dos pais',
+    title: '4 documentos que toda família deveria ter prontos enquanto os pais possuem plena capacidade civil',
     description: 'Organizar-se juridicamente com antecedência é uma das formas mais seguras de proteger sua família.',
     url: '/artigos/documentos-essenciais',
     publishedTime: '2026-03-03T00:00:00.000Z',
@@ -33,7 +33,7 @@ export default function ArtigoDocumentosEssenciais() {
   return (
     <ArticlePageFrame
       eyebrow="Organização"
-      title="4 documentos que toda família deveria ter prontos antes dos 70 anos dos pais"
+      title="4 documentos que toda família deveria ter prontos enquanto os pais possuem plena capacidade civil"
       author="Luciana Moura"
       date="Mar 03, 2026 · 7 min de leitura"
       slug="documentos-essenciais"
@@ -45,7 +45,7 @@ export default function ArtigoDocumentosEssenciais() {
           Organizar-se juridicamente pode parecer uma tarefa distante ou até incômoda, especialmente quando se trata de planejar o futuro dos pais. No entanto, preparar-se com antecedência é uma das formas mais seguras de evitar conflitos, garantir a tranquilidade da família e assegurar que as vontades do idoso sejam respeitadas.
         </p>
         <p className={p}>
-          Aqui, apresentamos quatro documentos essenciais que toda família deveria ter em mãos antes dos 70 anos dos pais. Eles não apenas protegem a família juridicamente, mas também ajudam a evitar situações de angústia e incerteza em momentos críticos.
+          Aqui, apresentamos quatro documentos essenciais que toda família deveria ter em mãos enquanto os pais possuem plena capacidade civil. Eles não apenas protegem a família juridicamente, mas também ajudam a evitar situações de angústia e incerteza em momentos críticos.
         </p>
 
 

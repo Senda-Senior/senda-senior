@@ -11,6 +11,13 @@
  * necessidade de cuidado, então mais "Sim" → fase mais avançada.
  */
 
+/**
+ * Evento de janela para iniciar o quiz a partir de outra seção (ex.: o botão
+ * "Descobrir o meu momento" na coluna editorial da MetodologiaSection). O CuidadoQuiz
+ * escuta e sai do estado de capa (intro) para as perguntas. Desacopla sem store global.
+ */
+export const START_QUIZ_EVENT = 'senda:start-quiz'
+
 export type CarePhase = 'prevent' | 'care' | 'immediate'
 
 export interface QuizQuestion {

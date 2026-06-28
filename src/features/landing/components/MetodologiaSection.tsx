@@ -14,6 +14,7 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { CuidadoQuiz } from './CuidadoQuiz'
+import { START_QUIZ_EVENT } from '@/features/landing/data/quiz-cuidado'
 
 export function MetodologiaSection() {
   return (
@@ -36,16 +37,20 @@ export function MetodologiaSection() {
             presente e proteger o futuro. Esta classificação não rotula; ela orienta.
           </p>
 
+          <p className="mb-7 max-w-[440px] font-sans text-[clamp(16px,1.38vw,18.4px)] leading-[1.65] text-[var(--color-cream-75)]">
+            Faça agora seu teste rápido para entender em qual momento você e sua família se encontram.
+          </p>
           <Link
-            href="#manuais"
+            href="#CuidadoQuiz"
+            onClick={() => window.dispatchEvent(new Event(START_QUIZ_EVENT))}
             className="btn-terracotta-hover inline-flex w-fit items-center gap-2.5 rounded-[30px] bg-[var(--color-terracotta)] px-7 py-3.5 font-sans text-[16px] font-semibold text-white no-underline transition-all duration-300"
           >
-            Ver manuais <ArrowRight size={16} strokeWidth={2} />
+            Descobrir o meu momento <ArrowRight size={16} strokeWidth={2} />
           </Link>
         </div>
 
         {/* Quiz de diagnóstico */}
-        <div className="min-h-[clamp(460px,62vh,580px)]">
+        <div id="CuidadoQuiz" className="min-h-[clamp(460px,62vh,580px)] scroll-mt-[clamp(56px,7vw,88px)]">
           <CuidadoQuiz />
         </div>
       </div>

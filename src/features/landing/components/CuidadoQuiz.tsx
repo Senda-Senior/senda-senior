@@ -8,10 +8,10 @@
  */
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, ArrowRight, ArrowLeft, RotateCcw } from 'lucide-react'
-import { QUIZ_QUESTIONS, scoreQuiz } from '@/features/landing/data/quiz-cuidado'
+import { QUIZ_QUESTIONS, scoreQuiz, START_QUIZ_EVENT } from '@/features/landing/data/quiz-cuidado'
 import { MANUAIS, SELECT_MANUAL_EVENT } from '@/features/landing/data/fases-cuidado'
 
 const TOTAL = QUIZ_QUESTIONS.length
@@ -19,7 +19,17 @@ const TOTAL = QUIZ_QUESTIONS.length
 export function CuidadoQuiz() {
   const [answers, setAnswers] = useState<Record<number, boolean>>({})
   const [current, setCurrent] = useState(0)
+  const [started, setStarted] = useState(false)
   const [showResult, setShowResult] = useState(false)
+
+  // Permite que o botão "Descobrir o meu momento" (MetodologiaSection) saia da capa.
+  useEffect(() => {
+    function onStart() {
+      setStarted(true)
+    }
+    window.addEventListener(START_QUIZ_EVENT, onStart)
+    return () => window.removeEventListener(START_QUIZ_EVENT, onStart)
+  }, [])
 
   const question = QUIZ_QUESTIONS[current]
   const answered = answers[question.id] !== undefined
@@ -52,88 +62,128 @@ export function CuidadoQuiz() {
 
   return (
     <div className="flex h-full flex-col rounded-[24px] border border-[rgba(42,37,32,0.06)] bg-[var(--color-cream)] p-[clamp(24px,3vw,40px)] shadow-[0_24px_64px_rgba(42,37,32,0.18)]">
-      {/* Cabeçalho */}
-      <div className="mb-6 flex items-center justify-between gap-3">
-        <p className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-terracotta)]">
-          Diagnóstico
-        </p>
-        {!showResult && (
-          <span className="font-sans text-[12.5px] font-medium text-[var(--color-ink-muted)]">
-            {current + 1} / {TOTAL}
-          </span>
-        )}
-      </div>
+      {!started && <Intro onStart={() => setStarted(true)} />}
 
-      {/* Barra de progresso */}
-      <div className="mb-7 h-[5px] overflow-hidden rounded-full bg-[rgba(42,37,32,0.08)]">
-        <motion.div
-          className="h-full rounded-full bg-[var(--color-green)]"
-          animate={{ width: `${showResult ? 100 : progress}%` }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-        />
-      </div>
+      {started && (
+        <>
+          {/* Cabeçalho */}
+          <div className="mb-6 flex items-center justify-between gap-3">
+            <p className="font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-terracotta)]">
+              Teste
+            </p>
+            {!showResult && (
+              <span className="font-sans text-[12.5px] font-medium text-[var(--color-ink-muted)]">
+                {current + 1} / {TOTAL}
+              </span>
+            )}
+          </div>
 
-      <AnimatePresence mode="wait" initial={false}>
-        {!showResult ? (
-          <motion.div
-            key={`q-${question.id}`}
-            initial={{ opacity: 0, x: 16 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -16 }}
-            transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="flex flex-1 flex-col"
-          >
-            <h3 className="mb-7 font-serif text-[clamp(20px,2vw,26px)] font-medium leading-[1.25] tracking-[-0.01em] text-[var(--color-ink)]">
-              {question.text}
-            </h3>
+          {/* Barra de progresso */}
+          <div className="mb-7 h-[5px] overflow-hidden rounded-full bg-[rgba(42,37,32,0.08)]">
+            <motion.div
+              className="h-full rounded-full bg-[var(--color-green)]"
+              animate={{ width: `${showResult ? 100 : progress}%` }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+            />
+          </div>
 
-            <div className="mb-auto grid grid-cols-2 gap-3">
-              {([['Sim', true], ['Não', false]] as const).map(([label, value]) => {
-                const selected = answers[question.id] === value
-                return (
+          <AnimatePresence mode="wait" initial={false}>
+            {!showResult ? (
+              <motion.div
+                key={`q-${question.id}`}
+                initial={{ opacity: 0, x: 16 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -16 }}
+                transition={{ duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="flex flex-1 flex-col"
+              >
+                <h3 className="mb-7 font-serif text-[clamp(20px,2vw,26px)] font-medium leading-[1.25] tracking-[-0.01em] text-[var(--color-ink)]">
+                  {question.text}
+                </h3>
+
+                <div className="mb-auto grid grid-cols-2 gap-3">
+                  {([['Sim', true], ['Não', false]] as const).map(([label, value]) => {
+                    const selected = answers[question.id] === value
+                    return (
+                      <button
+                        key={label}
+                        type="button"
+                        onClick={() => answer(value)}
+                        aria-pressed={selected}
+                        className={[
+                          'rounded-[14px] border-[1.5px] px-4 py-4 font-sans text-[15px] font-semibold transition-all duration-200',
+                          selected
+                            ? 'border-[var(--color-green)] bg-[var(--color-green)] text-white shadow-[0_6px_18px_rgba(45,95,79,0.25)]'
+                            : 'border-[rgba(42,37,32,0.14)] bg-white text-[var(--color-ink-sub)] hover:border-[var(--color-green)] hover:text-[var(--color-green)]',
+                        ].join(' ')}
+                      >
+                        {label}
+                      </button>
+                    )
+                  })}
+                </div>
+
+                <div className="mt-7 flex items-center justify-between gap-3">
                   <button
-                    key={label}
                     type="button"
-                    onClick={() => answer(value)}
-                    aria-pressed={selected}
-                    className={[
-                      'rounded-[14px] border-[1.5px] px-4 py-4 font-sans text-[15px] font-semibold transition-all duration-200',
-                      selected
-                        ? 'border-[var(--color-green)] bg-[var(--color-green)] text-white shadow-[0_6px_18px_rgba(45,95,79,0.25)]'
-                        : 'border-[rgba(42,37,32,0.14)] bg-white text-[var(--color-ink-sub)] hover:border-[var(--color-green)] hover:text-[var(--color-green)]',
-                    ].join(' ')}
+                    onClick={back}
+                    disabled={current === 0}
+                    className="inline-flex items-center gap-1.5 font-sans text-[13.5px] font-medium text-[var(--color-ink-muted)] transition-colors hover:text-[var(--color-ink)] disabled:invisible"
                   >
-                    {label}
+                    <ArrowLeft size={15} strokeWidth={1.9} /> Voltar
                   </button>
-                )
-              })}
-            </div>
-
-            <div className="mt-7 flex items-center justify-between gap-3">
-              <button
-                type="button"
-                onClick={back}
-                disabled={current === 0}
-                className="inline-flex items-center gap-1.5 font-sans text-[13.5px] font-medium text-[var(--color-ink-muted)] transition-colors hover:text-[var(--color-ink)] disabled:invisible"
-              >
-                <ArrowLeft size={15} strokeWidth={1.9} /> Voltar
-              </button>
-              <button
-                type="button"
-                onClick={next}
-                disabled={!answered}
-                className="inline-flex items-center gap-2 rounded-full bg-[var(--color-terracotta)] px-6 py-3 font-sans text-[14.5px] font-semibold text-white shadow-[0_10px_26px_rgba(138,78,46,0.22)] transition-all duration-200 hover:-translate-y-px disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none disabled:hover:translate-y-0"
-              >
-                {isLast ? 'Ver resultado' : 'Continuar'}
-                <ArrowRight size={15} strokeWidth={2} />
-              </button>
-            </div>
-          </motion.div>
-        ) : (
-          <Resultado key="resultado" answers={answers} onReset={reset} onBack={back} />
-        )}
-      </AnimatePresence>
+                  <button
+                    type="button"
+                    onClick={next}
+                    disabled={!answered}
+                    className="inline-flex items-center gap-2 rounded-full bg-[var(--color-terracotta)] px-6 py-3 font-sans text-[14.5px] font-semibold text-white shadow-[0_10px_26px_rgba(138,78,46,0.22)] transition-all duration-200 hover:-translate-y-px disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none disabled:hover:translate-y-0"
+                  >
+                    {isLast ? 'Ver resultado' : 'Continuar'}
+                    <ArrowRight size={15} strokeWidth={2} />
+                  </button>
+                </div>
+              </motion.div>
+            ) : (
+              <Resultado key="resultado" answers={answers} onReset={reset} onBack={back} />
+            )}
+          </AnimatePresence>
+        </>
+      )}
     </div>
+  )
+}
+
+function Intro({ onStart }: { onStart: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
+      className="flex flex-1 flex-col"
+    >
+      <p className="mb-3 font-sans text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-terracotta)]">
+        Teste
+      </p>
+      <h3 className="mb-4 font-serif text-[clamp(24px,2.6vw,32px)] font-medium leading-[1.15] tracking-[-0.02em] text-[var(--color-ink)]">
+        Descubra o momento do cuidado
+      </h3>
+      <p className="mb-auto max-w-[420px] font-sans text-[14.5px] leading-[1.6] text-[var(--color-ink-sub)]">
+        No fim, indicamos a fase e o manual certo para a sua família.
+      </p>
+
+      <div className="mt-7 flex items-center justify-between gap-3">
+        <span className="font-sans text-[12.5px] font-medium text-[var(--color-ink-muted)]">
+          {TOTAL} perguntas · cerca de 1 min
+        </span>
+        <button
+          type="button"
+          onClick={onStart}
+          className="inline-flex items-center gap-2 rounded-full bg-[var(--color-terracotta)] px-6 py-3 font-sans text-[14.5px] font-semibold text-white shadow-[0_10px_26px_rgba(138,78,46,0.22)] transition-all duration-200 hover:-translate-y-px"
+        >
+          Começar <ArrowRight size={15} strokeWidth={2} />
+        </button>
+      </div>
+    </motion.div>
   )
 }
 
