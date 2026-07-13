@@ -8,11 +8,12 @@
  */
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, ArrowRight, ArrowLeft, RotateCcw } from 'lucide-react'
 import { QUIZ_QUESTIONS, scoreQuiz, START_QUIZ_EVENT } from '@/features/landing/data/quiz-cuidado'
-import { MANUAIS, SELECT_MANUAL_EVENT } from '@/features/landing/data/fases-cuidado'
+import { MANUAIS } from '@/features/landing/data/fases-cuidado'
 
 const TOTAL = QUIZ_QUESTIONS.length
 
@@ -199,14 +200,6 @@ function Resultado({
   const { result } = scoreQuiz(answers)
   const manual = MANUAIS[result.manualIndex]
 
-  // Pré-seleciona o manual recomendado na ManuaisSection (que escuta o evento).
-  // O scroll para #manuais continua sendo feito pelo Lenis (href do link).
-  function selectManual() {
-    window.dispatchEvent(
-      new CustomEvent<number>(SELECT_MANUAL_EVENT, { detail: result.manualIndex }),
-    )
-  }
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 14 }}
@@ -249,13 +242,12 @@ function Resultado({
         >
           <RotateCcw size={14} strokeWidth={1.9} /> Refazer
         </button>
-        <a
-          href="#manuais"
-          onClick={selectManual}
+        <Link
+          href={`/manuais/${manual.slug}`}
           className="inline-flex items-center gap-2 rounded-full bg-[var(--color-terracotta)] px-6 py-3 font-sans text-[14.5px] font-semibold text-white no-underline shadow-[0_10px_26px_rgba(138,78,46,0.22)] transition-all duration-200 hover:-translate-y-px"
         >
           Ver o manual {manual.tab} <ArrowRight size={15} strokeWidth={2} />
-        </a>
+        </Link>
       </div>
 
       {/* Voltar para a última pergunta (revisar resposta) */}

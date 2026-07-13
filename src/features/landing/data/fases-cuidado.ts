@@ -2,16 +2,9 @@
  * fases-cuidado.ts
  * Dados dos 3 manuais (Prevent Care, Care, Immediate Care) com cores, links Hotmart, copycards
  *
- * Conecta: nenhuma | importado por ManuaisSection.tsx
+ * Conecta: nenhuma | importado por ManuaisSection, CuidadoQuiz, manuais/[slug] e sitemap
  * Camada: shared
  */
-
-/**
- * Evento de janela para pré-selecionar um manual na ManuaisSection a partir de outra
- * seção (ex.: resultado do quiz na metodologia). `detail` = índice em MANUAIS.
- * Desacopla as seções sem store global; a ManuaisSection escuta e seleciona.
- */
-export const SELECT_MANUAL_EVENT = 'senda:select-manual'
 
 export type Manual = {
   id: number

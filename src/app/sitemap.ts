@@ -1,12 +1,14 @@
 /**
  * sitemap.ts
- * /sitemap.xml gerado pelo Next — só páginas públicas e indexáveis (conteúdo de marketing
- * e artigos). Rotas de app/auth e o manual pago ficam de fora (ver robots.ts).
+ * /sitemap.xml gerado pelo Next — só páginas públicas e indexáveis (marketing, artigos
+ * e vitrines /manuais). Rotas de app/auth e o leitor pago ficam de fora (ver robots.ts).
  *
  * Ao publicar um novo artigo em /artigos, adicione-o aqui.
  * Camada: server (gerado em build)
  */
 import type { MetadataRoute } from 'next'
+
+import { MANUAIS } from '@/features/landing/data/fases-cuidado'
 
 const BASE_URL = 'https://sendasenior.com.br'
 
@@ -14,6 +16,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date()
   return [
     { url: `${BASE_URL}/`, lastModified: now, changeFrequency: 'weekly', priority: 1.0 },
+    ...MANUAIS.map((m) => ({
+      url: `${BASE_URL}/manuais/${m.slug}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.9,
+    })),
     {
       url: `${BASE_URL}/artigos/como-conversar-com-seus-pais`,
       lastModified: now,
