@@ -10,6 +10,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import { MANUAIS, SELECT_MANUAL_EVENT } from '@/features/landing/data/fases-cuidado'
 import { listenMediaQuery } from '@/lib/utils/mediaQuery'
@@ -377,10 +378,8 @@ export function ManuaisSection() {
               </p>
             </div>
 
-            <a
-              href={manual.link}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href={`/manuais/${manual.slug}`}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -398,8 +397,8 @@ export function ManuaisSection() {
                 letterSpacing: '0.01em',
               }}
             >
-              Comprar manual
-            </a>
+              Conhecer o manual
+            </Link>
           </motion.div>
         </AnimatePresence>
       </div>

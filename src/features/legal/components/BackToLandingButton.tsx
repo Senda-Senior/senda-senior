@@ -2,7 +2,7 @@
  * BackToLandingButton.tsx
  * Botão inteligente que volta para a landing page — se houver histórico de navegação, usa history.back(); senão redireciona com fallback.
  *
- * Conecta: importado por LegalPageFrame
+ * Conecta: importado por LegalPageFrame e ArticlePageFrame
  * Camada: browser ('use client')
  */
 

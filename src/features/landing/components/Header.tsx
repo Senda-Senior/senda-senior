@@ -8,6 +8,7 @@
 'use client'
 
 import NextImage from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 import { Menu, X, ArrowRight, ChevronDown, User } from 'lucide-react'
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
@@ -61,8 +62,8 @@ export function Header() {
         style={{ pointerEvents: hidden ? 'none' : 'auto' }}
       >
         <div className="mx-auto flex h-[clamp(68px,6.5vw,82px)] w-[min(1480px,calc(100vw-16px))] items-center justify-between gap-[clamp(10px,1.6vw,20px)] rounded-full border border-[rgba(233,226,210,0.20)] bg-[var(--header-surface)] px-[clamp(16px,1.8vw,28px)] pl-[6px] shadow-[0_18px_40px_rgba(42,37,32,0.22)] backdrop-blur-[18px]">
-          <a
-            href="#hero"
+          <Link
+            href="/#hero"
             className="flex shrink-0 items-center leading-none no-underline"
           >
             <NextImage
@@ -81,7 +82,7 @@ export function Header() {
               priority
               className="-ml-2 h-auto w-[clamp(96px,8vw,130px)] shrink-0"
             />
-          </a>
+          </Link>
 
           <nav className="nav-desktop flex min-w-0 flex-1 items-center justify-center gap-[clamp(14px,1.7vw,24px)]" aria-label="Menu principal">
             {NAV_LINKS.map(({ label, href, chevron }) => (

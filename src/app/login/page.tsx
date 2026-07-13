@@ -713,12 +713,6 @@ export default function Login() {
                       loading={loading}
                       onClick={() => handleOAuth('google')}
                     />
-                    <SocialButton
-                      provider="facebook"
-                      mode={mode}
-                      loading={loading}
-                      onClick={() => handleOAuth('facebook')}
-                    />
                   </div>
                 </>
               ) : null}
