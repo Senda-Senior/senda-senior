@@ -65,7 +65,7 @@ function ExpandedManuais({ onClose, isMobile }: { onClose: () => void; isMobile?
           <h2 className="font-serif text-3xl font-bold tracking-wide text-[var(--color-ink)]">Os Manuais</h2>
         </div>
       )}
-      <div className="flex flex-col md:flex-row gap-8 md:gap-12 w-full flex-1 items-center md:items-start pb-8 md:pb-0">
+      <div className="flex flex-col md:flex-row gap-8 md:gap-12 w-full flex-1 items-center pb-8 md:pb-0">
         {/* Texto esquerda */}
         <div className="flex-1 flex flex-col justify-center">
           <p className="font-sans text-[11.5px] font-bold uppercase tracking-[0.18em] text-[var(--color-terracotta)] mb-4">Metodologia Senda Sênior</p>
@@ -120,7 +120,7 @@ function ExpandedAssessoria({ onClose, isMobile }: { onClose: () => void; isMobi
           <h2 className="font-serif text-3xl font-bold tracking-wide text-[var(--color-ink)]">A Assessoria</h2>
         </div>
       )}
-      <div className="flex flex-col md:flex-row gap-8 md:gap-12 w-full flex-1 items-center md:items-start pb-8 md:pb-0">
+      <div className="flex flex-col md:flex-row gap-8 md:gap-12 w-full flex-1 items-center pb-8 md:pb-0">
         {/* Texto esquerda */}
         <div className="flex-1 flex flex-col justify-center">
           <p className="font-sans text-[11.5px] font-bold uppercase tracking-[0.18em] text-[var(--color-terracotta)] mb-4">Assessoria personalizada</p>
@@ -178,7 +178,7 @@ function ExpandedRepositorio({ onClose, isMobile }: { onClose: () => void; isMob
           <h2 className="font-serif text-3xl font-bold tracking-wide text-[var(--color-ink)]">O Repositório</h2>
         </div>
       )}
-      <div className="flex flex-col md:flex-row gap-8 md:gap-12 w-full flex-1 items-center md:items-start pb-8 md:pb-0">
+      <div className="flex flex-col md:flex-row gap-8 md:gap-12 w-full flex-1 items-center pb-8 md:pb-0">
         {/* Texto esquerda */}
         <div className="flex-1 flex flex-col justify-center">
           <p className="font-sans text-[11.5px] font-bold uppercase tracking-[0.18em] text-[var(--color-terracotta)] mb-4">Cofre digital</p>
@@ -255,7 +255,7 @@ function ExpandedParceiros({ onClose, isMobile }: { onClose: () => void, isMobil
       )}
 
       {/* Content Area */}
-      <div className="flex flex-col-reverse md:flex-row gap-8 md:gap-12 w-full flex-1 items-center md:items-start pb-8 md:pb-0">
+      <div className="flex flex-col-reverse md:flex-row gap-8 md:gap-12 w-full flex-1 items-center pb-8 md:pb-0">
         {/* Text */}
         <div className="flex-1 flex flex-col justify-center relative w-full">
           {/* Dropdown Filters */}
@@ -714,7 +714,7 @@ export function FundadorasStrip() {
             onClick={() => setActiveCard(null)}
           >
             {/* Desktop View (Sidebar + Content) */}
-            <div className="flex landing-max gap-8 h-full min-h-0 w-full items-stretch relative max-w-7xl mx-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="flex landing-max gap-8 max-h-[calc(100vh-6rem)] min-h-0 w-full items-stretch relative max-w-7xl mx-auto" onClick={(e) => e.stopPropagation()}>
               {/* Sidebar (Left) */}
               <div className="flex flex-col gap-4 w-[280px] shrink-0 pt-16">
                 {CARDS.map((card) => {
