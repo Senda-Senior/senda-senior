@@ -169,12 +169,12 @@ function Intro({ onStart }: { onStart: () => void }) {
         Descubra o momento do cuidado
       </h3>
       <p className="mb-auto max-w-[420px] font-sans text-[14.5px] leading-[1.6] text-[var(--color-ink-sub)]">
-        No fim, indicamos a fase e o manual certo para a sua família.
+        Responda com sinceridade. No fim, indicamos o momento e o manual certo para a sua família.
       </p>
 
       <div className="mt-7 flex items-center justify-between gap-3">
         <span className="font-sans text-[12.5px] font-medium text-[var(--color-ink-muted)]">
-          {TOTAL} perguntas · cerca de 1 min
+          {TOTAL} perguntas · cerca de 2 min
         </span>
         <button
           type="button"
@@ -250,7 +250,6 @@ function Resultado({
         </Link>
       </div>
 
-      {/* Voltar para a última pergunta (revisar resposta) */}
       <button
         type="button"
         onClick={onBack}
@@ -258,6 +257,10 @@ function Resultado({
       >
         <ArrowLeft size={13} strokeWidth={1.9} /> Revisar respostas
       </button>
+
+      <p className="mt-5 font-sans text-[10.5px] leading-[1.45] text-[var(--color-ink-muted)]/80">
+        Triagem familiar — não substitui avaliação médica ou geriátrica.
+      </p>
     </motion.div>
   )
 }
