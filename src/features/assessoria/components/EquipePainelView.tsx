@@ -10,28 +10,76 @@
 
 import Link from 'next/link'
 import NextImage from 'next/image'
-import { useEffect, useState } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 import {
   ASSESSORAS,
   CLIENTES,
   clienteStatusLabel,
   countPendencias,
 } from '@/features/assessoria/mock'
-import { getMockSolicitacoes, subscribeMockStore } from '@/features/assessoria/mockStore'
+import {
+  getMockSolicitacoes,
+  getMockSolicitacoesServerSnapshot,
+  subscribeMockStore,
+} from '@/features/assessoria/mockStore'
+
+function useClientePendencias(ownerUserId: string, clienteId: string) {
+  const itens = useSyncExternalStore(
+    subscribeMockStore,
+    () => getMockSolicitacoes(ownerUserId, clienteId),
+    getMockSolicitacoesServerSnapshot,
+  )
+  return countPendencias(itens)
+}
+
+function ClienteRow({
+  ownerUserId,
+  cliente,
+  assessoraId,
+}: {
+  ownerUserId: string
+  cliente: (typeof CLIENTES)[number]
+  assessoraId: string
+}) {
+  const pendencias = useClientePendencias(ownerUserId, cliente.id)
+
+  return (
+    <Link
+      href={`/equipe/${cliente.id}?como=${assessoraId}`}
+      className="flex flex-col gap-3 rounded-[16px] border border-[rgba(42,37,32,0.07)] bg-white p-5 no-underline shadow-[0_2px_12px_rgba(42,37,32,0.04)] transition-[transform,box-shadow] duration-150 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(42,37,32,0.1)] sm:flex-row sm:items-center sm:justify-between sm:p-6"
+    >
+      <div className="min-w-0">
+        <div className="mb-1 flex flex-wrap items-center gap-2">
+          <h2 className="font-serif text-[19px] font-semibold tracking-[-0.01em] text-[var(--color-ink)]">
+            {cliente.nome}
+          </h2>
+          <span className="rounded-[6px] bg-[var(--color-green-muted)] px-2 py-0.5 font-sans text-[11px] font-semibold text-[var(--color-green)]">
+            {clienteStatusLabel(cliente.status)}
+          </span>
+        </div>
+        <p className="font-sans text-[13px] text-[var(--color-ink-sub)]">
+          {cliente.etapa} · {cliente.ultimaAtualizacao}
+        </p>
+      </div>
+      <div className="flex flex-shrink-0 items-center gap-4">
+        <p className="font-sans text-[13px] text-[var(--color-ink-muted)]">
+          {pendencias > 0
+            ? `${pendencias} pendência${pendencias === 1 ? '' : 's'}`
+            : 'Sem pendências'}
+        </p>
+        <span className="font-sans text-[13px] font-semibold text-[var(--color-terracotta)]">
+          Abrir →
+        </span>
+      </div>
+    </Link>
+  )
+}
 
 export function EquipePainelView({ ownerUserId }: { ownerUserId: string }) {
   const [assessoraId, setAssessoraId] = useState(ASSESSORAS[0].id)
-  const [hydrated, setHydrated] = useState(false)
-  const [tick, setTick] = useState(0)
   const assessora = ASSESSORAS.find((a) => a.id === assessoraId) ?? ASSESSORAS[0]
   const ativos = CLIENTES.filter((c) => c.status !== 'aguardando_vinculo')
   const pendentes = CLIENTES.filter((c) => c.status === 'aguardando_vinculo')
-
-  useEffect(() => {
-    setHydrated(true)
-    return subscribeMockStore(() => setTick((n) => n + 1))
-  }, [])
-  void tick
 
   return (
     <div className="px-5 py-6 lg:px-8 lg:py-8">
@@ -79,44 +127,14 @@ export function EquipePainelView({ ownerUserId }: { ownerUserId: string }) {
         Em acompanhamento · {ativos.length}
       </p>
       <div className="mb-8 space-y-3">
-        {ativos.map((cliente) => {
-          const pendencias = countPendencias(
-            hydrated
-              ? getMockSolicitacoes(ownerUserId, cliente.id)
-              : cliente.solicitacoes,
-          )
-          return (
-            <Link
-              key={cliente.id}
-              href={`/equipe/${cliente.id}?como=${assessora.id}`}
-              className="flex flex-col gap-3 rounded-[16px] border border-[rgba(42,37,32,0.07)] bg-white p-5 no-underline shadow-[0_2px_12px_rgba(42,37,32,0.04)] transition-[transform,box-shadow] duration-150 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(42,37,32,0.1)] sm:flex-row sm:items-center sm:justify-between sm:p-6"
-            >
-              <div className="min-w-0">
-                <div className="mb-1 flex flex-wrap items-center gap-2">
-                  <h2 className="font-serif text-[19px] font-semibold tracking-[-0.01em] text-[var(--color-ink)]">
-                    {cliente.nome}
-                  </h2>
-                  <span className="rounded-[6px] bg-[var(--color-green-muted)] px-2 py-0.5 font-sans text-[11px] font-semibold text-[var(--color-green)]">
-                    {clienteStatusLabel(cliente.status)}
-                  </span>
-                </div>
-                <p className="font-sans text-[13px] text-[var(--color-ink-sub)]">
-                  {cliente.etapa} · {cliente.ultimaAtualizacao}
-                </p>
-              </div>
-              <div className="flex flex-shrink-0 items-center gap-4">
-                <p className="font-sans text-[13px] text-[var(--color-ink-muted)]">
-                  {pendencias > 0
-                    ? `${pendencias} pendência${pendencias === 1 ? '' : 's'}`
-                    : 'Sem pendências'}
-                </p>
-                <span className="font-sans text-[13px] font-semibold text-[var(--color-terracotta)]">
-                  Abrir →
-                </span>
-              </div>
-            </Link>
-          )
-        })}
+        {ativos.map((cliente) => (
+          <ClienteRow
+            key={cliente.id}
+            ownerUserId={ownerUserId}
+            cliente={cliente}
+            assessoraId={assessora.id}
+          />
+        ))}
       </div>
 
       {pendentes.length > 0 && (

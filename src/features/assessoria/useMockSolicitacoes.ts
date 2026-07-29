@@ -2,41 +2,33 @@
  * useMockSolicitacoes.ts
  * Hook do preview — lê/escreve solicitações do mockStore (por userId).
  *
- * Estado inicial sempre [] (SSR = 1º paint do client) para evitar hydration mismatch.
- * O localStorage só entra depois do mount via useEffect.
+ * Usa useSyncExternalStore (SSR snapshot = []) para evitar hydration mismatch
+ * e o lint react-hooks/set-state-in-effect.
  *
- * Conecta: mockStore | SolicitacoesView, DashboardView, EquipeClienteView
+ * Conecta: mockStore | SolicitacoesView, EquipeClienteView, AssessoriaView
  * Camada: browser (use client)
  */
 
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useSyncExternalStore } from 'react'
 import type { Solicitacao, SolicitacaoStatus } from './mock'
 import {
   addMockSolicitacao,
   enviarMockArquivo,
   getMockSolicitacoes,
+  getMockSolicitacoesServerSnapshot,
   patchMockSolicitacao,
   subscribeMockStore,
   updateMockSolicitacaoStatus,
 } from './mockStore'
 
 export function useMockSolicitacoes(ownerUserId: string, clienteId: string) {
-  // Nunca ler localStorage no initializer — divergiria do HTML do servidor.
-  const [itens, setItens] = useState<Solicitacao[]>([])
-
-  useEffect(() => {
-    if (!ownerUserId) {
-      setItens([])
-      return
-    }
-    function sync() {
-      setItens(getMockSolicitacoes(ownerUserId, clienteId))
-    }
-    sync()
-    return subscribeMockStore(sync)
-  }, [ownerUserId, clienteId])
+  const itens = useSyncExternalStore(
+    subscribeMockStore,
+    () => getMockSolicitacoes(ownerUserId, clienteId),
+    getMockSolicitacoesServerSnapshot,
+  )
 
   const adicionar = useCallback(
     (item: Solicitacao) => {

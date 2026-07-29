@@ -4,6 +4,7 @@
  *
  * Persistência: localStorage keyed por userId.
  * Seed vazio — nunca inventa pedidos das donas para contas novas.
+ * Cache em memória — snapshots estáveis p/ useSyncExternalStore.
  *
  * Conecta: useMockSolicitacoes | views de assessoria/dashboard | logout
  * Camada: browser
@@ -17,11 +18,14 @@ const STORAGE_PREFIX = 'senda:mock-solicitacoes:v3:'
 /** No preview da visão assessora, a conta logada “é” o cliente Daniel. */
 export const PREVIEW_CLIENTE_ID = 'daniel'
 
+const EMPTY_LIST: Solicitacao[] = []
+
 type StoreMap = Record<string, Solicitacao[]>
 
 type Listener = () => void
 
 const listeners = new Set<Listener>()
+const memory = new Map<string, StoreMap>()
 
 function storageKey(ownerUserId: string): string {
   return `${STORAGE_PREFIX}${ownerUserId}`
@@ -32,13 +36,13 @@ function emptySeed(): StoreMap {
   return Object.fromEntries(CLIENTES.map((c) => [c.id, [] as Solicitacao[]]))
 }
 
-function readStore(ownerUserId: string): StoreMap {
+function loadFromStorage(ownerUserId: string): StoreMap {
   if (typeof window === 'undefined' || !ownerUserId) return emptySeed()
   try {
     const raw = window.localStorage.getItem(storageKey(ownerUserId))
     if (!raw) {
       const initial = emptySeed()
-      writeStore(ownerUserId, initial)
+      persist(ownerUserId, initial)
       return initial
     }
     const parsed = JSON.parse(raw) as StoreMap
@@ -52,7 +56,16 @@ function readStore(ownerUserId: string): StoreMap {
   }
 }
 
-function writeStore(ownerUserId: string, store: StoreMap) {
+function readStore(ownerUserId: string): StoreMap {
+  if (!ownerUserId) return emptySeed()
+  const cached = memory.get(ownerUserId)
+  if (cached) return cached
+  const loaded = loadFromStorage(ownerUserId)
+  memory.set(ownerUserId, loaded)
+  return loaded
+}
+
+function persist(ownerUserId: string, store: StoreMap) {
   if (typeof window === 'undefined' || !ownerUserId) return
   try {
     window.localStorage.setItem(storageKey(ownerUserId), JSON.stringify(store))
@@ -67,6 +80,11 @@ function writeStore(ownerUserId: string, store: StoreMap) {
       // ignore quota
     }
   }
+}
+
+function writeStore(ownerUserId: string, store: StoreMap) {
+  memory.set(ownerUserId, store)
+  persist(ownerUserId, store)
   listeners.forEach((l) => l())
 }
 
@@ -76,7 +94,13 @@ export function subscribeMockStore(listener: Listener): () => void {
 }
 
 export function getMockSolicitacoes(ownerUserId: string, clienteId: string): Solicitacao[] {
-  return readStore(ownerUserId)[clienteId] ?? []
+  if (!ownerUserId) return EMPTY_LIST
+  return readStore(ownerUserId)[clienteId] ?? EMPTY_LIST
+}
+
+/** Snapshot estável p/ SSR / 1º paint (sem localStorage). */
+export function getMockSolicitacoesServerSnapshot(): Solicitacao[] {
+  return EMPTY_LIST
 }
 
 export function addMockSolicitacao(
@@ -150,5 +174,6 @@ export function clearAllMockStores(): void {
     }
   }
   toRemove.forEach((key) => window.localStorage.removeItem(key))
+  memory.clear()
   listeners.forEach((l) => l())
 }
