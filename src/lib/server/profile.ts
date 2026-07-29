@@ -7,6 +7,7 @@
  */
 
 import 'server-only'
+import { cache } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { createClient as createServerClient } from '@/lib/supabase/server'
 
@@ -27,12 +28,12 @@ export interface UserProfile {
   avatarUrl: string | null
 }
 
-export async function getProfile(user: User): Promise<UserProfile> {
+const getProfileById = cache(async (userId: string): Promise<UserProfile> => {
   const supabase = await createServerClient()
   const { data, error } = await supabase
     .from('profiles')
     .select('display_name, care_role, avatar_url')
-    .eq('user_id', user.id)
+    .eq('user_id', userId)
     .maybeSingle()
 
   if (error || !data) {
@@ -48,6 +49,10 @@ export async function getProfile(user: User): Promise<UserProfile> {
       ? data.avatar_url.trim()
       : null,
   }
+})
+
+export async function getProfile(user: User): Promise<UserProfile> {
+  return getProfileById(user.id)
 }
 
 /**

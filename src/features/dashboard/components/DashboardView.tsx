@@ -117,12 +117,17 @@ export function DashboardView({ firstName, ownerUserId, initialChecklist }: Dash
   return (
     <div className="px-5 py-6 lg:px-8 lg:py-8">
       <div className="relative mb-6 overflow-hidden rounded-[20px] bg-[var(--color-olive)] px-8 py-9 text-[var(--color-cream)] lg:px-10">
-        <div className="pointer-events-none absolute right-0 top-1/2 h-[260px] w-[260px] -translate-y-1/2 opacity-[0.07]">
+        {/* Marca atrás do saludo — não sob o card "Etapa atual" */}
+        <div
+          className="pointer-events-none absolute -bottom-10 -left-8 h-[200px] w-[200px] opacity-[0.08] lg:h-[240px] lg:w-[240px]"
+          aria-hidden
+        >
           <NextImage
-            src="/brand/logo-white-only-hd-nobg.png"
+            src="/brand/logo-white-only.webp"
             alt=""
             fill
-            className="object-contain object-center"
+            className="object-contain object-left-bottom"
+            sizes="240px"
           />
         </div>
 
@@ -157,7 +162,7 @@ export function DashboardView({ firstName, ownerUserId, initialChecklist }: Dash
             </Link>
           </div>
 
-          <div className="w-full max-w-[260px] rounded-[14px] border border-[rgba(233,226,210,0.14)] bg-[rgba(233,226,210,0.08)] px-5 py-4">
+          <div className="relative z-10 w-full max-w-[260px] rounded-[14px] border border-[rgba(233,226,210,0.18)] bg-[rgba(28,34,20,0.42)] px-5 py-4 backdrop-blur-[6px]">
             <p className="mb-3 font-sans text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-cream-60)]">
               Etapa atual
             </p>
@@ -199,8 +204,7 @@ export function DashboardView({ firstName, ownerUserId, initialChecklist }: Dash
             <Link
               key={p.href + p.title}
               href={p.href}
-              prefetch={false}
-              className="group block rounded-[18px] border border-[rgba(42,37,32,0.07)] bg-white p-6 no-underline shadow-[0_2px_12px_rgba(42,37,32,0.05)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(42,37,32,0.1)]"
+              className="group block rounded-[18px] border border-[rgba(42,37,32,0.07)] bg-white p-6 no-underline shadow-[0_2px_12px_rgba(42,37,32,0.05)] transition-[transform,box-shadow] duration-150 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(42,37,32,0.1)]"
             >
               <div className="mb-5 text-[var(--color-ink)] opacity-55">
                 <Icon size={26} strokeWidth={1.5} />
@@ -235,8 +239,7 @@ export function DashboardView({ firstName, ownerUserId, initialChecklist }: Dash
             <Link
               key={a.title}
               href={a.href}
-              prefetch={false}
-              className="group block rounded-[14px] border border-[rgba(42,37,32,0.06)] bg-[var(--color-warm-cream)] p-4 no-underline transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_4px_20px_rgba(42,37,32,0.08)]"
+              className="group block rounded-[14px] border border-[rgba(42,37,32,0.06)] bg-[var(--color-warm-cream)] p-4 no-underline transition-[transform,background-color,box-shadow] duration-150 hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_4px_20px_rgba(42,37,32,0.08)]"
             >
               <div className={`mb-3 inline-flex rounded-[8px] p-2 ${a.bg} ${a.color}`}>
                 <Icon size={20} strokeWidth={1.6} />

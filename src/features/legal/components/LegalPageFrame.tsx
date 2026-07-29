@@ -31,7 +31,7 @@ export function LegalPageFrame({
         <div className="mx-auto flex w-full max-w-[1180px] flex-wrap items-center justify-between gap-3">
           <Link href="/#hero" className="flex items-center no-underline">
             <NextImage
-              src="/brand/logo-white-only-hd-nobg.png"
+              src="/brand/logo-white-only.webp"
               alt=""
               width={72}
               height={72}

@@ -14,6 +14,7 @@
  */
 
 import 'server-only'
+import { cache } from 'react'
 import { redirect } from 'next/navigation'
 import type { User } from '@supabase/supabase-js'
 import { serverEnv } from '@/config/env.server'
@@ -42,8 +43,8 @@ export function canAccessAssessoriaPreview(email: string | null | undefined): bo
   return false
 }
 
-/** True se o user está na allowlist `advisory_advisors` (active). */
-export async function isAdvisoryAdvisor(userId: string): Promise<boolean> {
+/** True se o user está na allowlist `advisory_advisors` (active). Dedup por request. */
+export const isAdvisoryAdvisor = cache(async (userId: string): Promise<boolean> => {
   try {
     const supabase = await createServerClient()
     const { data, error } = await supabase
@@ -58,12 +59,18 @@ export async function isAdvisoryAdvisor(userId: string): Promise<boolean> {
   } catch {
     return false
   }
-}
+})
+
+const canAccessAssessoriaById = cache(
+  async (userId: string, email: string | null | undefined): Promise<boolean> => {
+    if (await isAdvisoryAdvisor(userId)) return true
+    return canAccessAssessoriaPreview(email)
+  },
+)
 
 /** Acesso à UI assessora: DB allowlist ou fallback de preview. */
 export async function canAccessAssessoria(user: User): Promise<boolean> {
-  if (await isAdvisoryAdvisor(user.id)) return true
-  return canAccessAssessoriaPreview(user.email)
+  return canAccessAssessoriaById(user.id, user.email)
 }
 
 /** Bloqueia /equipe se o usuário não pode ver a visão assessora. */

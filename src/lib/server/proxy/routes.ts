@@ -52,10 +52,11 @@ export function matchesPrefix(pathname: string, prefixes: readonly string[]): bo
 }
 
 export function shouldRateLimit(pathname: string): boolean {
+  // Só mutações / auth sensíveis — GETs de páginas protegidas não pagam Redis.
   if (pathname.startsWith('/api/')) return true
-  if (matchesPrefix(pathname, PROTECTED_PREFIXES)) return true
   if (matchesPrefix(pathname, AUTH_PREFIXES)) return true
   if (matchesPrefix(pathname, RATE_LIMIT_ONLY_PREFIXES)) return true
+  if (pathname.startsWith('/update-password')) return true
   return false
 }
 

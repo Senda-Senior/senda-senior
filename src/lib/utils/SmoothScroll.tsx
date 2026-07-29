@@ -2,8 +2,11 @@
  * SmoothScroll.tsx
  * Wrapper do Lenis (smooth scroll) com handler de anchor navigation — expõe useLenis hook
  *
- * Conecta: importa lenis/react | importado em root layout
+ * Conecta: importa lenis/react | importado na landing (page.tsx)
  * Camada: browser (use client)
+ *
+ * Aceita `#seção` e `/#seção` (Header pós-vitrines manuais). Só intercepta
+ * quando o destino é a home (`/`) — senão deixa o browser navegar.
  */
 
 'use client'
@@ -11,33 +14,49 @@
 import { ReactLenis, useLenis } from 'lenis/react'
 import type { ReactNode } from 'react'
 import { useEffect } from 'react'
+import { RevealScrollSync } from '@/design/RevealScrollSync'
 
-// Ease-out exponencial: começa rápido, desacelera (subida ao teto)
 const EASE_OUT = (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
-// Ease-in-out senoidal: começa devagar, acelera no meio, pousa suave (descida)
 const EASE_IN_OUT = (t: number) => -(Math.cos(Math.PI * t) - 1) / 2
 
-const DURATION = 2.6
+/** Duração das âncoras — antes 2.6s (sensação de lag). */
+const DURATION = 1.15
 const HEADER_OFFSET = 80
 
 // ALERTA MAPA ID→CONTEÚDO (os nomes confundem): `#por-quem-viveu` = SERVIÇOS (componente
 //    FundadorasStrip, menu "Serviços"); `#sobre` = SOBRE/FUNDADORAS (componente PorQuemViveu,
 //    menu "Sobre"). Os ids batem com o heading de cada seção, não com o nome do componente.
-//
-// Âncora de teto para cada seção: a seção imediatamente acima na ordem da página.
-// Quando uma seção está grudada (stuck) e não conseguimos calcular sua posição
-// via getBoundingClientRect, subimos primeiro até o teto — que está acima e tem
-// posição calculável via offsetTop — depois pousamos graciosamente no destino.
 const CEILING: Record<string, string> = {
   '#por-quem-viveu': '#manifesto-verde',
-  '#metodologia':    '#por-quem-viveu',
-  '#manuais':        '#metodologia',
-  '#sobre':          '#manuais',
-  '#conteudo':       '#sobre',
-  '#contato':        '#conteudo',
+  '#metodologia': '#por-quem-viveu',
+  '#manuais': '#metodologia',
+  '#sobre': '#manuais',
+  '#conteudo': '#sobre',
+  '#contato': '#conteudo',
 }
 
-// Retorna a posição natural do elemento no documento, ignorando sticky/transform
+/**
+ * Normaliza href de âncora da home.
+ * Aceita `#id`, `/#id`, `https://host/#id`. Retorna `#id` ou null.
+ */
+export function resolveHomeHash(
+  href: string,
+  origin = typeof window !== 'undefined' ? window.location.origin : 'https://sendasenior.com.br',
+): string | null {
+  if (!href) return null
+  if (href.startsWith('#') && href.length > 1) return href
+
+  try {
+    const url = new URL(href, origin)
+    if (url.origin !== origin) return null
+    if (url.pathname !== '/' && url.pathname !== '') return null
+    if (!url.hash || url.hash.length < 2) return null
+    return url.hash
+  } catch {
+    return null
+  }
+}
+
 function getDocumentTop(el: HTMLElement): number {
   let top = 0
   let node: HTMLElement | null = el
@@ -48,14 +67,7 @@ function getDocumentTop(el: HTMLElement): number {
   return top
 }
 
-// Posição de flow de uma seção do deck, IMUNE à corrupção do sticky.
-// `offsetTop`/`getBoundingClientRect` de uma seção `position: sticky` grudada
-// reportam a posição PRESA (≈ scroll atual), não a posição real. Como o <main>
-// é o bloco-contêiner, seções sticky ficam grudadas por quase a página inteira.
-// Somar o `offsetHeight` das seções ANTERIORES (alturas são estáveis, sticky só
-// translada, não muda altura) dá a posição de flow correta e estável.
 function getDeckFlowTop(el: HTMLElement): number {
-  // Sobe até o wrapper que é filho direto de <main>
   let wrapper: HTMLElement = el
   while (wrapper.parentElement && wrapper.parentElement.tagName !== 'MAIN') {
     wrapper = wrapper.parentElement
@@ -69,6 +81,54 @@ function getDeckFlowTop(el: HTMLElement): number {
   return top
 }
 
+type LenisInstance = NonNullable<ReturnType<typeof useLenis>>
+
+function scrollToHash(lenis: LenisInstance, hash: string) {
+  const el = document.getElementById(hash.slice(1))
+  if (!el) return
+
+  lenis.start()
+
+  if (hash === '#hero') {
+    lenis.scrollTo(0, { duration: DURATION, easing: EASE_OUT })
+    return
+  }
+
+  if (hash === '#por-quem-viveu') {
+    lenis.scrollTo(getDeckFlowTop(el) - HEADER_OFFSET, {
+      duration: DURATION,
+      easing: EASE_OUT,
+    })
+    return
+  }
+
+  const rect = el.getBoundingClientRect()
+
+  if (rect.top >= 10 || window.scrollY <= 300) {
+    lenis.scrollTo(rect.top + window.scrollY - HEADER_OFFSET, {
+      duration: DURATION,
+      easing: EASE_OUT,
+    })
+    return
+  }
+
+  const ceilingHref = CEILING[hash]
+  const ceilingEl = ceilingHref ? document.getElementById(ceilingHref.slice(1)) : null
+  const ceilingY = ceilingEl ? Math.max(0, getDocumentTop(ceilingEl) - HEADER_OFFSET) : 0
+
+  lenis.scrollTo(ceilingY, {
+    duration: 0.7,
+    easing: EASE_IN_OUT,
+    onComplete: () => {
+      const freshRect = el.getBoundingClientRect()
+      lenis.scrollTo(freshRect.top + window.scrollY - HEADER_OFFSET, {
+        duration: 0.65,
+        easing: EASE_IN_OUT,
+      })
+    },
+  })
+}
+
 function AnchorHandler() {
   const lenis = useLenis()
 
@@ -76,74 +136,47 @@ function AnchorHandler() {
     if (!lenis) return
 
     function handleClick(e: MouseEvent) {
+      if (!lenis) return
       const anchor = (e.target as HTMLElement).closest('a')
       const href = anchor?.getAttribute('href')
-      if (!href?.startsWith('#')) return
+      if (!href) return
 
-      const el = document.getElementById(href.slice(1))
+      const hash = resolveHomeHash(href)
+      if (!hash) return
+
+      // Já estamos na home: intercepta. Fora dela, deixa navegar para `/#…`.
+      if (window.location.pathname !== '/') return
+
+      const el = document.getElementById(hash.slice(1))
       if (!el) return
 
       e.preventDefault()
-      lenis?.start()
-
-      // #hero sempre vai para o topo absoluto
-      if (href === '#hero') {
-        lenis?.scrollTo(0, { duration: DURATION, easing: EASE_OUT })
-        return
+      if (window.location.hash !== hash) {
+        history.pushState(null, '', hash)
       }
-
-      // #por-quem-viveu (FundadorasStrip) é `position: sticky` e, como o <main> é o
-      // bloco-contêiner, fica grudado no topo por quase a página toda (atrás das seções
-      // de z maior). Quando grudado, `offsetTop` e `getBoundingClientRect` reportam a
-      // posição PRESA (≈ scroll atual), não a de flow — então o teto/destino vinham
-      // ≈ "onde você já está" e o scroll "empurrava fraquinho e não subia". getDeckFlowTop
-      // soma a altura das seções anteriores (estável, imune ao sticky) e dá a posição real.
-      if (href === '#por-quem-viveu') {
-        lenis?.scrollTo(getDeckFlowTop(el) - HEADER_OFFSET, {
-          duration: DURATION,
-          easing: EASE_OUT,
-        })
-        return
-      }
-
-      const rect = el.getBoundingClientRect()
-
-      // Elemento em posição natural (não grudado): scroll direto
-      if (rect.top >= 10 || window.scrollY <= 300) {
-        lenis?.scrollTo(rect.top + window.scrollY - HEADER_OFFSET, {
-          duration: DURATION,
-          easing: EASE_OUT,
-        })
-        return
-      }
-
-      // Elemento grudado (sticky) ou acima do viewport.
-      // Sobe até o teto da seção (posição calculável via offsetTop, ignorando
-      // sticky/transform) e pousa graciosamente no destino com o rect já fresco.
-      const ceilingHref = CEILING[href]
-      const ceilingEl = ceilingHref
-        ? document.getElementById(ceilingHref.slice(1))
-        : null
-      const ceilingY = ceilingEl
-        ? Math.max(0, getDocumentTop(ceilingEl) - HEADER_OFFSET)
-        : 0
-
-      lenis?.scrollTo(ceilingY, {
-        duration: 0.85,
-        easing: EASE_IN_OUT,
-        onComplete: () => {
-          // Do teto, o destino está abaixo e visível: getBoundingClientRect é preciso
-          const freshRect = el.getBoundingClientRect()
-          lenis?.scrollTo(freshRect.top + window.scrollY - HEADER_OFFSET, {
-            duration: 0.8,
-            easing: EASE_IN_OUT,
-          })
-        },
-      })
+      scrollToHash(lenis, hash)
     }
 
     document.addEventListener('click', handleClick)
     return () => document.removeEventListener('click', handleClick)
+  }, [lenis])
+
+  // Chegada via `/manuais` → `/#sobre` (ou refresh com hash)
+  useEffect(() => {
+    if (!lenis) return
+    const hash = window.location.hash
+    if (!hash || hash.length < 2) return
+
+    let timeoutId = 0
+    const rafId = requestAnimationFrame(() => {
+      scrollToHash(lenis, hash)
+      timeoutId = window.setTimeout(() => scrollToHash(lenis, hash), 120)
+    })
+
+    return () => {
+      cancelAnimationFrame(rafId)
+      if (timeoutId) window.clearTimeout(timeoutId)
+    }
   }, [lenis])
 
   return null
@@ -151,8 +184,9 @@ function AnchorHandler() {
 
 export function SmoothScroll({ children }: { children: ReactNode }) {
   return (
-    <ReactLenis root options={{ lerp: 0.1, duration: 2.2, wheelMultiplier: 0.85 }}>
+    <ReactLenis root options={{ lerp: 0.12, duration: 1.15, wheelMultiplier: 0.9 }}>
       <AnchorHandler />
+      <RevealScrollSync />
       {children}
     </ReactLenis>
   )

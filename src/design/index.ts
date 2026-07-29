@@ -47,6 +47,7 @@ export type { LabelProps } from './Label'
 
 export { Reveal } from './Reveal'
 export type { RevealProps } from './Reveal'
+export { RevealScrollSync } from './RevealScrollSync'
 
 export { Section } from './Section'
 export type { SectionProps } from './Section'

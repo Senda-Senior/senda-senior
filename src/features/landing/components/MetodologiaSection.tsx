@@ -11,10 +11,14 @@
  */
 'use client'
 
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { CuidadoQuiz } from './CuidadoQuiz'
 import { START_QUIZ_EVENT } from '@/features/landing/data/quiz-cuidado'
+
+const CuidadoQuiz = dynamic(
+  () => import('./CuidadoQuiz').then((m) => m.CuidadoQuiz),
+)
 
 export function MetodologiaSection() {
   return (

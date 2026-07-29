@@ -28,7 +28,7 @@ export function ScrollToTop() {
 
   const handleClick = () => {
     lenis?.scrollTo(0, {
-      duration: 2.6,
+      duration: 1.15,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     })
   }

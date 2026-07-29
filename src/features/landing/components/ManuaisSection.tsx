@@ -254,7 +254,6 @@ export function ManuaisSection() {
                 objectFit: 'cover',
                 objectPosition: isCompact ? 'center center' : 'center right',
               }}
-              priority
             />
           </motion.div>
         </AnimatePresence>

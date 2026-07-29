@@ -4,7 +4,7 @@
  * AppShell.tsx
  * Shell autenticado — sidebar, topbar e menu do usuário (com foto de perfil opcional).
  *
- * Conecta: AppSidebar | signOutAction | pages protegidas
+ * Conecta: AppSidebar | shellHeader | signOutAction | (app)/layout
  * Camada: browser (use client)
  */
 
@@ -13,6 +13,7 @@ import Link from 'next/link'
 import NextImage from 'next/image'
 import { Menu, Settings, LogOut, ChevronDown } from 'lucide-react'
 import { AppSidebar } from './AppSidebar'
+import { ShellHeaderProvider, useShellHeader } from './shellHeader'
 import { signOutAction } from '../actions'
 import { clearAllMockStores } from '@/features/assessoria/mockStore'
 
@@ -21,8 +22,6 @@ interface AppShellProps {
   displayName: string
   avatarUrl?: string | null
   showEquipeNav?: boolean
-  pageTitle: string
-  pageSubtitle?: string
   children: ReactNode
 }
 
@@ -31,11 +30,31 @@ export function AppShell({
   displayName,
   avatarUrl,
   showEquipeNav = false,
-  pageTitle,
-  pageSubtitle,
+  children,
+}: AppShellProps) {
+  return (
+    <ShellHeaderProvider>
+      <AppShellFrame
+        firstName={firstName}
+        displayName={displayName}
+        avatarUrl={avatarUrl}
+        showEquipeNav={showEquipeNav}
+      >
+        {children}
+      </AppShellFrame>
+    </ShellHeaderProvider>
+  )
+}
+
+function AppShellFrame({
+  firstName,
+  displayName,
+  avatarUrl,
+  showEquipeNav = false,
   children,
 }: AppShellProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { title: pageTitle, subtitle: pageSubtitle } = useShellHeader()
 
   return (
     <div className="flex min-h-screen bg-[var(--color-cream)]">
@@ -139,7 +158,6 @@ function UserMenu({
           </div>
           <Link
             href="/configuracoes"
-            prefetch={false}
             onClick={() => setOpen(false)}
             role="menuitem"
             className="flex items-center gap-2.5 rounded-[8px] px-3 py-2.5 font-sans text-[13.5px] font-medium text-[var(--color-ink-sub)] no-underline transition-colors hover:bg-[rgba(42,37,32,0.05)]"

@@ -89,8 +89,7 @@ export function EquipePainelView({ ownerUserId }: { ownerUserId: string }) {
             <Link
               key={cliente.id}
               href={`/equipe/${cliente.id}?como=${assessora.id}`}
-              prefetch={false}
-              className="flex flex-col gap-3 rounded-[16px] border border-[rgba(42,37,32,0.07)] bg-white p-5 no-underline shadow-[0_2px_12px_rgba(42,37,32,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(42,37,32,0.1)] sm:flex-row sm:items-center sm:justify-between sm:p-6"
+              className="flex flex-col gap-3 rounded-[16px] border border-[rgba(42,37,32,0.07)] bg-white p-5 no-underline shadow-[0_2px_12px_rgba(42,37,32,0.04)] transition-[transform,box-shadow] duration-150 hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(42,37,32,0.1)] sm:flex-row sm:items-center sm:justify-between sm:p-6"
             >
               <div className="min-w-0">
                 <div className="mb-1 flex flex-wrap items-center gap-2">

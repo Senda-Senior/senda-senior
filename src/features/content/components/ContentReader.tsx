@@ -91,7 +91,7 @@ export function ContentReader({
             className="mb-10 flex shrink-0 items-center rounded-full bg-[var(--header-surface)] py-1.5 pl-1 pr-4 no-underline shadow-[0_10px_24px_rgba(42,37,32,0.18)]"
           >
             <NextImage
-              src="/brand/logo-white-only-hd-nobg.png"
+              src="/brand/logo-white-only.webp"
               alt=""
               width={56}
               height={56}
@@ -164,7 +164,7 @@ export function ContentReader({
               className="mr-1 flex shrink-0 items-center rounded-full bg-[var(--header-surface)] py-1 pl-0.5 pr-3 no-underline shadow-[0_8px_20px_rgba(42,37,32,0.16)] sm:mr-2 sm:pr-3.5"
             >
               <NextImage
-                src="/brand/logo-white-only-hd-nobg.png"
+                src="/brand/logo-white-only.webp"
                 alt=""
                 width={44}
                 height={44}

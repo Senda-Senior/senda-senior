@@ -2,15 +2,15 @@
  * Reveal.tsx
  * Scroll-reveal com fade + slide (24px de baixo para cima) — detecta viewport via Lenis + getBoundingClientRect
  *
- * Conecta: importa framer-motion, lenis/react | usado em landing pages
+ * Conecta: framer-motion | revealRegistry (via RevealScrollSync no SmoothScroll)
  * Camada: browser (use client)
  */
 
 'use client'
 
 import { motion, useReducedMotion } from 'framer-motion'
-import { useLenis } from 'lenis/react'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { registerRevealCheck } from './revealRegistry'
 
 /**
  * Scroll-reveal padrão da marca: fade + 24px de baixo para cima, 800ms,
@@ -21,19 +21,14 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
  *   <Reveal variant="mount">...</Reveal>    ← anima imediatamente no mount (above-the-fold)
  *
  * Implementação Lenis-aware:
- *   - Project wraps everything in <ReactLenis root> (src/lib/utils/SmoothScroll.tsx).
- *     Lenis usa CSS transform na body para smooth scroll, o que QUEBRA
- *     IntersectionObserver e por consequência useInView/whileInView do
- *     framer-motion. Tentativa anterior (commits 819555e + 408b3c1) deixava
- *     conteúdo abaixo da dobra invisível em scroll real.
- *   - Esta versão hooka direto no scroll do Lenis via useLenis(cb), e usa
- *     getBoundingClientRect (que respeita transform) para decidir quando
- *     animar. Funciona em sticky-deck + Lenis sem pegadinha.
+ *   - Project wraps landing in <ReactLenis root> (SmoothScroll).
+ *     Lenis usa CSS transform na body, o que QUEBRA IntersectionObserver.
+ *   - RevealScrollSync (um por página) chama runRevealChecks no scroll do Lenis;
+ *     cada Reveal registra um check com getBoundingClientRect (transform-aware).
  *
  * Acessibilidade + screenshot determinismo:
  *   - prefers-reduced-motion: reduce → retorna div estático sem animação.
- *   - Playwright config (landing-* projects) usa reducedMotion: 'reduce',
- *     então tests capturam rest state determinístico.
+ *   - Playwright config (landing-* projects) usa reducedMotion: 'reduce'.
  */
 
 export interface RevealProps {
@@ -90,9 +85,6 @@ export function Reveal({
 
   // Initial visibility check on mount: handles above-the-fold inview elements
   // (Hero etc). Without this, they'd wait for first scroll event before animating.
-  // setState inside effect is intentional here — getBoundingClientRect requires
-  // post-layout DOM, can't be derived during render. Guard via inView prevents
-  // re-runs after first transition.
   useEffect(() => {
     if (variant === 'mount' || inView || !ref.current) return
     if (isInViewport(ref.current)) {
@@ -100,14 +92,14 @@ export function Reveal({
     }
   }, [variant, inView])
 
-  // Lenis-driven scroll detection. Lenis transforms body for smooth scroll, which
-  // breaks IntersectionObserver — using lenis.on('scroll') (via useLenis) bypasses
-  // that. Callback fires on every scroll frame; we check rect (transform-aware)
-  // and unsubscribe via inView state guard once triggered.
-  useLenis(() => {
-    if (inView || variant === 'mount' || !ref.current) return
-    if (isInViewport(ref.current)) setInView(true)
-  })
+  // Shared Lenis scroll bus (RevealScrollSync) — same trigger math as before.
+  useEffect(() => {
+    if (inView || variant === 'mount') return
+    return registerRevealCheck(() => {
+      if (!ref.current) return
+      if (isInViewport(ref.current)) setInView(true)
+    })
+  }, [inView, variant])
 
   if (reduce || !canAnimate) {
     return <div className={className}>{children}</div>

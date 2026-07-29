@@ -2,15 +2,14 @@
  * page.tsx
  * Landing page — hero, manifesto, componentes da jornada de cuidado, CTA final com SmoothScroll
  *
- * Conecta: features/landing (Hero, Manifesto, Consultoria, etc.) | SmoothScroll (Lenis)
- * Camada: browser (client components)
+ * Conecta: features/landing | SmoothScroll (Lenis)
+ * Camada: server (RSC) com islands client via dynamic (SSR ligado — mesmo HTML)
  */
 
+import dynamic from 'next/dynamic'
 import {
-  CustomCursor,
   Header,
   Hero,
-  FundadorasStrip,
   Manifesto,
   MetodologiaSection,
   ManuaisSection,
@@ -23,6 +22,14 @@ import {
   ScrollToTop,
 } from '@/features/landing'
 import { SmoothScroll } from '@/lib/utils/SmoothScroll'
+
+/** Code-split pesado; SSR default = true (comportamento visual igual). */
+const CustomCursor = dynamic(() =>
+  import('@/features/landing/components/CustomCursor').then((m) => m.CustomCursor),
+)
+const FundadorasStrip = dynamic(() =>
+  import('@/features/landing/components/FundadorasStrip').then((m) => m.FundadorasStrip),
+)
 
 export default function Home() {
   return (

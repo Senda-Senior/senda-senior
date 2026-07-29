@@ -1,14 +1,14 @@
 /**
  * Manifesto.tsx
- * Seção verde escuro com proposta de valor — lado esquerdo texto com Reveal, direito SVG foto mãe/filha
+ * Seção verde escuro com proposta de valor — texto + foto mãe/filha.
  *
- * Conecta: Reveal de @/design | importa de nenhum data
+ * Conecta: Reveal de @/design
  * Camada: browser
  */
+
 'use client'
 
-/* eslint-disable @next/next/no-img-element */
-
+import Image from 'next/image'
 import Link from 'next/link'
 import { Reveal } from '@/design'
 import { ArrowRight } from 'lucide-react'
@@ -20,16 +20,15 @@ export function Manifesto() {
       style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        background: 'var(--color-green-dark)', // Fundo esticado até a borda esquerda
+        background: 'var(--color-green-dark)',
         overflow: 'hidden',
-        minHeight: 'clamp(600px, 55vw, 1000px)', // Força a seção a crescer proporcionalmente à largura da tela
+        minHeight: 'clamp(600px, 55vw, 1000px)',
       }}
     >
-      {/* Lado Esquerdo: Bloco Verde com Texto (6 colunas) */}
       <div
         style={{
           position: 'relative',
-          padding: 'clamp(64px, 8vw, 120px) clamp(20px, 4vw, 100px)', // Respeitando a margem do grid
+          padding: 'clamp(64px, 8vw, 120px) clamp(20px, 4vw, 100px)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -98,7 +97,7 @@ export function Manifesto() {
                 background: 'var(--color-terracotta)',
                 color: 'white',
                 padding: '16px 32px',
-                borderRadius: 40, // Pill shape
+                borderRadius: 40,
                 fontSize: 16,
                 fontWeight: 600,
                 textDecoration: 'none',
@@ -111,26 +110,20 @@ export function Manifesto() {
         </div>
       </div>
 
-      {/* Lado Direito: Foto Mãe e Filha (6 colunas) */}
       <div
         style={{
           position: 'relative',
           minHeight: '100%',
-          boxShadow: 'var(--shadow-inset-separator)', // Sombra para separar o verde da foto
+          boxShadow: 'var(--shadow-inset-separator)',
         }}
       >
-        {/* Usando <img> direto — Next.js não otimiza SVG, fill replicado via position absolute */}
-        <img
-          src="/brand/photos/mae_filha.svg"
+        <Image
+          src="/brand/photos/mae_filha.webp"
           alt="Mãe e filha sorrindo"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            objectPosition: 'center 20%',
-          }}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover"
+          style={{ objectPosition: 'center 20%' }}
         />
       </div>
     </section>

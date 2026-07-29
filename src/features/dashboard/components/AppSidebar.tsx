@@ -59,7 +59,7 @@ function SidebarContent({
       <div className="flex items-center justify-between px-4 py-5">
         <Link href="/" className="flex items-center no-underline" onClick={onClose}>
           <NextImage
-            src="/brand/logo-white-only-hd-nobg.png"
+            src="/brand/logo-white-only.webp"
             alt=""
             width={72}
             height={72}
@@ -93,10 +93,9 @@ function SidebarContent({
             <Link
               key={href}
               href={href}
-              prefetch={false}
               onClick={onClose}
               className={[
-                'flex items-center gap-3 rounded-[10px] px-3 py-2.5 font-sans text-[13.5px] font-medium no-underline transition-all duration-200',
+                'flex items-center gap-3 rounded-[10px] px-3 py-2.5 font-sans text-[13.5px] font-medium no-underline transition-colors duration-150',
                 active
                   ? 'border-l-2 border-[var(--color-cream-60)] bg-[rgba(233,226,210,0.13)] pl-[10px] text-[var(--color-cream)]'
                   : 'text-[var(--color-cream-70)] hover:bg-[rgba(233,226,210,0.07)] hover:text-[var(--color-cream-85)]',

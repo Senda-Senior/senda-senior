@@ -1,6 +1,6 @@
 /**
  * SplashScreen.tsx
- * Tela de splash inicial — logo + wordmark com fade/scale, 2.2s de duração, sessionStorage check
+ * Tela de splash inicial — logo + wordmark com fade/scale (~1.4s), sessionStorage check
  *
  * Conecta: nenhum | gerencia estado de exibição com useEffect
  * Camada: browser
@@ -38,7 +38,7 @@ export function SplashScreen() {
       setIsVisible(false)
       document.body.style.overflow = ''
       sessionStorage.setItem('splash-shown', '1')
-    }, 2200)
+    }, 1400)
 
     return () => {
       clearTimeout(timer)
@@ -54,18 +54,18 @@ export function SplashScreen() {
           key="splash-screen"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, filter: 'blur(10px)' }}
-          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }} // var(--ease-senda)
+          transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[var(--color-sage-dark)]"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+            transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
             className="flex w-full max-w-[min(100vw,655px)] flex-col items-center justify-center px-4"
           >
-            {/* Símbolo (−5% vs tamanho anterior) */}
+            {/* Preferir asset leve — white-logo.png é ~458KB */}
             <NextImage
-              src="/white-logo.png"
+              src="/brand/logo-white-only.webp"
               alt="Símbolo Senda Sênior"
               width={98}
               height={98}

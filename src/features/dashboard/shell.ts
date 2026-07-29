@@ -7,6 +7,7 @@
  */
 
 import 'server-only'
+import { cache } from 'react'
 import type { User } from '@supabase/supabase-js'
 import { requireUser, getProfile } from '@/lib/server'
 import { canAccessAssessoria } from '@/features/assessoria/access'
@@ -20,8 +21,9 @@ export type AppShellUser = {
   user: User
 }
 
-export async function getAppShellUser(existing?: User): Promise<AppShellUser> {
-  const user = existing ?? (await requireUser())
+/** Dedup por request — layout + page compartilham o mesmo resultado. */
+export const getAppShellUser = cache(async (): Promise<AppShellUser> => {
+  const user = await requireUser()
   const profile = await getProfile(user)
 
   const displayName = profile.displayName ?? user.email?.split('@')[0] ?? 'Usuário'
@@ -35,4 +37,4 @@ export async function getAppShellUser(existing?: User): Promise<AppShellUser> {
     email: user.email ?? '',
     user,
   }
-}
+})

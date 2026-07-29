@@ -67,7 +67,7 @@ export function Header() {
             className="flex shrink-0 items-center leading-none no-underline"
           >
             <NextImage
-              src="/brand/logo-white-only-hd-nobg.png"
+              src="/brand/logo-white-only.webp"
               alt=""
               width={96}
               height={96}

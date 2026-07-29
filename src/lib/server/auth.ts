@@ -7,6 +7,7 @@
  */
 
 import 'server-only'
+import { cache } from 'react'
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import type { User } from '@supabase/supabase-js'
@@ -30,13 +31,13 @@ import { createClient as createServerClient } from '@/lib/supabase/server'
  * ───────────────────────────────────────────────────────────────────
  */
 
-export async function getUser(): Promise<User | null> {
+export const getUser = cache(async (): Promise<User | null> => {
   const supabase = await createServerClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
   return user
-}
+})
 
 export async function requireUser(): Promise<User> {
   const user = await getUser()
