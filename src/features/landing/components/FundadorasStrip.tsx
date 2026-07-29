@@ -14,7 +14,6 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { useLenis } from 'lenis/react'
 import NextImage from 'next/image'
 import Link from 'next/link'
@@ -33,13 +32,6 @@ const ICONS = {
   users: Users,
 } as const
 
-const SENDA_EASE = [0.25, 0.46, 0.45, 0.94] as const
-const MOBILE_CARD_TRANSITION = {
-  type: 'spring',
-  stiffness: 260,
-  damping: 32,
-  mass: 0.9,
-} as const
 const MOBILE_CARD_RADIUS = 'var(--radius-lg)'
 
 function ExpandedManuais({ onClose, isMobile }: { onClose: () => void; isMobile?: boolean }) {
@@ -49,13 +41,7 @@ function ExpandedManuais({ onClose, isMobile }: { onClose: () => void; isMobile?
     { num: '03', fase: 'Fase 3', titulo: 'Immediate Care', desc: 'Supervisão constante. Decisões urgentes com clareza.', bg: 'var(--color-terracotta)', numColor: 'rgba(255,255,255,0.25)', titleColor: 'white', descColor: 'rgba(255,255,255,0.7)' },
   ]
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, transition: { duration: 0.1 } }}
-      transition={{ delay: 0.2 }}
-      className="flex flex-col h-full w-full pt-4 px-2"
-    >
+    <div className="flex h-full w-full flex-col px-2 pt-4">
       {!isMobile && (
         <div className="flex justify-between items-start w-full mb-8">
           <button onClick={onClose} className="flex items-center gap-2 border-2 border-[var(--color-terracotta)] text-[var(--color-terracotta)] hover:bg-[var(--color-terracotta)] hover:text-white transition-colors px-5 py-2.5 rounded-full font-sans text-sm font-bold">
@@ -93,7 +79,7 @@ function ExpandedManuais({ onClose, isMobile }: { onClose: () => void; isMobile?
           ))}
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
@@ -104,13 +90,7 @@ function ExpandedAssessoria({ onClose, isMobile }: { onClose: () => void; isMobi
     { num: '03', icon: <CalendarCheck size={18} strokeWidth={1.8} />, titulo: 'Acompanhamento', desc: 'Presença contínua nos momentos que mais importam.' },
   ]
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, transition: { duration: 0.1 } }}
-      transition={{ delay: 0.2 }}
-      className="flex flex-col h-full w-full pt-4 px-2"
-    >
+    <div className="flex h-full w-full flex-col px-2 pt-4">
       {!isMobile && (
         <div className="flex justify-between items-start w-full mb-8">
           <button onClick={onClose} className="flex items-center gap-2 border-2 border-[var(--color-terracotta)] text-[var(--color-terracotta)] hover:bg-[var(--color-terracotta)] hover:text-white transition-colors px-5 py-2.5 rounded-full font-sans text-sm font-bold">
@@ -150,7 +130,7 @@ function ExpandedAssessoria({ onClose, isMobile }: { onClose: () => void; isMobi
           ))}
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
@@ -162,13 +142,7 @@ function ExpandedRepositorio({ onClose, isMobile }: { onClose: () => void; isMob
     { icon: <CalendarCheck size={16} strokeWidth={1.8} />, label: 'Histórico de cuidadores e rotinas' },
   ]
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, transition: { duration: 0.1 } }}
-      transition={{ delay: 0.2 }}
-      className="flex flex-col h-full w-full pt-4 px-2"
-    >
+    <div className="flex h-full w-full flex-col px-2 pt-4">
       {!isMobile && (
         <div className="flex justify-between items-start w-full mb-8">
           <button onClick={onClose} className="flex items-center gap-2 border-2 border-[var(--color-terracotta)] text-[var(--color-terracotta)] hover:bg-[var(--color-terracotta)] hover:text-white transition-colors px-5 py-2.5 rounded-full font-sans text-sm font-bold">
@@ -211,7 +185,7 @@ function ExpandedRepositorio({ onClose, isMobile }: { onClose: () => void; isMob
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
@@ -231,13 +205,7 @@ function ExpandedParceiros({ onClose, isMobile }: { onClose: () => void, isMobil
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, transition: { duration: 0.1 } }}
-      transition={{ delay: 0.2 }}
-      className="flex flex-col h-full w-full pt-4 px-2"
-    >
+    <div className="flex h-full w-full flex-col px-2 pt-4">
       {/* Top Header */}
       {!isMobile && (
         <div className="flex justify-between items-start w-full mb-8">
@@ -270,17 +238,11 @@ function ExpandedParceiros({ onClose, isMobile }: { onClose: () => void, isMobil
               <span className="font-sans text-[15px] font-semibold text-[var(--color-ink)]">
                 {selectedSpecialty}
               </span>
-              <ChevronDown size={18} className={`text-[var(--color-terracotta)] transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown size={18} className={`text-[var(--color-terracotta)] transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
             </div>
             
-            <AnimatePresence>
-              {isDropdownOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="absolute top-[calc(100%+8px)] left-0 w-full bg-white rounded-[20px] shadow-xl border border-[rgba(42,37,32,0.08)] overflow-hidden"
-                >
+            {isDropdownOpen && (
+              <div className="absolute top-[calc(100%+8px)] left-0 w-full bg-white rounded-[20px] shadow-xl border border-[rgba(42,37,32,0.08)] overflow-hidden">
                   <div className="max-h-60 overflow-y-auto py-2">
                     {specialties.map(s => (
                       <div
@@ -299,9 +261,8 @@ function ExpandedParceiros({ onClose, isMobile }: { onClose: () => void, isMobil
                       </div>
                     ))}
                   </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+              </div>
+            )}
           </div>
 
           <div className="inline-flex px-3 py-1 rounded-full border border-[var(--color-terracotta-light)] text-[var(--color-terracotta)] text-[10px] font-bold tracking-widest uppercase mb-6 w-max">
@@ -337,32 +298,25 @@ function ExpandedParceiros({ onClose, isMobile }: { onClose: () => void, isMobil
           />
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
 export function FundadorasStrip() {
   const [activeCard, setActiveCard] = useState<string | null>(null)
   const isMobile = useMediaQuery(MOBILE_PRODUCT_QUERY)
-  const reduceMotion = useReducedMotion() ?? false
   const overlayRef = useRef<HTMLDivElement>(null)
   const lenisStopped = useRef(false)
   const lenis = useLenis()
 
-  // Resolve o salto de rolagem: rola suavemente para o deck quando um card é ativado no mobile
   useEffect(() => {
-    if (isMobile && activeCard && !reduceMotion) {
-      const timeout = window.setTimeout(() => {
-        const el = document.getElementById(`accordion-card-${activeCard}`)
-        if (el) {
-          const y = el.getBoundingClientRect().top + window.scrollY - 100 // 100px de respiro pro header
-          window.scrollTo({ top: y, behavior: 'smooth' })
-        }
-      }, 280) // Depois da abertura inicial, evita brigar com o layout spring.
-
-      return () => window.clearTimeout(timeout)
+    if (isMobile && activeCard) {
+      const el = document.getElementById(`accordion-card-${activeCard}`)
+      if (!el) return
+      const y = el.getBoundingClientRect().top + window.scrollY - 100
+      window.scrollTo({ top: y, behavior: 'auto' })
     }
-  }, [activeCard, isMobile, reduceMotion])
+  }, [activeCard, isMobile])
 
   useEffect(() => {
     if (isMobile === false && activeCard) {
@@ -548,27 +502,21 @@ export function FundadorasStrip() {
                 const Icon = ICONS[card.icon]
 
                 return (
-                  <motion.button
+                  <button
                     key={card.icon}
+                    type="button"
                     onClick={() => setActiveCard(card.icon)}
-                    className="flex h-full min-h-[214px] w-full flex-col gap-[18px] overflow-hidden rounded-[18px] py-[30px] pl-[clamp(22px,2vw,28px)] pr-[clamp(22px,2vw,28px)] text-left outline-none hover:z-10 hover:scale-[1.015] focus-visible:ring-2 focus-visible:ring-[var(--color-terracotta)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-cream)]"
+                    className="flex h-full min-h-[214px] w-full flex-col gap-[18px] overflow-hidden rounded-[18px] py-[30px] pl-[clamp(22px,2vw,28px)] pr-[clamp(22px,2vw,28px)] text-left outline-none transition-transform duration-150 hover:z-10 hover:scale-[1.01] focus-visible:ring-2 focus-visible:ring-[var(--color-terracotta)]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-cream)]"
                     style={{
                       background: card.bg,
                       boxShadow: '0 18px 42px rgba(42, 37, 32, 0.08)',
                     }}
                   >
-                    <motion.div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        color: 'var(--color-ink)',
-                      }}
-                    >
+                    <div style={{ display: 'flex', alignItems: 'center', color: 'var(--color-ink)' }}>
                       <Icon size={42} strokeWidth={1.3} aria-hidden />
-                    </motion.div>
-
-                    <motion.div>
-                      <motion.h3
+                    </div>
+                    <div>
+                      <h3
                         style={{
                           fontFamily: 'var(--font-sans)',
                           fontSize: 18,
@@ -580,8 +528,8 @@ export function FundadorasStrip() {
                         }}
                       >
                         {card.title}
-                      </motion.h3>
-                      <motion.p
+                      </h3>
+                      <p
                         style={{
                           fontFamily: 'var(--font-sans)',
                           fontSize: 14.95,
@@ -591,9 +539,9 @@ export function FundadorasStrip() {
                         }}
                       >
                         {card.desc}
-                      </motion.p>
-                    </motion.div>
-                  </motion.button>
+                      </p>
+                    </div>
+                  </button>
                 )
               })}
             </div>
@@ -608,10 +556,9 @@ export function FundadorasStrip() {
                   const isActive = activeCard === card.icon
 
                   return (
-                    <motion.div
+                    <div
                       id={`accordion-card-${card.icon}`}
                       key={card.icon}
-                      layout="position"
                       role={!isActive ? 'button' : undefined}
                       tabIndex={!isActive ? 0 : undefined}
                       aria-expanded={isActive}
@@ -625,7 +572,7 @@ export function FundadorasStrip() {
                           setActiveCard(card.icon)
                         }
                       }}
-                      className={`w-full flex flex-col overflow-hidden shrink-0 border border-[rgba(42,37,32,0.04)] will-change-transform transition-[background-color,border-color,box-shadow,opacity] duration-300 ease-out ${!isActive ? 'cursor-pointer hover:opacity-90' : ''}`}
+                      className={`w-full flex flex-col overflow-hidden shrink-0 border border-[rgba(42,37,32,0.04)] transition-[background-color,border-color,box-shadow,opacity,margin] duration-150 ease-out ${!isActive ? 'cursor-pointer hover:opacity-90' : ''}`}
                       style={{
                         background: isActive ? 'white' : card.bg,
                         borderRadius: MOBILE_CARD_RADIUS,
@@ -634,29 +581,20 @@ export function FundadorasStrip() {
                         zIndex: isActive ? CARDS.length + 1 : CARDS.length - i,
                         boxShadow: '0 -4px 16px rgba(0,0,0,0.06)'
                       }}
-                      transition={reduceMotion ? { duration: 0 } : MOBILE_CARD_TRANSITION}
                     >
                         {/* Card Header (Visible in deck) */}
-                        <motion.div
-                          className="flex h-[72px] shrink-0 items-center justify-between px-6"
-                          animate={{ backgroundColor: isActive ? 'var(--color-terracotta)' : 'rgba(0, 0, 0, 0)' }}
-                          transition={reduceMotion ? { duration: 0 } : { duration: 0.24, ease: SENDA_EASE }}
+                        <div
+                          className="flex h-[72px] shrink-0 items-center justify-between px-6 transition-colors duration-150"
+                          style={{
+                            backgroundColor: isActive ? 'var(--color-terracotta)' : 'transparent',
+                            color: isActive ? '#fff' : 'var(--color-ink)',
+                          }}
                         >
                           <div className="flex items-center gap-4">
-                            <motion.div
-                              animate={{ color: isActive ? '#fff' : 'var(--color-ink)' }}
-                              transition={reduceMotion ? { duration: 0 } : { duration: 0.22, ease: SENDA_EASE }}
-                            >
-                              <Icon size={24} strokeWidth={2} />
-                            </motion.div>
-                            <motion.h3 
-                              className="font-sans text-[16px] font-bold"
-                              animate={{ color: isActive ? '#fff' : 'var(--color-ink)' }}
-                              transition={reduceMotion ? { duration: 0 } : { duration: 0.22, ease: SENDA_EASE }}
-                              style={{ margin: 0 }}
-                            >
+                            <Icon size={24} strokeWidth={2} />
+                            <h3 className="m-0 font-sans text-[16px] font-bold">
                               {card.title}
-                            </motion.h3>
+                            </h3>
                           </div>
                           {isActive && (
                             <button
@@ -667,30 +605,17 @@ export function FundadorasStrip() {
                               <ArrowLeft size={20} strokeWidth={2.5} />
                             </button>
                           )}
-                        </motion.div>
+                        </div>
 
-                        {/* Active Content */}
-                        <AnimatePresence>
-                          {isActive && (
-                            <motion.div
-                              initial={reduceMotion ? false : { height: 0, opacity: 0, y: -8 }}
-                              animate={{ height: 'auto', opacity: 1, y: 0 }}
-                              exit={reduceMotion ? { opacity: 0 } : { height: 0, opacity: 0, y: -6 }}
-                              transition={
-                                reduceMotion
-                                  ? { duration: 0 }
-                                  : { height: { duration: 0.32, ease: SENDA_EASE }, opacity: { duration: 0.24, ease: SENDA_EASE }, y: { duration: 0.28, ease: SENDA_EASE } }
-                              }
-                              className="flex flex-col overflow-hidden px-5 pb-8 pt-5"
-                            >
+                        {isActive && (
+                          <div className="flex flex-col overflow-hidden px-5 pb-8 pt-5">
                               {activeCard === 'users' && <ExpandedParceiros onClose={() => setActiveCard(null)} isMobile />}
                               {activeCard === 'book-open' && <ExpandedManuais onClose={() => setActiveCard(null)} isMobile />}
                               {activeCard === 'heart-handshake' && <ExpandedAssessoria onClose={() => setActiveCard(null)} isMobile />}
                               {activeCard === 'files' && <ExpandedRepositorio onClose={() => setActiveCard(null)} isMobile />}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                    </motion.div>
+                          </div>
+                        )}
+                    </div>
                   )
                 })}
               </div>
@@ -699,18 +624,14 @@ export function FundadorasStrip() {
         </div>
       </div>
 
-      {/* Overlay com Fundo Desfocado para o Modo Expandido (Apenas Desktop) */}
-      <AnimatePresence>
-        {isMobile === false && activeCard && (
-          <motion.div
+      {/* Overlay expandido (desktop) — sem blur full-screen */}
+      {isMobile === false && activeCard && (
+          <div
             ref={overlayRef}
             role="dialog"
             aria-modal="true"
             aria-label="Detalhes do produto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, pointerEvents: 'auto' }}
-            exit={{ opacity: 0, pointerEvents: 'none' }}
-            className="fixed inset-0 z-[100] bg-[rgba(242,239,233,0.7)] backdrop-blur-md flex flex-col items-center justify-center p-12 overflow-hidden"
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden bg-[rgba(242,239,233,0.92)] p-12"
             onClick={() => setActiveCard(null)}
           >
             {/* Desktop View (Sidebar + Content) */}
@@ -722,37 +643,32 @@ export function FundadorasStrip() {
                   const isActive = activeCard === card.icon
 
                   return (
-                    <motion.button
+                    <button
                       key={card.icon}
+                      type="button"
                       onClick={() => setActiveCard(card.icon)}
-                      className="flex flex-col items-center justify-center gap-3 overflow-hidden rounded-[20px] py-8 px-4 text-center outline-none hover:scale-[1.02]"
+                      className="flex flex-col items-center justify-center gap-3 overflow-hidden rounded-[20px] px-4 py-8 text-center outline-none transition-transform duration-150 hover:scale-[1.01]"
                       style={{
                         background: isActive ? 'var(--color-terracotta)' : card.bg,
                         boxShadow: isActive ? '0 12px 32px rgba(42, 37, 32, 0.12)' : 'none',
                       }}
                     >
-                      <motion.div
+                      <div style={{ color: isActive ? 'white' : 'var(--color-ink)' }}>
+                        <Icon size={32} strokeWidth={1.5} aria-hidden />
+                      </div>
+                      <h3
                         style={{
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: 15,
+                          fontWeight: 700,
                           color: isActive ? 'white' : 'var(--color-ink)',
+                          lineHeight: 1.2,
+                          margin: 0,
                         }}
                       >
-                        <Icon size={32} strokeWidth={1.5} aria-hidden />
-                      </motion.div>
-
-                      <motion.div>
-                        <motion.h3
-                          style={{
-                            fontFamily: 'var(--font-sans)',
-                            fontSize: 15,
-                            fontWeight: 700,
-                            color: isActive ? 'white' : 'var(--color-ink)',
-                            lineHeight: 1.2,
-                          }}
-                        >
-                          {card.title}
-                        </motion.h3>
-                      </motion.div>
-                    </motion.button>
+                        {card.title}
+                      </h3>
+                    </button>
                   )
                 })}
               </div>
@@ -765,9 +681,8 @@ export function FundadorasStrip() {
                 {activeCard === 'files' && <ExpandedRepositorio onClose={() => setActiveCard(null)} />}
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+      )}
     </section>
   )
 }

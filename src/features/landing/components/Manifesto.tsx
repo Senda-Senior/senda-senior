@@ -123,7 +123,7 @@ export function Manifesto() {
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
           className="object-cover"
-          style={{ objectPosition: 'center 20%' }}
+          style={{ objectPosition: '62% 22%' }}
         />
       </div>
     </section>

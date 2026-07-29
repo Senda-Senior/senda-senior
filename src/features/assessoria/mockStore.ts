@@ -2,16 +2,19 @@
  * mockStore.ts
  * Store local do preview — sincroniza solicitações entre visão assessora e cliente.
  *
- * Persistência: localStorage keyed por userId (evita herança entre contas no mesmo browser).
+ * Persistência: localStorage keyed por userId.
+ * Seed vazio — nunca inventa pedidos das donas para contas novas.
+ *
  * Conecta: useMockSolicitacoes | views de assessoria/dashboard | logout
  * Camada: browser
  */
 
 import { CLIENTES, type Solicitacao, type SolicitacaoStatus } from './mock'
 
-const STORAGE_PREFIX = 'senda:mock-solicitacoes:v2:'
+/** Bump de versão limpa seeds antigos com pedidos inventados. */
+const STORAGE_PREFIX = 'senda:mock-solicitacoes:v3:'
 
-/** No preview, a conta logada “é” o cliente Daniel. */
+/** No preview da visão assessora, a conta logada “é” o cliente Daniel. */
 export const PREVIEW_CLIENTE_ID = 'daniel'
 
 type StoreMap = Record<string, Solicitacao[]>
@@ -24,27 +27,28 @@ function storageKey(ownerUserId: string): string {
   return `${STORAGE_PREFIX}${ownerUserId}`
 }
 
-function seed(): StoreMap {
-  return Object.fromEntries(CLIENTES.map((c) => [c.id, structuredClone(c.solicitacoes)]))
+/** Store vazio — solicitações só existem se alguém criar de verdade. */
+function emptySeed(): StoreMap {
+  return Object.fromEntries(CLIENTES.map((c) => [c.id, [] as Solicitacao[]]))
 }
 
 function readStore(ownerUserId: string): StoreMap {
-  if (typeof window === 'undefined' || !ownerUserId) return seed()
+  if (typeof window === 'undefined' || !ownerUserId) return emptySeed()
   try {
     const raw = window.localStorage.getItem(storageKey(ownerUserId))
     if (!raw) {
-      const initial = seed()
+      const initial = emptySeed()
       writeStore(ownerUserId, initial)
       return initial
     }
     const parsed = JSON.parse(raw) as StoreMap
-    const base = seed()
+    const base = emptySeed()
     for (const id of Object.keys(base)) {
-      if (!parsed[id]) parsed[id] = base[id]
+      if (!parsed[id]) parsed[id] = []
     }
     return parsed
   } catch {
-    return seed()
+    return emptySeed()
   }
 }
 
@@ -139,7 +143,8 @@ export function clearAllMockStores(): void {
     const key = window.localStorage.key(i)
     if (
       key &&
-      (key.startsWith(STORAGE_PREFIX) || key.startsWith('senda:mock-solicitacoes:v1'))
+      (key.startsWith('senda:mock-solicitacoes:') ||
+        key.startsWith(STORAGE_PREFIX))
     ) {
       toRemove.push(key)
     }

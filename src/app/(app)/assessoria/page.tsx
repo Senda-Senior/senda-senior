@@ -16,5 +16,5 @@ export const metadata = {
 export default async function AssessoriaPage() {
   const shell = await getAppShellUser()
 
-  return <AssessoriaView showEquipeLink={shell.showEquipeNav} />
+  return <AssessoriaView showEquipeLink={shell.showEquipeNav} ownerUserId={shell.user.id} />
 }

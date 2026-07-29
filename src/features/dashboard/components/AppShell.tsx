@@ -9,9 +9,8 @@
  */
 
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import Link from 'next/link'
 import NextImage from 'next/image'
-import { Menu, Settings, LogOut, ChevronDown } from 'lucide-react'
+import { Menu, LogOut, ChevronDown } from 'lucide-react'
 import { AppSidebar } from './AppSidebar'
 import { ShellHeaderProvider, useShellHeader } from './shellHeader'
 import { signOutAction } from '../actions'
@@ -156,15 +155,6 @@ function UserMenu({
               {displayName}
             </p>
           </div>
-          <Link
-            href="/configuracoes"
-            onClick={() => setOpen(false)}
-            role="menuitem"
-            className="flex items-center gap-2.5 rounded-[8px] px-3 py-2.5 font-sans text-[13.5px] font-medium text-[var(--color-ink-sub)] no-underline transition-colors hover:bg-[rgba(42,37,32,0.05)]"
-          >
-            <Settings size={15} strokeWidth={1.8} />
-            Configurações
-          </Link>
           <button
             onClick={handleLogout}
             disabled={loggingOut}

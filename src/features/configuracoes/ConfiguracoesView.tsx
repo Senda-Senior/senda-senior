@@ -357,7 +357,7 @@ function SessionSection() {
   )
 }
 
-/* ─── Zona de perigo (excluir conta) ───────────────────────────── */
+/* ─── Cuidado (excluir conta) ──────────────────────────────────── */
 
 function DangerZoneSection() {
   const [confirmText, setConfirmText] = useState('')
@@ -386,7 +386,7 @@ function DangerZoneSection() {
         </div>
         <div className="min-w-0">
           <p className="font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-[#B91C1C]">
-            Zona de perigo
+            Cuidado
           </p>
           <h2 className="font-serif text-[18px] font-semibold leading-[1.2] text-[var(--color-ink)]">
             Excluir conta

@@ -138,7 +138,7 @@ function PremiumField({
 
   return (
     <label htmlFor={id} className="block">
-      <span className="block text-sm font-bold text-[#2b2520]" style={{ marginBottom: '12px' }}>
+      <span className="block text-sm font-bold text-[#2b2520]" style={{ marginBottom: '6px' }}>
         {label}
       </span>
       <input
@@ -493,7 +493,7 @@ export default function Login() {
             </div>
 
             <div className="mx-auto w-full max-w-[320px] self-center">
-              <div className="flex items-center justify-center gap-10" style={{ marginTop: '-1px', marginBottom: '20px' }}>
+              <div className="flex items-center justify-center gap-8" style={{ marginTop: '-1px', marginBottom: '14px' }}>
                 <AuthTab active={mode === 'login'} onClick={() => switchMode('login')}>
                   Entrar
                 </AuthTab>
@@ -505,7 +505,7 @@ export default function Login() {
                 </AuthTab>
               </div>
 
-              <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
+              <form onSubmit={handleSubmit} className="flex flex-col gap-3.5" noValidate>
                 {isRegister ? (
                   <div style={{ display: 'flex', gap: 12 }}>
                     <PremiumField
@@ -705,13 +705,13 @@ export default function Login() {
 
               {!isReset ? (
                 <>
-                  <div className="my-10 flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-[#8f8375]">
+                  <div className="my-5 flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-[#8f8375]">
                     <span className="h-[1px] flex-1 bg-[#d2c9bc]" />
                     <span>ou</span>
                     <span className="h-[1px] flex-1 bg-[#d2c9bc]" />
                   </div>
 
-                  <div className="flex flex-col gap-6">
+                  <div className="flex flex-col gap-3">
                     <SocialButton
                       provider="google"
                       mode={mode}
@@ -722,7 +722,7 @@ export default function Login() {
                 </>
               ) : null}
 
-              <p className="text-center text-xs leading-relaxed text-[#7f7468]" style={{ marginTop: '30px' }}>
+              <p className="text-center text-xs leading-relaxed text-[#7f7468]" style={{ marginTop: '16px' }}>
                 Ao prosseguir, você estará concordando com os
                 <br />
                 <span className="font-bold text-[#2a2420]">

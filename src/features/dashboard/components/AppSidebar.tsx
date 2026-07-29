@@ -142,7 +142,7 @@ export function AppSidebar({ open, onClose, showEquipeNav = false }: AppSidebarP
       {/* Sidebar — fixed on mobile (drawer), sticky on desktop */}
       <aside
         className={[
-          'fixed left-0 top-0 z-50 h-full w-[240px] transition-transform duration-300 ease-[var(--ease-senda)]',
+          'fixed left-0 top-0 z-50 h-full w-[240px] transition-transform duration-150 ease-[var(--ease-senda)]',
           'lg:sticky lg:top-0 lg:h-screen lg:flex-shrink-0 lg:translate-x-0',
           open ? 'translate-x-0' : '-translate-x-full',
         ].join(' ')}

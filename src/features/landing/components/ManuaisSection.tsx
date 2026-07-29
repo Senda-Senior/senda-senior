@@ -252,7 +252,7 @@ export function ManuaisSection() {
               sizes="(max-width: 980px) 100vw, 1200px"
               style={{
                 objectFit: 'cover',
-                objectPosition: isCompact ? 'center center' : 'center right',
+                objectPosition: isCompact ? 'center center' : '28% center',
               }}
             />
           </motion.div>
