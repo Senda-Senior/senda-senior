@@ -8,24 +8,30 @@
 
 'use client'
 
-import { useMemo, useState, useTransition, type ReactNode } from 'react'
-import { User as UserIcon, Mail, KeyRound, LogOut, Check, AlertTriangle } from 'lucide-react'
+import { useMemo, useState, useTransition, type ChangeEvent, type ReactNode } from 'react'
+import { User as UserIcon, Mail, KeyRound, LogOut, Check, AlertTriangle, Camera } from 'lucide-react'
 import { Button, Field } from '@/design'
 import { createClient as createBrowserClient } from '@/lib/supabase/client'
 import { STRONG_PASSWORD_MIN_LENGTH, updatePasswordSchema } from '@/features/auth/schemas'
 import { signOutAction } from '@/features/dashboard/actions'
-import { deleteAccountAction, updateProfileNameAction } from './actions'
+import { Avatar } from '@/features/dashboard/components/AppShell'
+import { deleteAccountAction, updateProfileAvatarAction, updateProfileNameAction } from './actions'
 import { DELETE_ACCOUNT_CONFIRMATION } from './constants'
 
 interface Props {
   initialDisplayName: string
+  initialAvatarUrl: string | null
   email: string
 }
 
-export function ConfiguracoesView({ initialDisplayName, email }: Props) {
+export function ConfiguracoesView({ initialDisplayName, initialAvatarUrl, email }: Props) {
   return (
     <div className="px-5 py-8 lg:px-8 lg:py-10">
       <div className="mx-auto max-w-[680px] space-y-5">
+        <AvatarSection
+          firstName={initialDisplayName.split(' ')[0] || 'U'}
+          initialAvatarUrl={initialAvatarUrl}
+        />
         <NameSection initialDisplayName={initialDisplayName} />
         <EmailSection currentEmail={email} />
         <PasswordSection />
@@ -33,6 +39,66 @@ export function ConfiguracoesView({ initialDisplayName, email }: Props) {
         <DangerZoneSection />
       </div>
     </div>
+  )
+}
+
+/* ─── Foto ─────────────────────────────────────────────────────── */
+
+function AvatarSection({
+  firstName,
+  initialAvatarUrl,
+}: {
+  firstName: string
+  initialAvatarUrl: string | null
+}) {
+  const [avatarUrl, setAvatarUrl] = useState(initialAvatarUrl)
+  const [feedback, setFeedback] = useState<Feedback>(null)
+  const [isPending, startTransition] = useTransition()
+
+  function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+
+    setFeedback(null)
+    const formData = new FormData()
+    formData.set('file', file)
+
+    startTransition(async () => {
+      const result = await updateProfileAvatarAction(formData)
+      if (result.ok) {
+        setAvatarUrl(result.avatarUrl)
+        setFeedback({ type: 'success', text: 'Foto atualizada.' })
+      } else {
+        setFeedback({ type: 'error', text: result.error })
+      }
+    })
+  }
+
+  return (
+    <SettingsCard
+      icon={<Camera size={18} strokeWidth={1.7} />}
+      eyebrow="Perfil"
+      title="Foto"
+      description="Aparece no painel e para a assessoria. JPEG, PNG ou WebP até 2 MB."
+    >
+      <div className="flex items-center gap-4">
+        <Avatar firstName={firstName} avatarUrl={avatarUrl} size="lg" />
+        <div className="min-w-0 flex-1">
+          <label className="inline-flex cursor-pointer items-center justify-center rounded-[10px] bg-[var(--color-green)] px-4 py-2.5 font-sans text-[13px] font-semibold text-white transition-opacity hover:opacity-90 has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-50">
+            {isPending ? 'Enviando...' : 'Escolher foto'}
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              className="sr-only"
+              disabled={isPending}
+              onChange={handleFileChange}
+            />
+          </label>
+        </div>
+      </div>
+      <FeedbackLine feedback={feedback} />
+    </SettingsCard>
   )
 }
 

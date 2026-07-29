@@ -1,28 +1,13 @@
 /**
  * manual/[slug]/page.tsx
- * Leitor de capítulo do manual — rota dinâmica com generateStaticParams (ISR-like)
+ * Rota legada do leitor de manual pago — redireciona para conteúdos públicos.
+ * Não expor capítulos do produto sem entitlement.
  *
- * Conecta: getChapterBySlug, getChapterSlugs, DigitalReader (features/manual)
- * Camada: server (RSC com staticParams)
+ * Camada: server
  */
 
-import { notFound } from 'next/navigation'
-import { getChapterBySlug, getChapterSlugs, DigitalReader } from '@/features/manual'
+import { redirect } from 'next/navigation'
 
-export async function generateStaticParams() {
-  return getChapterSlugs().map((slug) => ({ slug }))
-}
-
-export default async function ManualChapterPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
-  const { slug } = await params
-
-  if (!getChapterBySlug(slug)) {
-    notFound()
-  }
-
-  return <DigitalReader initialChapterSlug={slug} />
+export default async function ManualChapterPage() {
+  redirect('/#conteudo')
 }

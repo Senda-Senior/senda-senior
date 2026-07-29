@@ -1,41 +1,36 @@
 /**
  * dashboard/page.tsx
- * Painel principal do usuário — RSC protegido (requireUser) + checklist de cuidados + perfil
+ * Painel principal do usuário — RSC protegido + checklist + shell.
  *
- * Conecta: requireUser, getProfile (lib/server) | getChecklist, DashboardView (features/dashboard)
+ * Conecta: getAppShellUser | getChecklist | DashboardView | AppShell
  * Camada: server (RSC com force-dynamic)
  */
 
 import { Suspense } from 'react'
-import { requireUser, getProfile } from '@/lib/server'
 import { getChecklist, DashboardView } from '@/features/dashboard'
+import { getAppShellUser } from '@/features/dashboard/shell'
 import { AppShell } from '@/features/dashboard/components/AppShell'
 import DashboardLoading from './loading'
 
 export const dynamic = 'force-dynamic'
 
 export default async function DashboardPage() {
-  const user = await requireUser()
-  const [checklist, profile] = await Promise.all([
-    getChecklist(user.id),
-    getProfile(user),
-  ])
-
-  const displayName = profile.displayName
-    ?? user.email?.split('@')[0]
-    ?? 'Usuário'
-  const firstName = displayName.split(' ')[0] || 'Usuário'
+  const shell = await getAppShellUser()
+  const checklist = await getChecklist(shell.user.id)
 
   return (
     <AppShell
-      firstName={firstName}
-      displayName={displayName}
-      pageTitle="Painel de Cuidado Familiar"
-      pageSubtitle="Organize documentos, cuidados e decisões importantes."
+      firstName={shell.firstName}
+      displayName={shell.displayName}
+      avatarUrl={shell.avatarUrl}
+      showEquipeNav={shell.showEquipeNav}
+      pageTitle="Painel"
+      pageSubtitle="Colabore com sua assessoria para concluir seu processo."
     >
       <Suspense fallback={<DashboardLoading />}>
         <DashboardView
-          firstName={firstName}
+          firstName={shell.firstName}
+          ownerUserId={shell.user.id}
           initialChecklist={checklist}
         />
       </Suspense>

@@ -1,13 +1,13 @@
 /**
  * configuracoes/page.tsx
- * Configurações da conta — RSC protegido (requireUser) + Conta & Segurança.
+ * Configurações da conta — RSC protegido + Conta & Segurança.
  *
- * Conecta: requireUser, getProfile (lib/server) | ConfiguracoesView (features/configuracoes) | AppShell
+ * Conecta: getAppShellUser | ConfiguracoesView | AppShell
  * Camada: server (RSC com force-dynamic)
  */
 
-import { requireUser, getProfile } from '@/lib/server'
 import { ConfiguracoesView } from '@/features/configuracoes'
+import { getAppShellUser } from '@/features/dashboard/shell'
 import { AppShell } from '@/features/dashboard/components/AppShell'
 
 export const dynamic = 'force-dynamic'
@@ -17,22 +17,21 @@ export const metadata = {
 }
 
 export default async function ConfiguracoesPage() {
-  const user = await requireUser()
-  const profile = await getProfile(user)
-
-  const displayName = profile.displayName ?? user.email?.split('@')[0] ?? 'Usuário'
-  const firstName = displayName.split(' ')[0] || 'Usuário'
+  const shell = await getAppShellUser()
 
   return (
     <AppShell
-      firstName={firstName}
-      displayName={displayName}
+      firstName={shell.firstName}
+      displayName={shell.displayName}
+      avatarUrl={shell.avatarUrl}
+      showEquipeNav={shell.showEquipeNav}
       pageTitle="Configurações"
       pageSubtitle="Gerencie sua conta e segurança."
     >
       <ConfiguracoesView
-        initialDisplayName={displayName}
-        email={user.email ?? ''}
+        initialDisplayName={shell.displayName}
+        initialAvatarUrl={shell.avatarUrl}
+        email={shell.email}
       />
     </AppShell>
   )

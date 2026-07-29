@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import { requireUser, getProfile } from '@/lib/server'
+import { canAccessAssessoria } from '@/features/assessoria/access'
 import { getCategories, getQuota, listFiles, VaultView } from '@/features/vault'
 import { AppShell } from '@/features/dashboard/components/AppShell'
 import VaultLoading from '../loading'
@@ -29,6 +30,8 @@ export default async function VaultJuridicoPage() {
     <AppShell
       firstName={firstName}
       displayName={displayName}
+      avatarUrl={profile.avatarUrl}
+      showEquipeNav={await canAccessAssessoria(user)}
       pageTitle="Documentos e Procurações"
       pageSubtitle="Testamentos, diretrizes antecipadas e procurações organizadas."
     >

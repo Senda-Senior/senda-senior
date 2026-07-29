@@ -2,7 +2,7 @@
  * robots.ts
  * /robots.txt gerado pelo Next. Permite todos os crawlers (incl. bots de IA — GPTBot,
  * ClaudeBot, PerplexityBot, Google-Extended caem em `*`) no conteúdo público, e bloqueia
- * rotas de app/auth e o manual pago (RLS por entitlement) — que não devem ser indexadas.
+ * rotas de app/auth e /manual (legado do produto pago; redireciona) — que não devem ser indexadas.
  *
  * Conecta: aponta para /sitemap.xml (sitemap.ts) | metadataBase em app/layout.tsx
  * Camada: server (gerado em build)
@@ -31,7 +31,7 @@ export default function robots(): MetadataRoute.Robots {
           '/login',
           '/update-password',
           '/auth/',
-          '/manual', // produto pago (RLS por entitlement) — anônimo vê vazio
+          '/manual', // legado — redirect; não indexar
           '/em-construcao',
         ],
       },

@@ -3,25 +3,44 @@
 import Link from 'next/link'
 import NextImage from 'next/image'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, FolderOpen, Users, Settings, X, LogOut } from 'lucide-react'
+import { LayoutDashboard, FolderOpen, ClipboardList, Handshake, UsersRound, Settings, X, LogOut } from 'lucide-react'
 import { useState } from 'react'
 import { signOutAction } from '../actions'
+import { clearAllMockStores } from '@/features/assessoria/mockStore'
 
-const NAV = [
+const NAV_BASE = [
   { icon: LayoutDashboard, label: 'Painel', href: '/dashboard' },
-  { icon: FolderOpen, label: 'Cofre de Documentos', href: '/vault' },
-  { icon: Users, label: 'Rede de Confiança', href: '/rede-de-confianca' },
+  { icon: FolderOpen, label: 'Documentos', href: '/vault' },
+  { icon: ClipboardList, label: 'Solicitações', href: '/solicitacoes' },
+  { icon: Handshake, label: 'Assessoria', href: '/assessoria' },
   { icon: Settings, label: 'Configurações', href: '/configuracoes' },
-]
+] as const
+
+const NAV_EQUIPE = { icon: UsersRound, label: 'Visão assessora', href: '/equipe' } as const
 
 interface AppSidebarProps {
   open: boolean
   onClose: () => void
+  showEquipeNav?: boolean
 }
 
-function SidebarContent({ onClose }: { onClose: () => void }) {
+function SidebarContent({
+  onClose,
+  showEquipeNav,
+}: {
+  onClose: () => void
+  showEquipeNav: boolean
+}) {
   const pathname = usePathname()
   const [loggingOut, setLoggingOut] = useState(false)
+
+  const nav = showEquipeNav
+    ? [
+        ...NAV_BASE.slice(0, 4),
+        NAV_EQUIPE,
+        NAV_BASE[4],
+      ]
+    : [...NAV_BASE]
 
   function isActive(href: string) {
     if (href === '/dashboard') return pathname === '/dashboard'
@@ -30,6 +49,7 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
 
   async function handleLogout() {
     setLoggingOut(true)
+    clearAllMockStores()
     try { await signOutAction() } catch { setLoggingOut(false) }
   }
 
@@ -67,7 +87,7 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
 
       {/* Nav */}
       <nav className="flex-1 space-y-0.5 px-3 py-2">
-        {NAV.map(({ icon: Icon, label, href }) => {
+        {nav.map(({ icon: Icon, label, href }) => {
           const active = isActive(href)
           return (
             <Link
@@ -93,7 +113,7 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
       <div className="px-4 pb-6">
         <div className="mb-4 h-px bg-[rgba(233,226,210,0.1)]" />
         <p className="mb-5 font-sans text-[11px] leading-[1.65] text-[var(--color-cream-55)]">
-          Mais segurança para seus pais,<br />mais tranquilidade para você.
+          Colabore com sua assessoria<br />para concluir seu processo.
         </p>
         <button
           onClick={handleLogout}
@@ -108,7 +128,7 @@ function SidebarContent({ onClose }: { onClose: () => void }) {
   )
 }
 
-export function AppSidebar({ open, onClose }: AppSidebarProps) {
+export function AppSidebar({ open, onClose, showEquipeNav = false }: AppSidebarProps) {
   return (
     <>
       {/* Mobile backdrop */}
@@ -128,7 +148,7 @@ export function AppSidebar({ open, onClose }: AppSidebarProps) {
           open ? 'translate-x-0' : '-translate-x-full',
         ].join(' ')}
       >
-        <SidebarContent onClose={onClose} />
+        <SidebarContent onClose={onClose} showEquipeNav={showEquipeNav} />
       </aside>
     </>
   )

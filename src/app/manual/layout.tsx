@@ -1,28 +1,19 @@
 /**
  * manual/layout.tsx
- * Layout do leitor de manual — ReaderBodyLock desabilita scroll para modo foco
+ * Layout mínimo da rota legada /manual (só redirect — sem leitor).
  *
- * Conecta: ReaderBodyLock (componente client) | metadata customizada
  * Camada: server
  */
 
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
-import { ReaderBodyLock } from './ReaderBodyLock'
 
 export const metadata: Metadata = {
-  title: 'Manual Prevent Care — Leitura Interativa',
-  description:
-    'Acesse os capítulos do Manual Prevent Care de maneira fluida e sem distrações, com Modo Foco.',
+  title: 'Conteúdos | Senda Sênior',
+  description: 'Artigos e conteúdos da Senda Sênior sobre planejamento do cuidado.',
+  robots: { index: false, follow: false },
 }
 
 export default function ManualLayout({ children }: { children: ReactNode }) {
-  return (
-    <>
-      <ReaderBodyLock />
-      <div className="flex min-h-screen bg-[var(--color-cream)]">
-        {children}
-      </div>
-    </>
-  )
+  return children
 }

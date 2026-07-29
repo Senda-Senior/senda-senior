@@ -1,14 +1,13 @@
 /**
  * manual/page.tsx
- * Index do manual — redireciona para o primeiro capítulo (slug-based)
+ * Rota legada do leitor de manual pago — redireciona para conteúdos públicos.
+ * Não expor capítulos do produto sem entitlement.
  *
- * Conecta: manualChapters (features/manual)
- * Camada: server (RSC)
+ * Camada: server
  */
 
 import { redirect } from 'next/navigation'
-import { manualChapters } from '@/features/manual'
 
 export default function ManualIndex() {
-  redirect(`/manual/${manualChapters[0].slug}`)
+  redirect('/#conteudo')
 }

@@ -1,13 +1,14 @@
 /**
  * vault/page.tsx
- * Cofre digital de documentos — RSC protegido + categorias, quota, arquivos ativos e deletados
+ * Cofre digital de documentos — RSC protegido + categorias, quota, arquivos
  *
- * Conecta: requireUser, getProfile (lib/server) | getCategories, getQuota, listFiles, VaultView (features/vault)
+ * Conecta: requireUser, getProfile | vault data | AppShell
  * Camada: server (RSC com force-dynamic)
  */
 
 import { Suspense } from 'react'
 import { requireUser, getProfile } from '@/lib/server'
+import { canAccessAssessoria } from '@/features/assessoria/access'
 import { getCategories, getQuota, listFiles, VaultView } from '@/features/vault'
 import { AppShell } from '@/features/dashboard/components/AppShell'
 import VaultLoading from './loading'
@@ -17,7 +18,6 @@ export const dynamic = 'force-dynamic'
 export default async function VaultPage() {
   const user = await requireUser()
 
-  // profile junto das demais queries — sem round-trip em série.
   const [profile, quota, categories, activeList, trashedList] = await Promise.all([
     getProfile(user),
     getQuota(user.id),
@@ -33,8 +33,10 @@ export default async function VaultPage() {
     <AppShell
       firstName={firstName}
       displayName={displayName}
-      pageTitle="Cofre de Documentos"
-      pageSubtitle="Todos os seus documentos organizados e protegidos."
+      avatarUrl={profile.avatarUrl}
+      showEquipeNav={await canAccessAssessoria(user)}
+      pageTitle="Documentos"
+      pageSubtitle="Arquivos do seu processo, sob seu controle."
     >
       <Suspense fallback={<VaultLoading />}>
         <VaultView

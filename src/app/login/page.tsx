@@ -348,7 +348,12 @@ export default function Login() {
         })
 
         if (signInError) {
-          setError('Email ou senha incorretos.')
+          const msg = signInError.message.toLowerCase()
+          if (msg.includes('captcha')) {
+            setError('Confirme o CAPTCHA e tente novamente.')
+          } else {
+            setError('Email ou senha incorretos.')
+          }
           return
         }
 

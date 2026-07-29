@@ -3,9 +3,8 @@
 import { useEffect } from 'react'
 
 /**
- * Aplica `body.reader-locked` enquanto o leitor está montado e o remove
- * ao desmontar — evita que o overflow:hidden "vaze" para outras rotas
- * quando o usuário navega via client-side transitions.
+ * Aplica `body.reader-locked` enquanto o leitor está montado e remove
+ * ao desmontar — evita overflow:hidden “vazar” em client navigations.
  */
 export function ReaderBodyLock() {
   useEffect(() => {

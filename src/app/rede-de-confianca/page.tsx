@@ -1,5 +1,6 @@
 import { Users, UserCheck, Stethoscope, ShieldCheck } from 'lucide-react'
 import { requireUser, getProfile } from '@/lib/server'
+import { canAccessAssessoria } from '@/features/assessoria/access'
 import { AppShell } from '@/features/dashboard/components/AppShell'
 
 export const dynamic = 'force-dynamic'
@@ -42,10 +43,12 @@ export default async function RedeDeConfiancaPage() {
     <AppShell
       firstName={firstName}
       displayName={displayName}
+      avatarUrl={profile.avatarUrl}
+      showEquipeNav={await canAccessAssessoria(user)}
       pageTitle="Rede de Confiança"
       pageSubtitle="Gerencie quem acessa quais informações."
     >
-      <div className="px-5 py-8 lg:px-8 lg:py-10">
+      <div className="flex min-h-full flex-col justify-center px-5 py-8 lg:px-8 lg:py-10">
         <div className="max-w-[720px]">
           <p className="mb-3 font-sans text-[10.5px] font-bold uppercase tracking-[0.2em] text-[var(--color-terracotta)]">
             Em breve

@@ -1,31 +1,53 @@
 'use client'
 
+/**
+ * AppShell.tsx
+ * Shell autenticado — sidebar, topbar e menu do usuário (com foto de perfil opcional).
+ *
+ * Conecta: AppSidebar | signOutAction | pages protegidas
+ * Camada: browser (use client)
+ */
+
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
+import NextImage from 'next/image'
 import { Menu, Settings, LogOut, ChevronDown } from 'lucide-react'
 import { AppSidebar } from './AppSidebar'
 import { signOutAction } from '../actions'
+import { clearAllMockStores } from '@/features/assessoria/mockStore'
 
 interface AppShellProps {
   firstName: string
   displayName: string
+  avatarUrl?: string | null
+  showEquipeNav?: boolean
   pageTitle: string
   pageSubtitle?: string
   children: ReactNode
 }
 
-export function AppShell({ firstName, displayName, pageTitle, pageSubtitle, children }: AppShellProps) {
+export function AppShell({
+  firstName,
+  displayName,
+  avatarUrl,
+  showEquipeNav = false,
+  pageTitle,
+  pageSubtitle,
+  children,
+}: AppShellProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <div className="flex min-h-screen bg-[var(--color-cream)]">
-      <AppSidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <AppSidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        showEquipeNav={showEquipeNav}
+      />
 
       <div className="flex min-w-0 flex-1 flex-col">
-        {/* Topbar */}
         <header className="sticky top-0 z-30 flex h-[68px] items-center justify-between border-b border-[rgba(42,37,32,0.08)] bg-[rgba(233,226,210,0.92)] px-5 backdrop-blur-md lg:px-8">
           <div className="flex min-w-0 flex-1 items-center gap-3">
-            {/* Hamburger mobile */}
             <button
               onClick={() => setSidebarOpen(true)}
               className="flex-shrink-0 rounded-[8px] p-2 text-[var(--color-ink-sub)] transition-colors hover:bg-[rgba(42,37,32,0.06)] lg:hidden"
@@ -46,8 +68,7 @@ export function AppShell({ firstName, displayName, pageTitle, pageSubtitle, chil
             </div>
           </div>
 
-          {/* Menu do usuário */}
-          <UserMenu firstName={firstName} displayName={displayName} />
+          <UserMenu firstName={firstName} displayName={displayName} avatarUrl={avatarUrl} />
         </header>
 
         <main className="flex-1">
@@ -58,7 +79,15 @@ export function AppShell({ firstName, displayName, pageTitle, pageSubtitle, chil
   )
 }
 
-function UserMenu({ firstName, displayName }: { firstName: string; displayName: string }) {
+function UserMenu({
+  firstName,
+  displayName,
+  avatarUrl,
+}: {
+  firstName: string
+  displayName: string
+  avatarUrl?: string | null
+}) {
   const [open, setOpen] = useState(false)
   const [loggingOut, setLoggingOut] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -75,6 +104,7 @@ function UserMenu({ firstName, displayName }: { firstName: string; displayName: 
 
   async function handleLogout() {
     setLoggingOut(true)
+    clearAllMockStores()
     try { await signOutAction() } catch { setLoggingOut(false) }
   }
 
@@ -86,9 +116,7 @@ function UserMenu({ firstName, displayName }: { firstName: string; displayName: 
         aria-haspopup="menu"
         className="flex items-center gap-2.5 rounded-[10px] bg-[rgba(45,95,79,0.07)] px-3 py-2 transition-colors hover:bg-[rgba(45,95,79,0.12)]"
       >
-        <div className="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-green)] font-sans text-[13px] font-bold text-white">
-          {firstName[0]?.toUpperCase()}
-        </div>
+        <Avatar firstName={firstName} avatarUrl={avatarUrl} size="sm" />
         <span className="hidden font-sans text-[13.5px] font-medium text-[var(--color-ink-sub)] sm:block">
           {displayName}
         </span>
@@ -131,5 +159,38 @@ function UserMenu({ firstName, displayName }: { firstName: string; displayName: 
         </div>
       )}
     </div>
+  )
+}
+
+const AVATAR_SIZE = {
+  sm: { box: 'h-[30px] w-[30px]', text: 'text-[13px]', img: '30px' },
+  lg: { box: 'h-16 w-16', text: 'text-[22px]', img: '64px' },
+} as const
+
+export function Avatar({
+  firstName,
+  avatarUrl,
+  size = 'sm',
+}: {
+  firstName: string
+  avatarUrl?: string | null
+  size?: keyof typeof AVATAR_SIZE
+}) {
+  const s = AVATAR_SIZE[size]
+
+  if (avatarUrl) {
+    return (
+      <span className={`relative flex-shrink-0 overflow-hidden rounded-full bg-[var(--color-green-muted)] ${s.box}`}>
+        <NextImage src={avatarUrl} alt="" fill className="object-cover" sizes={s.img} />
+      </span>
+    )
+  }
+
+  return (
+    <span
+      className={`flex flex-shrink-0 items-center justify-center rounded-full bg-[var(--color-green)] font-sans font-bold text-white ${s.box} ${s.text}`}
+    >
+      {firstName[0]?.toUpperCase()}
+    </span>
   )
 }

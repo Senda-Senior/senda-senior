@@ -11,10 +11,11 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient as createServerClient } from '@/lib/supabase/server'
-import { assertSameOrigin, requireUser, updateDisplayName } from '@/lib/server'
+import { assertSameOrigin, requireUser, updateDisplayName, updateAvatarUrl } from '@/lib/server'
 import { DELETE_ACCOUNT_CONFIRMATION } from './constants'
 
 export type UpdateNameResult = { ok: true } | { ok: false; error: string }
+export type UpdateAvatarResult = { ok: true; avatarUrl: string } | { ok: false; error: string }
 
 /**
  * Atualiza o `display_name` do usuário autenticado. Revalida as rotas
@@ -31,6 +32,63 @@ export async function updateProfileNameAction(displayName: string): Promise<Upda
     revalidatePath('/dashboard')
   }
   return result
+}
+
+const AVATAR_MIME = new Set(['image/jpeg', 'image/png', 'image/webp'])
+const AVATAR_MAX_BYTES = 2 * 1024 * 1024
+
+/**
+ * Recebe a foto de perfil (FormData `file`), sobe no bucket `avatars`
+ * e grava a URL pública em `profiles.avatar_url`.
+ */
+export async function updateProfileAvatarAction(formData: FormData): Promise<UpdateAvatarResult> {
+  await assertSameOrigin()
+  const user = await requireUser()
+
+  const file = formData.get('file')
+  if (!(file instanceof File) || file.size === 0) {
+    return { ok: false, error: 'Selecione uma imagem.' }
+  }
+  if (!AVATAR_MIME.has(file.type)) {
+    return { ok: false, error: 'Use JPEG, PNG ou WebP.' }
+  }
+  if (file.size > AVATAR_MAX_BYTES) {
+    return { ok: false, error: 'A foto deve ter no máximo 2 MB.' }
+  }
+
+  const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg'
+  const path = `${user.id}/avatar.${ext}`
+  const supabase = await createServerClient()
+
+  const { error: uploadError } = await supabase.storage
+    .from('avatars')
+    .upload(path, file, { upsert: true, contentType: file.type, cacheControl: '3600' })
+
+  if (uploadError) {
+    return {
+      ok: false,
+      error: 'Não foi possível enviar a foto. Verifique se a migration 0015 foi aplicada.',
+    }
+  }
+
+  const { data: publicData } = supabase.storage.from('avatars').getPublicUrl(path)
+  const avatarUrl = `${publicData.publicUrl}?v=${Date.now()}`
+
+  const result = await updateAvatarUrl(user, avatarUrl)
+  if (!result.ok) {
+    return {
+      ok: false,
+      error: 'Foto enviada, mas não foi possível salvar no perfil. Aplique a migration 0015.',
+    }
+  }
+
+  revalidatePath('/configuracoes')
+  revalidatePath('/dashboard')
+  revalidatePath('/solicitacoes')
+  revalidatePath('/assessoria')
+  revalidatePath('/vault')
+
+  return { ok: true, avatarUrl }
 }
 
 /**

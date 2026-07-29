@@ -34,6 +34,7 @@ export interface Database {
           user_id: string
           display_name: string | null
           care_role: 'self' | 'caregiver' | null
+          avatar_url: string | null
           created_at: string
           updated_at: string
         }
@@ -41,12 +42,14 @@ export interface Database {
           user_id: string
           display_name?: string | null
           care_role?: 'self' | 'caregiver' | null
+          avatar_url?: string | null
           created_at?: string
           updated_at?: string
         }
         Update: {
           display_name?: string | null
           care_role?: 'self' | 'caregiver' | null
+          avatar_url?: string | null
         }
         Relationships: []
       }
@@ -169,6 +172,7 @@ export interface Database {
           created_at: string
           updated_at: string
           deleted_at: string | null
+          content_sha256: string | null
         }
         Insert: {
           id?: string
@@ -189,6 +193,7 @@ export interface Database {
           created_at?: string
           updated_at?: string
           deleted_at?: string | null
+          content_sha256?: string | null
         }
         Update: {
           current_blob_id?: string | null
@@ -205,6 +210,7 @@ export interface Database {
           text_content?: string | null
           version_count?: number
           deleted_at?: string | null
+          content_sha256?: string | null
         }
         Relationships: []
       }
@@ -327,9 +333,125 @@ export interface Database {
           }
         ]
       }
+
+      // ─── 0016_assessoria — vínculos + solicitações ─────────────────
+      advisory_advisors: {
+        Row: {
+          user_id: string
+          label: string
+          active: boolean
+          created_at: string
+        }
+        Insert: {
+          user_id: string
+          label: string
+          active?: boolean
+          created_at?: string
+        }
+        Update: {
+          label?: string
+          active?: boolean
+        }
+        Relationships: []
+      }
+
+      advisory_links: {
+        Row: {
+          id: string
+          assessor_user_id: string
+          client_user_id: string | null
+          status: 'pending' | 'active' | 'revoked' | 'declined'
+          invited_email: string
+          invite_token: string | null
+          created_at: string
+          accepted_at: string | null
+          revoked_at: string | null
+        }
+        Insert: {
+          id?: string
+          assessor_user_id: string
+          client_user_id?: string | null
+          status?: 'pending' | 'active' | 'revoked' | 'declined'
+          invited_email: string
+          invite_token?: string | null
+          created_at?: string
+          accepted_at?: string | null
+          revoked_at?: string | null
+        }
+        Update: {
+          client_user_id?: string | null
+          status?: 'pending' | 'active' | 'revoked' | 'declined'
+          invited_email?: string
+          invite_token?: string | null
+          accepted_at?: string | null
+          revoked_at?: string | null
+        }
+        Relationships: []
+      }
+
+      document_requests: {
+        Row: {
+          id: string
+          link_id: string
+          requested_by: string
+          title: string
+          due_at: string | null
+          assessor_note: string | null
+          review_note: string | null
+          status:
+            | 'pendente'
+            | 'enviado'
+            | 'em_revisao'
+            | 'aprovado'
+            | 'precisa_atualizacao'
+          vault_file_id: string | null
+          created_at: string
+          updated_at: string
+          submitted_at: string | null
+        }
+        Insert: {
+          id?: string
+          link_id: string
+          requested_by: string
+          title: string
+          due_at?: string | null
+          assessor_note?: string | null
+          review_note?: string | null
+          status?:
+            | 'pendente'
+            | 'enviado'
+            | 'em_revisao'
+            | 'aprovado'
+            | 'precisa_atualizacao'
+          vault_file_id?: string | null
+          created_at?: string
+          updated_at?: string
+          submitted_at?: string | null
+        }
+        Update: {
+          title?: string
+          due_at?: string | null
+          assessor_note?: string | null
+          review_note?: string | null
+          status?:
+            | 'pendente'
+            | 'enviado'
+            | 'em_revisao'
+            | 'aprovado'
+            | 'precisa_atualizacao'
+          vault_file_id?: string | null
+          submitted_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: { [_ in never]: never }
-    Functions: { [_ in never]: never }
+    Functions: {
+      delete_current_user: {
+        Args: Record<string, never>
+        Returns: undefined
+      }
+    }
     Enums: { [_ in never]: never }
     CompositeTypes: { [_ in never]: never }
   }

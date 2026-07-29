@@ -34,6 +34,12 @@ const serverSchema = z.object({
     .optional(),
   UPSTASH_REDIS_REST_TOKEN: z.string().min(1).optional(),
   E2E_DISABLE_RATE_LIMIT: z.enum(['true']).optional(),
+
+  // Preview da visão assessora (/equipe). Lista CSV de emails.
+  // Vazio + sem OPEN → ninguém acessa (nem em development).
+  ASSESSORIA_PREVIEW_EMAILS: z.string().optional(),
+  // Só fora de production. Preferir allowlist em qualquer ambiente compartilhado.
+  ASSESSORIA_PREVIEW_OPEN: z.enum(['true']).optional(),
 })
 
 const serverProcessEnv = {
@@ -41,6 +47,8 @@ const serverProcessEnv = {
   UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
   UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
   E2E_DISABLE_RATE_LIMIT: process.env.E2E_DISABLE_RATE_LIMIT,
+  ASSESSORIA_PREVIEW_EMAILS: process.env.ASSESSORIA_PREVIEW_EMAILS,
+  ASSESSORIA_PREVIEW_OPEN: process.env.ASSESSORIA_PREVIEW_OPEN,
 }
 
 const parsed = serverSchema.safeParse(serverProcessEnv)

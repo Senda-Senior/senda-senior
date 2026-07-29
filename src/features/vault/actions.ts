@@ -281,6 +281,7 @@ export async function confirmUpload(
       .from('vault_files')
       .update({ status: 'failed' })
       .eq('id', fileId)
+      .eq('user_id', user.id)
     return fail('not_uploaded')
   }
   if (Number(stat.size) !== Number(blob.size_bytes)) {
@@ -288,6 +289,7 @@ export async function confirmUpload(
       .from('vault_files')
       .update({ status: 'failed' })
       .eq('id', fileId)
+      .eq('user_id', user.id)
     await removeObject(supabase, blob.storage_path)
     return fail('size_mismatch')
   }
@@ -316,6 +318,7 @@ export async function confirmUpload(
       manual_override: false,
     })
     .eq('id', fileId)
+    .eq('user_id', user.id)
 
   if (updateError) {
     logDbError('[vault.confirmUpload] update failed', updateError)
@@ -326,6 +329,7 @@ export async function confirmUpload(
     .from('vault_files')
     .select(VAULT_FILE_SELECT)
     .eq('id', fileId)
+    .eq('user_id', user.id)
     .single()
 
   if (!refreshed) return fail('internal')
@@ -545,6 +549,7 @@ export async function restore(fileId: string): Promise<ActionResult<null>> {
 // ─── loadUserOverrides ──────────────────────────────────────────────
 
 export async function loadUserOverrides(): Promise<ActionResult<{ count: number }>> {
+  await assertSameOrigin()
   const user = await requireUser()
   const supabase = await createServerClient()
   const synced = await syncClassifierOverridesForUser(supabase, user.id)

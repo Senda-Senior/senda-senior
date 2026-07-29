@@ -18,9 +18,14 @@ migrar para outro tier = `update vault_quotas set tier='premium', limit_bytes=10
 
 ## sharing
 
-**escolhido**: schema preparado, sem ui/actions no mvp.
+**escolhido (0016)**: compartilhamento **por solicitação de assessoria**, não share genérico do cofre.
 
-tabelas `vault_shares` + policy adicional na rls de `vault_files`. nenhuma server action de share criada — quando entrar no roadmap, é só somar actions.
+- `advisory_advisors` (allowlist) + `advisory_links` (vínculo) + `document_requests` (`vault_file_id`).
+- Assessora **não** lista o cofre do cliente; ganha SELECT só no arquivo citado na solicitação (status entregue) de vínculo `active`.
+- Storage: SELECT estreito no path do blob entregue (signed URL com JWT); sem INSERT/UPDATE/DELETE.
+- `vault_shares` genérico **não** voltou (foi removido em 0004).
+
+MVP sem UI completa ainda — schema + RLS + action de download por request.
 
 ## ocr / busca full-text
 

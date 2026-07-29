@@ -36,9 +36,10 @@ const clientSchema = z.object({
     .string()
     .url('NEXT_PUBLIC_SITE_URL deve ser uma URL válida.')
     .optional(),
-  // Cloudflare Turnstile (CAPTCHA anti-bot no auth). Opcional: ausente = sem CAPTCHA.
-  // Só ativar quando o CAPTCHA estiver habilitado no painel do Supabase (Auth → Attack
-  // Protection), senão o widget aparece mas o Supabase ignora o token.
+  // Cloudflare Turnstile (CAPTCHA anti-bot no auth). Opcional no schema, mas
+  // obrigatório na prática se Attack Protection estiver ligado no Supabase —
+  // sem a key o login falha com captcha_failed. Use a mesma key em prod e local;
+  // em Cloudflare, permita o hostname localhost no widget.
   NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().min(1).optional(),
 })
 

@@ -1,7 +1,8 @@
 # schema (public + storage)
 
-referência canónica alinhada à migration
-[`0004_remodel_context_vault.sql`](../supabase/migrations/0004_remodel_context_vault.sql).
+referência canónica alinhada às migrations
+[`0004_remodel_context_vault.sql`](../supabase/migrations/0004_remodel_context_vault.sql)
+→ [`0016_assessoria_links_requests.sql`](../supabase/migrations/0016_assessoria_links_requests.sql).
 narrativa e regras de negócio: [vault/model.md](vault/model.md).
 
 ## extensões
@@ -21,6 +22,11 @@ erDiagram
   auth_users ||--o{ vault_categories : user_id
   auth_users ||--o{ vault_tags : user_id
   auth_users ||--o{ vault_files : user_id
+  auth_users ||--o| advisory_advisors : user_id
+  auth_users ||--o{ advisory_links : assessor_user_id
+  auth_users ||--o{ advisory_links : client_user_id
+  advisory_links ||--o{ document_requests : link_id
+  document_requests }o--o| vault_files : vault_file_id
 
   vault_files }o--o| vault_file_blobs : current_blob_id
   vault_files ||--o{ vault_file_blobs : file_id
@@ -43,6 +49,7 @@ exatamente um entre `system_category_slug` e `user_category_id` está preenchido
 | user_id       | uuid pk    | → `auth.users(id)` on delete cascade |
 | display_name  | text       | null   |
 | care_role     | text       | null ou `self` \| `caregiver` |
+| avatar_url    | text       | null (0015); path público no bucket `avatars` |
 | created_at    | timestamptz| default now() |
 | updated_at    | timestamptz| trigger |
 
@@ -147,24 +154,72 @@ unique `(file_id, version)`.
 | used_bytes, file_count | bigint / int | recalculado por trigger |
 | updated_at  | timestamptz | |
 
+### `advisory_advisors` (0016)
+
+| coluna     | tipo | notas |
+|------------|------|--------|
+| user_id    | uuid pk | → `auth.users` CASCADE |
+| label      | text not null | nome exibido |
+| active     | bool not null default true | |
+| created_at | timestamptz | |
+
+Allowlist MVP. SELECT authenticated só `active`; escrita só migration/service role.
+Seed: Julianne Pimentel, Luciana Moura.
+
+### `advisory_links` (0016)
+
+| coluna | tipo | notas |
+|--------|------|--------|
+| id | uuid pk | |
+| assessor_user_id | uuid not null | → `auth.users` |
+| client_user_id | uuid | null até aceite; obrigatório se `active` |
+| status | text | `pending` \| `active` \| `revoked` \| `declined` |
+| invited_email | text not null | matching no aceite |
+| invite_token | text unique | nullable |
+| created_at, accepted_at, revoked_at | timestamptz | |
+
+UNIQUE parcial `(assessor, client)` onde `active`; UNIQUE parcial `(assessor, lower(email))` onde `pending`.
+Aceite exige email do `auth.users` = `invited_email`.
+
+### `document_requests` (0016)
+
+| coluna | tipo | notas |
+|--------|------|--------|
+| id | uuid pk | |
+| link_id | uuid | → `advisory_links` CASCADE |
+| requested_by | uuid | assessora |
+| title | text | 1..200 |
+| due_at | date | null |
+| assessor_note, review_note | text | max 2000 |
+| status | text | `pendente` \| `enviado` \| `em_revisao` \| `aprovado` \| `precisa_atualizacao` |
+| vault_file_id | uuid | → `vault_files` SET NULL; só cliente anexa |
+| created_at, updated_at, submitted_at | timestamptz | |
+
+Policy extra em `vault_files` / `vault_file_blobs` / `storage.objects`: SELECT estreito
+só se o arquivo estiver citado numa solicitação entregue de vínculo `active` da assessora.
+Sem abrir o cofre inteiro. Download via signed URL (TTL curto).
+
 ## `storage` (supabase)
 
 | objeto    | notas |
 |-----------|--------|
 | bucket `vault` | privado, `file_size_limit` 52428800 |
-| `storage.objects` | policies: primeiro segmento do path = `auth.uid()::text` para crud no bucket `vault` |
+| bucket `avatars` | público, 2 MB, jpeg/png/webp (0015) |
+| `storage.objects` | vault: dono do prefixo + SELECT estreito assessora em path entregue; avatars: público read, write próprio prefixo |
 
-caminho típico de objeto: `{user_id}/{file_id}.{ext}` (ver `buildStoragePath` na app).
+caminho típico de objeto vault: `{user_id}/{file_id}.{ext}` (ver `buildStoragePath` na app).
 
 ## triggers resumidos (funções `public`)
 
 | gatilho / função | tabela alvo | efeito |
 |------------------|-------------|--------|
-| `set_updated_at` | profiles, care, vault_quotas, vault_files | `updated_at := now()` |
+| `set_updated_at` | profiles, care, vault_quotas, vault_files, document_requests | `updated_at := now()` |
 | `handle_new_user` | após insert `auth.users` | insere `profiles` e `vault_quotas` se faltando |
 | `vault_files_update_search` | vault_files | preenche `search_vector` |
 | `vault_file_blobs_sync_version_count` | após dml em `vault_file_blobs` | actualiza `vault_files.version_count` |
 | `vault_files_quota_after` / `vault_blobs_quota_after` | vault_files, vault_file_blobs | chama `vault_quotas_recalc` |
+| `advisory_links_enforce_transition` | advisory_links | aceite/declínio/revogação + match de email |
+| `document_requests_enforce_mutation` | document_requests | papéis, anexo vault, `is_private` |
 
 ## fora do `public` (auth)
 
