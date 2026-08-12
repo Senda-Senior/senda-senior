@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 /**
  * JSON-LD de Organização — ajuda o Google/AI a entender QUE entidade é a "Senda Sênior"
  * (desambiguação: existem outras empresas com nome parecido). Não é executável, então não
- * conflita com a CSP. Atualize `sameAs` quando houver perfis sociais oficiais.
+ * conflita com a CSP. Adicione a `sameAs` cada novo perfil social oficial.
  */
 const organizationLd = {
   '@context': 'https://schema.org',
@@ -64,6 +64,8 @@ const organizationLd = {
   description:
     'Plataforma de planejamento e assessoria para o envelhecimento familiar. Manuais e consultoria para famílias organizarem o cuidado de pais idosos antes da urgência.',
   email: 'contato@sendasenior.com.br',
+  // Perfis oficiais — o mesmo link vive em features/landing/data/footer.ts.
+  sameAs: ['https://www.instagram.com/sendasenior/'],
   areaServed: { '@type': 'Country', name: 'Brasil' },
   knowsLanguage: 'pt-BR',
   founder: [

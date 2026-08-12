@@ -17,6 +17,9 @@ export type NavColumn = {
   links: NavLink[]
 }
 
+/** Perfil oficial — usado na coluna CONTATO e nos ícones sociais. */
+const INSTAGRAM_URL = 'https://www.instagram.com/sendasenior/'
+
 export const NAV_COLUMNS: NavColumn[] = [
   {
     title: 'EXPLORE',
@@ -33,7 +36,7 @@ export const NAV_COLUMNS: NavColumn[] = [
       { label: 'E-mail', href: 'mailto:contato@sendasenior.com.br' },
       { label: 'WhatsApp', href: 'https://wa.me/' },
       { label: 'Agendar Conversa', href: '#contato' },
-      { label: 'Instagram', href: '#' },
+      { label: 'Instagram', href: INSTAGRAM_URL },
     ],
   },
   {
@@ -54,7 +57,7 @@ export type SocialLink = {
 }
 
 export const SOCIALS: SocialLink[] = [
-  { Icon: Instagram, href: '#', label: 'Instagram' },
+  { Icon: Instagram, href: INSTAGRAM_URL, label: 'Instagram' },
   { Icon: Linkedin, href: '#', label: 'LinkedIn' },
   { Icon: WhatsAppIcon, href: 'https://wa.me/', label: 'WhatsApp' },
   { Icon: Facebook, href: '#', label: 'Facebook' },
