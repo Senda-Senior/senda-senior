@@ -58,10 +58,10 @@ export function Header() {
         }}
         animate={hidden ? 'hidden' : 'visible'}
         transition={{ duration: 0.35, ease: 'easeInOut' }}
-        className="fixed inset-x-0 top-0 z-[100] px-[clamp(4px,0.8vw,12px)] py-[10px]"
+        className="ios-fixed-header fixed inset-x-0 top-0 z-[100] px-[clamp(4px,0.8vw,12px)] py-[10px]"
         style={{ pointerEvents: hidden ? 'none' : 'auto' }}
       >
-        <div className="mx-auto flex h-[clamp(68px,6.5vw,82px)] w-[min(1480px,calc(100vw-16px))] items-center justify-between gap-[clamp(10px,1.6vw,20px)] rounded-full border border-[rgba(233,226,210,0.20)] bg-[var(--header-surface)] px-[clamp(16px,1.8vw,28px)] pl-[6px] shadow-[0_18px_40px_rgba(42,37,32,0.22)] backdrop-blur-[18px]">
+        <div className="ios-stable-surface mx-auto flex h-[clamp(68px,6.5vw,82px)] w-[min(1480px,calc(100vw-16px))] items-center justify-between gap-[clamp(10px,1.6vw,20px)] rounded-full border border-[rgba(233,226,210,0.20)] bg-[var(--header-surface)] px-[clamp(16px,1.8vw,28px)] pl-[6px] shadow-[0_18px_40px_rgba(42,37,32,0.22)] backdrop-blur-[18px]">
           <Link
             href="/#hero"
             className="flex shrink-0 items-center leading-none no-underline"
@@ -116,7 +116,7 @@ export function Header() {
       </motion.header>
 
       {menuOpen ? (
-        <div className="mobile-menu flex" role="navigation" aria-label="Menu mobile" onClick={() => setMenuOpen(false)}>
+        <div className="mobile-menu ios-stable-surface flex" role="navigation" aria-label="Menu mobile" onClick={() => setMenuOpen(false)}>
           <button
             onClick={() => setMenuOpen(false)}
             aria-label="Fechar menu"

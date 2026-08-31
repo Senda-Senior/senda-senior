@@ -476,6 +476,41 @@ body.reader-locked {
   isolation: isolate;
 }
 
+/* Estabiliza as camadas conhecidas por piscar no WebKit touch durante scroll. */
+@supports (-webkit-touch-callout: none) {
+  @media (hover: none) and (pointer: coarse) {
+    .ios-slide-reveal {
+      opacity: 1 !important;
+    }
+
+    .ios-fixed-header {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      transform: translate3d(0, 0, 0) !important;
+    }
+
+    .ios-stable-surface {
+      background-color: rgba(89, 95, 67, 0.96) !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+    }
+
+    .mobile-menu.ios-stable-surface,
+    .ios-stable-surface[aria-label='Voltar ao início'] {
+      background-color: rgba(233, 226, 210, 0.96) !important;
+    }
+
+    .ios-static-filter {
+      filter: none !important;
+    }
+
+    .whatsapp-float {
+      transform: none;
+      will-change: auto;
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .cards-grid {
     grid-template-columns: 1fr;

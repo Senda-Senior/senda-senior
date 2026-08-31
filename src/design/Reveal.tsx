@@ -108,7 +108,7 @@ export function Reveal({
   return (
     <motion.div
       ref={ref}
-      className={className}
+      className={['ios-slide-reveal', className].filter(Boolean).join(' ')}
       initial={false}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: distance }}
       transition={{ duration: 0.8, delay, ease: SENDA_EASE }}

@@ -44,7 +44,7 @@ export function ScrollToTop() {
           transition={{ duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
           whileHover={{ y: -3 }}
           whileTap={{ scale: 0.96 }}
-          className="fixed bottom-6 left-1/2 z-[150] -translate-x-1/2 flex items-center gap-[9px] rounded-full border border-[rgba(42,37,32,0.12)] bg-[rgba(233,226,210,0.72)] px-5 py-[11px] font-sans text-[13.5px] font-semibold text-[var(--color-ink)] shadow-[0_8px_32px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.55)] backdrop-blur-[14px]"
+          className="ios-stable-surface fixed bottom-6 left-1/2 z-[150] -translate-x-1/2 flex items-center gap-[9px] rounded-full border border-[rgba(42,37,32,0.12)] bg-[rgba(233,226,210,0.72)] px-5 py-[11px] font-sans text-[13.5px] font-semibold text-[var(--color-ink)] shadow-[0_8px_32px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.55)] backdrop-blur-[14px]"
           aria-label="Voltar ao início"
           style={{ WebkitBackdropFilter: 'blur(14px)' }}
         >
