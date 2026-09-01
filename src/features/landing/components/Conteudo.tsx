@@ -124,9 +124,31 @@ export function Conteudo() {
 
                 {/* Footer (Author & Date) */}
                 <div style={{ display: 'flex', alignItems: 'center', marginTop: 32, gap: 12 }}>
-                  {/* Avatar Placeholder */}
-                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#aab6c9' }} />
-                  
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      width: 28,
+                      height: 28,
+                      flex: '0 0 28px',
+                      overflow: 'hidden',
+                      borderRadius: '50%',
+                      background: '#aab6c9',
+                    }}
+                  >
+                    <img
+                      src={a.avatar}
+                      alt=""
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        objectPosition: 'center top',
+                        transform: 'scale(1.55)',
+                        transformOrigin: 'center 25%',
+                      }}
+                    />
+                  </div>
+
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, fontWeight: 700, color: a.titleColor }}>
                       {a.author}
@@ -169,4 +191,3 @@ export function Conteudo() {
     </section>
   )
 }
-

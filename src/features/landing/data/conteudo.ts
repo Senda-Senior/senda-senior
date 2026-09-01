@@ -15,6 +15,7 @@ export type Artigo = {
   titleColor: string
   tagColor: string
   photo: string
+  avatar: string
   href: string
 }
 
@@ -28,6 +29,7 @@ export const ARTIGOS: Artigo[] = [
     titleColor: 'var(--color-forest-dark)',
     tagColor: 'var(--color-forest-60)',
     photo: '/conversa-pais.webp',
+    avatar: '/JULIANNE FOTO.webp',
     href: '/artigos/como-conversar-com-seus-pais',
   },
   {
@@ -39,6 +41,7 @@ export const ARTIGOS: Artigo[] = [
     titleColor: 'var(--color-brown-rich)',
     tagColor: 'var(--color-brown-rich-65)',
     photo: '/5-documentos.webp',
+    avatar: '/LUCIANA FOTO.webp',
     href: '/artigos/documentos-essenciais',
   },
   {
@@ -50,6 +53,7 @@ export const ARTIGOS: Artigo[] = [
     titleColor: 'var(--color-ink)',
     tagColor: 'var(--color-ink-55)',
     photo: '/qual-momento.webp',
+    avatar: '/LUCIANA FOTO.webp',
     href: '/artigos/qual-fase-de-cuidado',
   },
 ]
