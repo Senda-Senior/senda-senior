@@ -1,6 +1,6 @@
 /**
  * AuthBrandPanel.tsx
- * Painel visual esquerdo das páginas de auth com foto de marca, gradientes de leitura e decorações.
+ * Painel visual esquerdo das páginas de auth com foto de marca e gradientes de leitura.
  *
  * Conecta: importa NextImage (next/image) | importado por AuthPage (pages)
  * Camada: browser
@@ -19,7 +19,7 @@ type AuthBrandPanelProps = {
   objectPosition?: string
 }
 
-/** Painel esquerdo das páginas de auth: foto de marca, gradiente de leitura e selos — `public/brand/`. */
+/** Painel esquerdo das páginas de auth: foto editorial e gradientes de leitura. */
 export function AuthBrandPanel({ children, photoSrc, objectPosition = '22% 45%' }: AuthBrandPanelProps) {
   return (
     <div
@@ -70,46 +70,6 @@ export function AuthBrandPanel({ children, photoSrc, objectPosition = '22% 45%' 
           pointerEvents: 'none',
         }}
       />
-
-      <div
-        style={{
-          position: 'absolute',
-          right: '2%',
-          bottom: '4%',
-          zIndex: 6,
-          width: 'clamp(96px, 20vw, 200px)',
-          opacity: 0.22,
-          pointerEvents: 'none',
-        }}
-      >
-        <NextImage
-          src="/brand/star-scatter-decoration.jpg"
-          alt=""
-          width={512}
-          height={512}
-          style={{ width: '100%', height: 'auto' }}
-        />
-      </div>
-
-      <div
-        style={{
-          position: 'absolute',
-          right: '7%',
-          top: '10%',
-          zIndex: 6,
-          width: 'clamp(56px, 9vw, 84px)',
-          pointerEvents: 'none',
-          filter: 'drop-shadow(0 8px 22px rgba(0,0,0,0.3))',
-        }}
-      >
-        <NextImage
-          src="/brand/CARD-removebg-preview.png"
-          alt=""
-          width={220}
-          height={280}
-          style={{ width: '100%', height: 'auto' }}
-        />
-      </div>
 
       <div
         className="auth-panel-content"

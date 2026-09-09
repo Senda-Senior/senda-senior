@@ -98,14 +98,18 @@ export default function UpdatePassword() {
         photoSrc="/brand/card-elder-window.png"
         objectPosition="28% 38%"
       >
-        <Link href="/" className="mb-12 inline-block no-underline">
+        <Link
+          href="/"
+          aria-label="Voltar para o início"
+          className="mb-[clamp(48px,7vh,76px)] inline-block no-underline"
+        >
           <NextImage
-            src="/brand/logo-14.png"
+            src="/brand/logo-wordmark-dark.png"
             alt="Senda Sênior"
-            width={280}
-            height={98}
+            width={648}
+            height={213}
             priority
-            className="h-11 w-auto object-contain [filter:brightness(0)_invert(1)]"
+            className="h-auto w-[clamp(210px,18vw,270px)] object-contain [filter:brightness(0)_invert(1)]"
           />
         </Link>
 
@@ -122,24 +126,26 @@ export default function UpdatePassword() {
         <div className="mt-12 flex flex-col gap-4">
           {[
             {
-              icon: <Lock size={16} strokeWidth={1.8} />,
+              icon: <Lock size={19} strokeWidth={1.7} />,
               text: 'Criptografia ponta a ponta',
             },
             {
-              icon: <ShieldCheck size={16} strokeWidth={1.8} />,
+              icon: <ShieldCheck size={19} strokeWidth={1.7} />,
               text: 'Conformidade com LGPD',
             },
             {
-              icon: <KeyRound size={16} strokeWidth={1.8} />,
+              icon: <KeyRound size={19} strokeWidth={1.7} />,
               text: 'Seus dados, suas regras',
             },
           ].map((item) => (
             <div
               key={item.text}
-              className="flex items-center gap-3 rounded-[10px] border border-white/8 bg-white/8 px-4 py-3"
+              className="flex min-h-14 items-center gap-3.5 rounded-[12px] border border-white/10 bg-black/10 px-4.5 py-3.5 backdrop-blur-[2px]"
             >
-              <span className="text-base text-white/55">{item.icon}</span>
-              <span className="text-[15px] font-medium text-white/80">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/70">
+                {item.icon}
+              </span>
+              <span className="text-[15px] font-medium text-white/85">
                 {item.text}
               </span>
             </div>
